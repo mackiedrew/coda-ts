@@ -1,0 +1,5 @@
+{
+  "name": "coda-ts",
+  "description": "Simple node, JavaScript, and TypeScript client for working with the Coda API.",
+  "packageManager": "yarn@3.2.0"
+}
