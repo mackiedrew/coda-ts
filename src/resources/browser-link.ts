@@ -1,6 +1,5 @@
 import Api from '../api';
-import { Resource } from './resource';
-import { ItemResponse, ResourceType } from './types';
+import { Resource, ItemResponse, ResourceType } from './resource';
 
 export interface BrowserLinkDto {
   // The browser link to try to resolve.

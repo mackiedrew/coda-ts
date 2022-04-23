@@ -1,6 +1,5 @@
 import Api from '../api';
-import { Resource } from './resource';
-import { ItemResponse, ListResponse, ResourceType } from './types';
+import { Resource, ItemResponse, ListResponse, ResourceType } from './resource';
 
 // https://coda.io/developers/apis/v1#operation/createDoc
 export interface CreateDocDto {
@@ -8,12 +7,6 @@ export interface CreateDocDto {
   sourceDoc?: string; // An optional doc ID from which to create a copy.
   timezone?: string; // The timezone to use for the newly created doc.
   folderId?: string; // The ID of the folder within which to create this doc. Defaults to your "My docs" folder in the oldest workspace you joined
-}
-
-export interface Icon {
-  name: string;
-  type: string;
-  browserLink: string;
 }
 
 export interface DocSize {
