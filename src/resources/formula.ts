@@ -2,11 +2,11 @@ import Api from '../api';
 import { Resource } from './resource';
 
 /**
- * A Table API interface class.
+ * A Formula API interface class.
  *
- * https://coda.io/developers/apis/v1#tag/Tables
+ * https://coda.io/developers/apis/v1#tag/Formulas
  */
-export class Table extends Resource {
+export class Formula extends Resource {
   /**
    * @param apiInstance The API instance used to make the API call.
    */
@@ -23,4 +23,4 @@ export class Table extends Resource {
   }
 }
 
-export default Table;
+export default Formula;

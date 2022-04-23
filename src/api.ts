@@ -1,5 +1,6 @@
 import axios, { AxiosInstance } from 'axios';
-import { BASE_URL } from './constants';
+
+export const BASE_URL = 'https://coda.io/apis/v1';
 
 export default class Api {
   constructor(token: string) {

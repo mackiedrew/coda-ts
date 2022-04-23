@@ -36,3 +36,5 @@ export class Mutation extends Resource {
     return response.data;
   }
 }
+
+export default Mutation;
