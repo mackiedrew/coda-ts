@@ -1,4 +1,10 @@
 import Api from './api';
 
-export default Api;
-export const Coda = Api;
+export class Coda {
+  constructor(token: string) {
+    this.Api = new Api(token);
+  }
+  private Api: Api;
+}
+
+export default Coda;

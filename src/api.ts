@@ -1,6 +1,13 @@
+import axios, { AxiosInstance } from 'axios';
+
+export const BASE_URL = 'https://coda.io/developers/apis/v1';
+
 export default class Api {
   constructor(token: string) {
-    this.token = token;
+    this.http = axios.create({
+      baseURL: BASE_URL,
+      headers: { Authorization: `Bearer ${token}` },
+    });
   }
-  token: string;
+  public http: AxiosInstance;
 }
