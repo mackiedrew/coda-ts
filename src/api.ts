@@ -1,4 +1,5 @@
 import axios, { AxiosInstance } from 'axios';
+import Doc from './resources/doc';
 
 export const BASE_URL = 'https://coda.io/apis/v1';
 

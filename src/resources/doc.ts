@@ -1,6 +1,8 @@
 import Api from '../api';
+import { Folder } from './folder';
 import { Icon } from './icon';
-import { Resource, ItemResponse, ListResponse, ResourceType } from './resource';
+import { Resource, ListResponse, ResourceType, ItemResponse } from './resource';
+import { Workspace } from './workspace';
 
 export interface CreateDocDto {
   title?: string; // Title of the new doc. Defaults to 'Untitled'.
@@ -69,21 +71,21 @@ export interface DocSize {
   overApiSizeLimit: boolean;
 }
 
-export interface SourceDoc {
+export interface DocRef {
   id: string;
   type: ResourceType.Doc;
   href: string;
   browserLink: string;
 }
 
-export interface DocResponse extends ItemResponse<ResourceType.Doc> {
+export interface DocResource extends ItemResponse<ResourceType.Doc> {
   browserLink: string;
   icon: Icon;
   name: string;
   owner: string;
   ownerName: string;
   docSize: DocSize;
-  sourceDoc: SourceDoc;
+  sourceDoc: DocRef;
   createdAt: string;
   updatedAt: string;
   published: {
@@ -95,17 +97,8 @@ export interface DocResponse extends ItemResponse<ResourceType.Doc> {
     mode: boolean;
     categories: string[];
   };
-  folder: {
-    id: string; // 'fl-ABC123'
-    type: ResourceType.Folder;
-    browserLink: string;
-  };
-  workspace: {
-    id: string; // 'ws-ABC123'
-    type: ResourceType.Workspace;
-    organizationId: string; // 'org-ABC123'
-    browserLink: string;
-  };
+  folder: Folder;
+  workspace: Workspace;
   workspaceId: string;
   folderId: string;
 }
@@ -124,7 +117,7 @@ export interface ListDocOptions {
   pageToken?: string; // An opaque token used to fetch the next page of results.
 }
 
-export type ListDocResponse = ListResponse<DocResponse>;
+export type ListDocResponse = ListResponse<DocResource>;
 
 /**
  * A Doc API interface class.
@@ -165,8 +158,8 @@ export class Doc extends Resource {
    * @param docData Doc creation parameters. (see docs or type for details)
    * @returns Information about the created Doc.
    */
-  async create(docData: CreateDocDto): Promise<DocResponse> {
-    const response = await this.api.http.post<DocResponse>(`/docs`, docData);
+  async create(docData: CreateDocDto): Promise<DocResource> {
+    const response = await this.api.http.post<DocResource>(`/docs`, docData);
     return response.data;
   }
 
@@ -191,8 +184,8 @@ export class Doc extends Resource {
    * @param docId ID of the doc; example: `AbCDeFGH`
    * @returns Returns metadata for the specified doc.
    */
-  async get(docId: string): Promise<DocResponse> {
-    const response = await this.api.http.get<DocResponse>(`/docs/${docId}`);
+  async get(docId: string): Promise<DocResource> {
+    const response = await this.api.http.get<DocResource>(`/docs/${docId}`);
     return response.data;
   }
 

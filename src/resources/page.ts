@@ -4,6 +4,14 @@ import { Image } from './image';
 import { Mutation } from './mutation';
 import { ItemResponse, ListResponse, Resource, ResourceType } from './resource';
 
+export interface PageRef {
+  id: string; // ID of the page.
+  type: ResourceType.Page; // The type of this resource.
+  browserLink: string; // Browser-friendly link to the page.
+  href: string; // API link to the page.
+  name: string; // Name of the page.
+}
+
 export interface PageResponse extends ItemResponse<ResourceType.Page> {
   browserLink: string;
   subtitle?: string;

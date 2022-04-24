@@ -1,24 +1,38 @@
 import Api from '../api';
 
 export enum ResourceType {
-  Doc = 'doc', // https://coda.io/developers/apis/v1#tag/Docs
-  Page = 'page', // https://coda.io/developers/apis/v1#tag/Pages
-  Table = 'table', // https://coda.io/developers/apis/v1#tag/Tables
-  Column = 'column', // https://coda.io/developers/apis/v1#tag/Columns
-  Row = 'row', // https://coda.io/developers/apis/v1#tag/Rows
-  Forumla = 'forumla', // https://coda.io/developers/apis/v1#tag/Formula
-  Control = 'control', // https://coda.io/developers/apis/v1#tag/Control
-  Account = 'user', // https://coda.io/developers/apis/v1#tag/Account
-  ApiLink = 'apiLink', // https://coda.io/developers/apis/v1#operation/resolveBrowserLink
-
-  // Mutation isn't an object or a resource type but it fulfills a similar role
-  Mutation = 'mutation', // https://coda.io/developers/apis/v1#operation/getMutationStatus
-  Automation = 'automation',
-
-  // No API but still resources
-  Folder = 'folder',
-  Workspace = 'workspace',
   Metadata = 'aclMetadata',
+  Permissions = 'aclPermissions',
+  ApiLink = 'apiLink',
+  Automation = 'automation',
+  Column = 'column',
+  Control = 'control',
+  Doc = 'doc',
+  DocAnalytics = 'docAnalytics',
+  DocAnalyticsSummary = 'docAnalyticsSummary',
+  DocAnalyticsV2 = 'docAnalyticsV2',
+  Folder = 'folder',
+  Formula = 'formula',
+  Mutation = 'mutationStatus',
+  Pack = 'pack',
+  PackAclPermissions = 'packAclPermissions',
+  PackAnalytics = 'packAnalytics',
+  PackAnalyticsSummary = 'packAnalyticsSummary',
+  PackAsset = 'packAsset',
+  PackCategory = 'packCategory',
+  PackFormulaAnalytics = 'packFormulaAnalytics',
+  PackLog = 'packLog',
+  PackMaker = 'packMaker',
+  PackOAuthConfig = 'packOauthConfig',
+  PackRelease = 'packRelease',
+  PackSourceCode = 'packSourceCode',
+  PackSystemConnection = 'packSystemConnection',
+  PackVersion = 'packVersion',
+  Page = 'page',
+  Row = 'row',
+  Table = 'table',
+  User = 'user',
+  Workspace = 'workspace',
 }
 
 export interface ItemResponse<T extends ResourceType> {

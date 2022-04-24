@@ -12,6 +12,9 @@ export interface MutationStatus {
  * https://coda.io/developers/apis/v1#operation/triggerWebhookAutomation
  */
 export class Automation extends Resource {
+  /**
+   * @param apiInstance The API instance used to make the API call.
+   */
   constructor(apiInstance: Api) {
     super(apiInstance);
   }
