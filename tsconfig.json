@@ -9,11 +9,15 @@
     "incremental": true,
     "module": "commonjs",
     "noImplicitAny": true,
+    "noImplicitThis": true,
+    "alwaysStrict": true,
+    "strictBindCallApply": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "strictPropertyInitialization": true,
     "removeComments": true,
     "skipLibCheck": true,
     "sourceMap": true,
-    "strictBindCallApply": true,
-    "strictNullChecks": true,
-    "target": "es2017"
+    "target": "es2017",
   }
 }

@@ -5,7 +5,7 @@ import { Workspace } from './workspace';
 export interface WhoAmIResponse {
   name: string; // Name of the user.
   loginId: string; // Email address of the user.
-  type: ResourceType.Account; // The type of this resource.
+  type: ResourceType.User; // The type of this resource.
   scoped: boolean; // True if the token used to make this request has restricted/scoped access to the API.
   tokenName: string; // Returns the name of the token used for this request.
   href: string; // API link to the user.
