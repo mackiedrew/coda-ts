@@ -16,16 +16,6 @@ export interface RowResource extends RowResourceOfTable {
   parent: TableRef;
 }
 
-export interface RowListQueryById {
-  queryString: string;
-  columnId: string;
-}
-
-export interface RowListQueryByName {
-  queryString: string;
-  columnName: string;
-}
-
 /**
  * Specifies the sort order of the rows returned. If left unspecified, rows are returned by creation
  * time ascending. "UpdatedAt" sort ordering is the order of rows based upon when they were last updated.
@@ -45,6 +35,23 @@ export enum RowValueFormat {
   Simple = 'simple',
   SimpleWithArrays = 'simpleWithArrays',
   Rich = 'rich',
+}
+
+export enum RowListQueryType {
+  ID = 'id',
+  Name = 'name',
+}
+
+export interface RowListQueryById {
+  type: RowListQueryType.ID;
+  queryString: string;
+  columnId: string;
+}
+
+export interface RowListQueryByName {
+  type: RowListQueryType.Name;
+  queryString: string;
+  columnName: string;
 }
 
 export type RowListQuery = RowListQueryById | RowListQueryByName;
@@ -96,12 +103,22 @@ export class Row extends Resource {
     super(apiInstance);
   }
 
+  constructQuery(query?: RowListQuery): string | void {
+    if (!query) return;
+    if (query.type === RowListQueryType.Name) return `"${query.columnName}":${query.queryString}`;
+    return `${query.columnId}:${query.queryString}`;
+  }
+
   async list(
     docId: string,
     tableIdOrName: string,
     options: RowListOptions,
   ): Promise<ListRowResponse> {
-    return true;
+    const response = await this.api.http.get<ListRowResponse>(
+      `/docs/${docId}/tables/${tableIdOrName}/rows`,
+      { params: { ...options, query: this.constructQuery(options.query) } },
+    );
+    return response.data;
   }
 
   async upsert(
@@ -110,7 +127,14 @@ export class Row extends Resource {
     data: RowUpsertDto,
     disableParsing = false,
   ): Promise<{ mutation: Mutation; rowIds: string[] }> {
-    return true;
+    const response = await this.api.http.post<{
+      requestId: string;
+      rowIds: string[];
+    }>(`/docs/${docId}/tables/${tableIdOrName}/rows`, data, { params: { disableParsing } });
+    return {
+      mutation: new Mutation(this.api, response.data.requestId),
+      rowIds: response.data.rowIds,
+    };
   }
 
   async deleteMany(
@@ -118,7 +142,14 @@ export class Row extends Resource {
     tableIdOrName: string,
     rowIds: string[],
   ): Promise<{ mutation: Mutation; rowIds: string[] }> {
-    return true;
+    const response = await this.api.http.delete<{
+      requestId: string;
+      rowIds: string[];
+    }>(`/docs/${docId}/tables/${tableIdOrName}/rows`, { data: { rowIds } });
+    return {
+      mutation: new Mutation(this.api, response.data.requestId),
+      rowIds: response.data.rowIds,
+    };
   }
 
   async get(
@@ -128,7 +159,13 @@ export class Row extends Resource {
     useColumnNames: boolean,
     valueFormat: RowValueFormat,
   ): Promise<RowResource> {
-    return true;
+    const response = await this.api.http.get<RowResource>(
+      `/docs/${docId}/tables/${tableIdOrName}/rows/${rowIdOrName}`,
+      {
+        params: { useColumnNames, valueFormat },
+      },
+    );
+    return response.data;
   }
 
   async update(
@@ -137,16 +174,32 @@ export class Row extends Resource {
     rowIdOrName: string,
     data: RowData,
     disableParsing = false,
-  ): Promise<{ mutation: Mutation; id: string }> {
-    return true;
+  ): Promise<{ mutation: Mutation; rowId: string }> {
+    const response = await this.api.http.put<{
+      requestId: string;
+      id: string;
+    }>(`/docs/${docId}/tables/${tableIdOrName}/rows/${rowIdOrName}`, data, {
+      params: { disableParsing },
+    });
+    return {
+      mutation: new Mutation(this.api, response.data.requestId),
+      rowId: response.data.id,
+    };
   }
 
   async delete(
     docId: string,
     tableIdOrName: string,
     rowIdOrName: string,
-  ): Promise<{ mutation: Mutation; id: string }> {
-    return true;
+  ): Promise<{ mutation: Mutation; rowId: string }> {
+    const response = await this.api.http.delete<{
+      requestId: string;
+      id: string;
+    }>(`/docs/${docId}/tables/${tableIdOrName}/rows/${rowIdOrName}`);
+    return {
+      mutation: new Mutation(this.api, response.data.requestId),
+      rowId: response.data.id,
+    };
   }
 
   async pushButton(
@@ -155,7 +208,16 @@ export class Row extends Resource {
     rowIdOrName: string,
     columnIdOrName: string,
   ): Promise<{ mutation: Mutation; rowId: string; columnId: string }> {
-    return true;
+    const response = await this.api.http.post<{
+      requestId: string;
+      rowId: string;
+      columnId: string;
+    }>(`/docs/${docId}/tables/${tableIdOrName}/rows/${rowIdOrName}/buttons/${columnIdOrName}`);
+    return {
+      mutation: new Mutation(this.api, response.data.requestId),
+      rowId: response.data.rowId,
+      columnId: response.data.columnId,
+    };
   }
 }
 
