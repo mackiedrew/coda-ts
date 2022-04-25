@@ -32,8 +32,7 @@ export class Automation {
       `/docs/${docId}/hooks/automation/${ruleId}`,
       payload,
     );
-    const mutation = new Mutation(this.api, response.data.requestId);
-    return mutation;
+    return new Mutation(this.api, response.data.requestId);
   }
 }
 

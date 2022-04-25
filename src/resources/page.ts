@@ -55,7 +55,6 @@ export class Page {
    * @param docId ID of the doc; example: `AbCDeFGH`
    * @param limit Maximum number of results to return in this query; default is 25; integer >= 1
    * @param pageToken An opaque token used to fetch the next page of results; example: `eyJsaW1pd`
-   *
    * @returns List of pages.
    */
   async list(
@@ -101,8 +100,7 @@ export class Page {
     const response = await this.api.http.put<PageUpdateResponse>(
       `/docs/${docId}/pages/${pageIdOrName}`,
     );
-    const mutation = new Mutation(this.api, response.data.requestId);
-    return mutation;
+    return new Mutation(this.api, response.data.requestId);
   }
 }
 

@@ -10,6 +10,7 @@
     "test": "jest"
   },
   "devDependencies": {
+    "@brettz9/eslint-plugin": "^1.0.4",
     "@types/dotenv": "^8.2.0",
     "@types/eslint": "8",
     "@types/jest": "^27.4.1",
@@ -19,7 +20,10 @@
     "dotenv": "^16.0.0",
     "eslint": "8.13.0",
     "eslint-config-prettier": "8.5.0",
+    "eslint-plugin-jsdoc": "^39.2.8",
     "eslint-plugin-prettier": "4.0.0",
+    "eslint-plugin-sonarjs": "^0.13.0",
+    "eslint-plugin-unicorn": "^42.0.0",
     "jest": "27.5.1",
     "prettier": "2.6.2",
     "ts-jest": "^27.1.4",

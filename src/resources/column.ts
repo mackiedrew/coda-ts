@@ -81,7 +81,7 @@ export class Column {
    * they're easily proneto being changed by users. If you're using a name,
    * be sure to URI-encode it; example: `grid-pqRst-U`
    * @param options Options for the query, see type or docs for details.
-   * @returnsA list of columns in a table.
+   * @returns list of columns in a table.
    */
   async list(
     docId: string,

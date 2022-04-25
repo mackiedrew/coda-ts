@@ -121,11 +121,11 @@ export type ListDocResponse = ListResponse<DocResource>;
 
 /**
  * A Doc API interface class.
- * 
+ *
  * Coda docs are foundational, top-level collaborative projects that contain pages.
  * The API lets you list and search your docs to obtain basic metadata like titles
  * and ownership information.
-
+ *
  * https://coda.io/developers/apis/v1#tag/Docs
  */
 export class Doc {
