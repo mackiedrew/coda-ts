@@ -24,19 +24,10 @@ jobs:
       - name: Install dependencies
         run: yarn install
         
-      - name: Lint
-        run: yarn lint
-        
-      - name: Tests
-        run: yarn test
-        
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-    
-      - name: Install dependencies
-        run: yarn install
+      - name: Create env file
+        run: |
+          touch .env.test
+          echo CODA_UNRESTRICTED_API_KEY=${{ secrets.CODA_UNRESTRICTED_API_KEY }} >> .env.test
         
       - name: Build
         run: yarn build
