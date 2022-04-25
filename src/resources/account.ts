@@ -21,11 +21,8 @@ export interface WhoAmIResponse {
  * https://coda.io/developers/apis/v1#tag/Account
  */
 export class Account extends Resource {
-  /**
-   * @param apiInstance The API instance used to make the API call.
-   */
-  constructor(apiInstance: Api) {
-    super(apiInstance);
+  constructor(api: Api) {
+    super(api);
   }
 
   /**

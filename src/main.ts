@@ -1,10 +1,14 @@
 import Api from './api';
+import Account from './resources/account';
 
 export class Coda {
+  private api: Api;
+  public Account: Account;
+
   constructor(token: string) {
-    this.Api = new Api(token);
+    this.api = new Api(token);
+    this.Account = new Account(this.api);
   }
-  private Api: Api;
 }
 
 export default Coda;
