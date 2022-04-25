@@ -6,3 +6,5 @@ export interface Workspace {
   browserLink: string; // Browser-friendly link to the Coda workspace.
   organizationId?: string; // ID of the organization bound to this workspace, if any; example: `org-ABC123`
 }
+
+export default Workspace;

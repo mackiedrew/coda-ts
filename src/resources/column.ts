@@ -1,5 +1,5 @@
 import Api from '../api';
-import { ItemResponse, ListResponse, Resource, ResourceType } from './resource';
+import { ItemResponse, ListResponse, ResourceType } from './resource';
 import { TableRef } from './table';
 
 export interface ListColumnOptions {
@@ -65,12 +65,10 @@ export interface ColumnResource extends ItemResponse<ResourceType.Column> {
  *
  * https://coda.io/developers/apis/v1#tag/Columns
  */
-export class Column extends Resource {
-  /**
-   * @param apiInstance The API instance used to make the API call.
-   */
-  constructor(apiInstance: Api) {
-    super(apiInstance);
+export class Column {
+  private api: Api;
+  constructor(api: Api) {
+    this.api = api;
   }
 
   /**

@@ -1,5 +1,5 @@
 import Api from '../api';
-import { Resource, ItemResponse, ResourceType } from './resource';
+import { ItemResponse, ResourceType } from './resource';
 
 export interface BrowserLinkDto {
   // The browser link to try to resolve.
@@ -14,7 +14,12 @@ export interface BrowserLinkDto {
 
 export interface BrowserLinkResponse extends ItemResponse<ResourceType.ApiLink> {
   browserLink?: string; // Canonical browser-friendly link to the resolved resource.
-  resource: Resource; // Reference to the resolved resource.
+  resource: {
+    id: string;
+    href: string;
+    type: ResourceType;
+    name: string;
+  };
 }
 
 /**
@@ -23,12 +28,10 @@ export interface BrowserLinkResponse extends ItemResponse<ResourceType.ApiLink> 
  *
  * https://coda.io/developers/apis/v1#operation/resolveBrowserLink
  */
-export class BrowserLink extends Resource {
-  /**
-   * @param apiInstance The API instance used to make the API call.
-   */
-  constructor(apiInstance: Api) {
-    super(apiInstance);
+export class BrowserLink {
+  private api: Api;
+  constructor(api: Api) {
+    this.api = api;
   }
 
   /**

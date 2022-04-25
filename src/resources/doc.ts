@@ -1,7 +1,7 @@
 import Api from '../api';
 import { Folder } from './folder';
 import { Icon } from './icon';
-import { Resource, ListResponse, ResourceType, ItemResponse } from './resource';
+import { ListResponse, ResourceType, ItemResponse } from './resource';
 import { Workspace } from './workspace';
 
 export interface CreateDocDto {
@@ -128,9 +128,10 @@ export type ListDocResponse = ListResponse<DocResource>;
 
  * https://coda.io/developers/apis/v1#tag/Docs
  */
-export class Doc extends Resource {
-  constructor(apiInstance: Api) {
-    super(apiInstance);
+export class Doc {
+  private api: Api;
+  constructor(api: Api) {
+    this.api = api;
   }
 
   /**

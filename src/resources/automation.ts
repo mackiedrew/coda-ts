@@ -1,6 +1,5 @@
 import Api from '../api';
 import Mutation from './mutation';
-import { Resource } from './resource';
 
 export interface MutationStatus {
   completed: boolean;
@@ -11,12 +10,10 @@ export interface MutationStatus {
  *
  * https://coda.io/developers/apis/v1#operation/triggerWebhookAutomation
  */
-export class Automation extends Resource {
-  /**
-   * @param apiInstance The API instance used to make the API call.
-   */
-  constructor(apiInstance: Api) {
-    super(apiInstance);
+export class Automation {
+  private api: Api;
+  constructor(api: Api) {
+    this.api = api;
   }
 
   /**

@@ -1,6 +1,6 @@
 import Api from '../api';
 import { PageRef } from './page';
-import { ItemResponse, ListResponse, Resource, ResourceType } from './resource';
+import { ItemResponse, ListResponse, ResourceType } from './resource';
 
 export enum TableType {
   Table = 'table',
@@ -84,12 +84,10 @@ export interface TableListOption {
  *
  * https://coda.io/developers/apis/v1#tag/Tables
  */
-export class Table extends Resource {
-  /**
-   * @param apiInstance The API instance used to make the API call.
-   */
-  constructor(apiInstance: Api) {
-    super(apiInstance);
+export class Table {
+  private api: Api;
+  constructor(api: Api) {
+    this.api = api;
   }
 
   /**

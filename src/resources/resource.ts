@@ -1,5 +1,3 @@
-import Api from '../api';
-
 export enum ResourceType {
   Metadata = 'aclMetadata',
   Permissions = 'aclPermissions',
@@ -48,15 +46,3 @@ export interface ListResponse<T> {
   nextPageToken: string;
   nextPageLink: string;
 }
-
-/**
- * https://coda.io/developers/apis/v1#section/Using-the-API/Resource-IDs-and-Links
- */
-export class Resource {
-  constructor(apiInstance: Api) {
-    this.api = apiInstance;
-  }
-  public api: Api;
-}
-
-export default Resource;

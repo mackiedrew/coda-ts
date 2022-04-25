@@ -1,6 +1,6 @@
 import Api from '../api';
 import { PageRef } from './page';
-import { ItemResponse, ListResponse, Resource, ResourceType } from './resource';
+import { ItemResponse, ListResponse, ResourceType } from './resource';
 
 export interface ListControlsOptions {
   limit?: number; // Maximum number of results to return in this query; default: 25
@@ -21,12 +21,10 @@ export interface ControlResource extends ItemResponse<ResourceType.Control> {
  * https://coda.io/developers/apis/v1#tag/Controls
  *
  */
-export class Control extends Resource {
-  /**
-   * @param apiInstance The API instance used to make the API call.
-   */
-  constructor(apiInstance: Api) {
-    super(apiInstance);
+export class Control {
+  private api: Api;
+  constructor(api: Api) {
+    this.api = api;
   }
 
   /**

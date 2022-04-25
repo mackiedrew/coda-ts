@@ -1,6 +1,5 @@
 import Api from '../api';
 import Mutation from './mutation';
-import { Resource } from './resource';
 
 export type Categories = string[];
 
@@ -25,9 +24,10 @@ export interface PublishOptions {
  *
  * https://coda.io/developers/apis/v1#tag/Publishing
  */
-export class Publishing extends Resource {
-  constructor(apiInstance: Api) {
-    super(apiInstance);
+export class Publishing {
+  private api: Api;
+  constructor(api: Api) {
+    this.api = api;
   }
 
   /**

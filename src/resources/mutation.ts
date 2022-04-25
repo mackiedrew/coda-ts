@@ -1,5 +1,4 @@
 import Api from '../api';
-import { Resource } from './resource';
 
 export interface MutationStatus {
   completed: boolean;
@@ -10,13 +9,16 @@ export interface MutationStatus {
  *
  * https://coda.io/developers/apis/v1#operation/getMutationStatus
  */
-export class Mutation extends Resource {
+export class Mutation {
+  private api: Api;
+
   /**
    * ID of the request. example: `abc-123-def-456`
    */
   private requestId: string;
-  constructor(apiInstance: Api, requestId: string) {
-    super(apiInstance);
+
+  constructor(api: Api, requestId: string) {
+    this.api = api;
     this.requestId = requestId;
   }
 

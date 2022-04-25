@@ -1,5 +1,5 @@
 import Api from '../api';
-import { Resource, ResourceType } from './resource';
+import { ResourceType } from './resource';
 import { Workspace } from './workspace';
 
 export interface WhoAmIResponse {
@@ -20,9 +20,10 @@ export interface WhoAmIResponse {
  *
  * https://coda.io/developers/apis/v1#tag/Account
  */
-export class Account extends Resource {
+export class Account {
+  private api: Api;
   constructor(api: Api) {
-    super(api);
+    this.api = api;
   }
 
   /**

@@ -1,6 +1,6 @@
 import Api from '../api';
 import { PageRef } from './page';
-import { ItemResponse, ListResponse, Resource, ResourceType } from './resource';
+import { ItemResponse, ListResponse, ResourceType } from './resource';
 import { ScalarValue } from './values';
 
 export interface FormulaListOptions {
@@ -25,12 +25,10 @@ export interface FormulaResource extends ItemResponse<ResourceType.Formula> {
  *
  * https://coda.io/developers/apis/v1#tag/Formulas
  */
-export class Formula extends Resource {
-  /**
-   * @param apiInstance The API instance used to make the API call.
-   */
-  constructor(apiInstance: Api) {
-    super(apiInstance);
+export class Formula {
+  private api: Api;
+  constructor(api: Api) {
+    this.api = api;
   }
 
   /**

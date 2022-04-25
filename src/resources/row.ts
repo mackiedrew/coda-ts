@@ -1,6 +1,6 @@
 import Api from '../api';
 import Mutation from './mutation';
-import { ItemResponse, ListResponse, Resource, ResourceType } from './resource';
+import { ItemResponse, ListResponse, ResourceType } from './resource';
 import { TableRef } from './table';
 import { CellValue, ScalarValue } from './values';
 
@@ -95,12 +95,10 @@ export interface ListRowResponse extends ListResponse<RowResourceOfTable> {
  * https://coda.io/developers/apis/v1#tag/Rows
  *
  */
-export class Row extends Resource {
-  /**
-   * @param apiInstance The API instance used to make the API call.
-   */
-  constructor(apiInstance: Api) {
-    super(apiInstance);
+export class Row {
+  private api: Api;
+  constructor(api: Api) {
+    this.api = api;
   }
 
   constructQuery(query?: RowListQuery): string | void {

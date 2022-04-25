@@ -2,7 +2,7 @@ import Api from '../api';
 import { Icon } from './icon';
 import { Image } from './image';
 import { Mutation } from './mutation';
-import { ItemResponse, ListResponse, Resource, ResourceType } from './resource';
+import { ItemResponse, ListResponse, ResourceType } from './resource';
 
 export interface PageRef {
   id: string; // ID of the page.
@@ -41,12 +41,10 @@ interface PageUpdateResponse {
  *
  * https://coda.io/developers/apis/v1#tag/Pages
  */
-export class Page extends Resource {
-  /**
-   * @param apiInstance The API instance used to make the API call.
-   */
-  constructor(apiInstance: Api) {
-    super(apiInstance);
+export class Page {
+  private api: Api;
+  constructor(api: Api) {
+    this.api = api;
   }
 
   /**
