@@ -1,10 +1,8 @@
 import Api from '../api';
-import { ItemResponse, ListResponse, ResourceType } from './resource';
+import { ItemResponse, ListResponse, Pagination, ResourceType } from './resource';
 import { TableRef } from './table';
 
-export interface ListColumnOptions {
-  limit?: number; // Maximum number of results to return in this query; default: 25
-  pageToken?: string; // An opaque token used to fetch the next page of results; example: `eyJsaW1pd`
+export interface ListColumnOptions extends Pagination {
   visibleOnly?: boolean; // If true, returns only visible columns for the table.
 }
 

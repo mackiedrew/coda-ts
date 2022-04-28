@@ -2,7 +2,7 @@ import Api from '../api';
 import { Icon } from './icon';
 import { Image } from './image';
 import { Mutation } from './mutation';
-import { ItemResponse, ListResponse, ResourceType } from './resource';
+import { ItemResponse, ListResponse, Pagination, ResourceType } from './resource';
 
 export interface PageRef {
   id: string; // ID of the page.
@@ -53,16 +53,10 @@ export class Page {
    * https://coda.io/developers/apis/v1#operation/listPages
    *
    * @param docId ID of the doc; example: `AbCDeFGH`
-   * @param limit Maximum number of results to return in this query; default is 25; integer >= 1
-   * @param pageToken An opaque token used to fetch the next page of results; example: `eyJsaW1pd`
+   * @param options Standard pagination options.
    * @returns List of pages.
    */
-  async list(
-    docId: string,
-    limit?: number,
-    pageToken?: string,
-  ): Promise<ListResponse<PageResponse>> {
-    const options = { limit, pageToken };
+  async list(docId: string, options: Pagination = {}): Promise<ListResponse<PageResponse>> {
     const response = await this.api.http.get<ListResponse<PageResponse>>(`/docs/${docId}/pages`, {
       params: options,
     });

@@ -9,8 +9,8 @@ beforeEach(() => {
   invalidCoda = new Coda('fake token!');
 });
 
-describe('account api returns expected results', () => {
-  describe('for whoAmI enpoint', () => {
+describe('Account API returns expected results for', () => {
+  describe('GET /whoAmI', () => {
     test('with valid token', async () => {
       const whoAmI = await coda.Account.whoAmI();
       expect(whoAmI.type).toBe(ResourceType.User);
@@ -18,7 +18,7 @@ describe('account api returns expected results', () => {
       expect(whoAmI.href).toBe('https://coda.io/apis/v1/whoami');
     });
     test('with invalid token', async () => {
-      invalidCoda.Account.whoAmI().catch((error) => {
+      await invalidCoda.Account.whoAmI().catch((error) => {
         expect(error.response.data.statusCode).toBe(401);
         expect(error.response.data.statusMessage).toBe('Unauthorized');
       });

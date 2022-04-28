@@ -46,3 +46,8 @@ export interface ListResponse<T> {
   nextPageToken: string;
   nextPageLink: string;
 }
+
+export interface Pagination {
+  limit?: number; // Maximum number of results to return in this query; example: `10`; default: `25`
+  pageToken?: string; // An opaque token used to fetch the next page of results; example: `eyJsaW1pd`
+}

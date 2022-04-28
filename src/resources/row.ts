@@ -1,6 +1,6 @@
 import Api from '../api';
 import Mutation from './mutation';
-import { ItemResponse, ListResponse, ResourceType } from './resource';
+import { ItemResponse, ListResponse, Pagination, ResourceType } from './resource';
 import { TableRef } from './table';
 import { CellValue, ScalarValue } from './values';
 
@@ -56,14 +56,12 @@ export interface RowListQueryByName {
 
 export type RowListQuery = RowListQueryById | RowListQueryByName;
 
-export interface RowListOptions {
+export interface RowListOptions extends Pagination {
   query?: RowListQuery;
   sortBy?: RowSortBy;
   useColumnNames?: boolean; // Use column names instead of column IDs in the returned output. This is generally discouraged as it is fragile. If columns are renamed, code using original names may throw errors.
   valueFormat?: RowValueFormat; // The format that cell values are returned as.
   visibleOnly?: boolean;
-  limit?: number;
-  pageToken?: string;
   syncToken?: string;
 }
 

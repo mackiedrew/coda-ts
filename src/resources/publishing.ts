@@ -1,7 +1,15 @@
 import Api from '../api';
 import Mutation from './mutation';
 
-export type Categories = string[];
+export interface Published {
+  description: string;
+  browserLink: string;
+  imageLink: string;
+  discoverable: boolean;
+  earnCredit: boolean;
+  mode: boolean;
+  categories: string[];
+}
 
 export enum DocPublishMode {
   View = 'view',
@@ -13,7 +21,7 @@ export interface PublishOptions {
   slug: string; // Slug for the published doc.
   discoverable: boolean; // If true, indicates that the doc is discoverable.
   earnCredit: boolean; // If true, new users may be required to sign in to view content within this document.
-  categoryNames: Categories; // The names of categories to apply to the document.
+  categoryNames: string[]; // The names of categories to apply to the document.
   mode: DocPublishMode;
 }
 
@@ -24,22 +32,12 @@ export interface PublishOptions {
  *
  * https://coda.io/developers/apis/v1#tag/Publishing
  */
-export class Publishing {
+export class Publish {
   private api: Api;
-  constructor(api: Api) {
+  private id: string;
+  constructor(api: Api, docId: string) {
     this.api = api;
-  }
-
-  /**
-   * Gets all available doc categories.
-   *
-   * https://coda.io/developers/apis/v1#operation/listCategories
-   *
-   * @returns All available doc categories.
-   */
-  async catetories(): Promise<Categories> {
-    const response = await this.api.http.get<Categories>('/categories');
-    return response.data;
+    this.id = docId;
   }
 
   /**
@@ -47,13 +45,12 @@ export class Publishing {
    *
    * https://coda.io/developers/apis/v1#operation/publishDoc
    *
-   * @param docId ID of the doc; example: `AbCDeFGH`
    * @param options Options for query. See type or docs for details.
    * @returns Returns mutation that can provide completion status.
    */
-  async publish(docId: string, options: PublishOptions): Promise<Mutation> {
+  async publish(options: PublishOptions): Promise<Mutation> {
     const response = await this.api.http.put<{ requestId: string }>(
-      `/docs/${docId}/publish`,
+      `/docs/${this.id}/publish`,
       options,
     );
     return new Mutation(this.api, response.data.requestId);
@@ -64,13 +61,12 @@ export class Publishing {
    *
    * https://coda.io/developers/apis/v1#operation/unpublishDoc
    *
-   * @param docId ID of the doc; example: `AbCDeFGH`
    * @returns Returns true if document unpublished.
    */
-  async unpublish(docId: string): Promise<true> {
-    await this.api.http.delete<any>(`/docs/${docId}/publish`);
+  async unpublish(): Promise<true> {
+    await this.api.http.delete<any>(`/docs/${this.id}/publish`);
     return true;
   }
 }
 
-export default Publishing;
+export default Publish;

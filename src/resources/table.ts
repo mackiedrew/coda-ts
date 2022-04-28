@@ -1,6 +1,6 @@
 import Api from '../api';
 import { PageRef } from './page';
-import { ItemResponse, ListResponse, ResourceType } from './resource';
+import { ItemResponse, ListResponse, Pagination, ResourceType } from './resource';
 
 export enum TableType {
   Table = 'table',
@@ -72,9 +72,7 @@ export interface TableResource extends ItemResponse<ResourceType.Table> {
   filter?: Filter;
 }
 
-export interface TableListOption {
-  limit: number; // Maximum number of results to return in this query; default: 25;
-  pageToken: string; // An opaque token used to fetch the next page of results; example: eyJsaW1pd
+export interface TableListOption extends Pagination {
   sortBy: string; // Determines how to sort the given objects.
   tabledTypes: TableType;
 }
