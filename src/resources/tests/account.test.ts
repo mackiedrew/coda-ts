@@ -1,5 +1,5 @@
-import Coda from '../main';
-import { ResourceType } from '../resources/resource';
+import { Coda } from '../../main';
+import { ResourceType } from '../../types/resource';
 
 let coda: Coda;
 let invalidCoda: Coda;

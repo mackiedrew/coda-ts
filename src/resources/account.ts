@@ -1,6 +1,6 @@
-import Api from '../api';
-import { ResourceType } from './resource';
-import { Workspace } from './workspace';
+import { Api } from '../api';
+import { ResourceType } from '../types/resource';
+import { Workspace } from '../types/workspace';
 
 export interface WhoAmIResponse {
   name: string; // Name of the user.
@@ -36,5 +36,3 @@ export class Account {
     return response.data;
   }
 }
-
-export default Account;

@@ -1,10 +1,10 @@
-import Api from '../api';
-import { Folder } from './folder';
-import { Icon } from './icon';
+import { Api } from '../api';
+import { Folder } from '../types/folder';
+import { Icon } from '../types/icon';
 import { Permissions } from './permission';
-import { Published } from './publishing';
-import { ResourceType, ItemResponse } from './resource';
-import { Workspace } from './workspace';
+import { PublishInfo } from './publish';
+import { ResourceType, Resource } from '../types/resource';
+import { Workspace } from '../types/workspace';
 
 export interface ShareMetadata {
   canShare: boolean; // When true, the user of the api can share
@@ -26,7 +26,7 @@ export interface DocRef {
   browserLink: string;
 }
 
-export interface DocResponse extends ItemResponse<ResourceType.Doc> {
+export interface DoctDto extends Resource<ResourceType.Doc> {
   browserLink: string;
   owner: string;
   ownerName: string;
@@ -37,7 +37,7 @@ export interface DocResponse extends ItemResponse<ResourceType.Doc> {
   icon?: Icon;
   docSize?: DocSize;
   sourceDoc?: DocRef;
-  published?: Published;
+  published?: PublishInfo;
 }
 
 /**
@@ -68,11 +68,11 @@ export class Doc {
   public icon?: Icon;
   public docSize?: DocSize;
   public sourceDoc?: DocRef;
-  public published?: Published;
+  public published?: PublishInfo;
 
   public Permissions: Permissions;
 
-  constructor(api: Api, doc: DocResponse) {
+  constructor(api: Api, doc: DoctDto) {
     this.api = api;
 
     this.id = doc.id;
@@ -118,5 +118,3 @@ export class Doc {
     return response.data;
   }
 }
-
-export default Doc;

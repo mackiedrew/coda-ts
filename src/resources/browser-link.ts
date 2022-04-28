@@ -1,5 +1,5 @@
-import Api from '../api';
-import { ItemResponse, ResourceType } from './resource';
+import { Api } from '../api';
+import { Resource, ResourceType } from '../types/resource';
 
 export interface BrowserLinkDto {
   // The browser link to try to resolve.
@@ -12,14 +12,9 @@ export interface BrowserLinkDto {
   degradeGracefully?: boolean;
 }
 
-export interface BrowserLinkResponse extends ItemResponse<ResourceType.ApiLink> {
+export interface BrowserLinkResponse extends Resource<ResourceType.ApiLink> {
+  resource: Resource<ResourceType>;
   browserLink?: string; // Canonical browser-friendly link to the resolved resource.
-  resource: {
-    id: string;
-    href: string;
-    type: ResourceType;
-    name: string;
-  };
 }
 
 /**
@@ -47,9 +42,10 @@ export class BrowserLink {
    * @returns Metadata for the resolved resource.
    */
   async resolve(url: string, degradeGracefully = false): Promise<BrowserLinkResponse> {
+    // URL ENCODE
     const response = await this.api.http.get<BrowserLinkResponse>(`/resolveBrowserLink`, {
       params: {
-        url,
+        url: encodeURIComponent(url),
         degradeGracefully,
       },
     });

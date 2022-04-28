@@ -1,7 +1,7 @@
-import Api from '../api';
-import Mutation from './mutation';
+import { Api } from '../api';
+import { Mutation } from './mutation';
 
-export interface Published {
+export interface PublishInfo {
   description: string;
   browserLink: string;
   imageLink: string;
@@ -11,7 +11,7 @@ export interface Published {
   categories: string[];
 }
 
-export enum DocPublishMode {
+export enum PublishMode {
   View = 'view',
   Play = 'play',
   Edit = 'edit',
@@ -22,7 +22,7 @@ export interface PublishOptions {
   discoverable: boolean; // If true, indicates that the doc is discoverable.
   earnCredit: boolean; // If true, new users may be required to sign in to view content within this document.
   categoryNames: string[]; // The names of categories to apply to the document.
-  mode: DocPublishMode;
+  mode: PublishMode;
 }
 
 /**
@@ -68,5 +68,3 @@ export class Publish {
     return true;
   }
 }
-
-export default Publish;

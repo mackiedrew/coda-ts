@@ -1,4 +1,4 @@
-import Coda from '../main';
+import { Coda } from '../../main';
 
 const coda: Coda = new Coda(process.env.CODA_UNRESTRICTED_API_KEY || '');
 

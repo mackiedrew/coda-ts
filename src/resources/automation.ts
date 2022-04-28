@@ -1,5 +1,5 @@
-import Api from '../api';
-import Mutation from './mutation';
+import { Api } from '../api';
+import { Mutation } from './mutation';
 
 export interface MutationStatus {
   completed: boolean;
@@ -35,5 +35,3 @@ export class Automation {
     return new Mutation(this.api, response.data.requestId);
   }
 }
-
-export default Automation;

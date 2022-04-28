@@ -1,6 +1,6 @@
-import Api from '../api';
+import { Api } from '../api';
 import { PageRef } from './page';
-import { ItemResponse, ListResponse, Pagination, ResourceType } from './resource';
+import { Resource, ResourceList, Pagination, ResourceType } from '../types/resource';
 
 export enum TableType {
   Table = 'table',
@@ -58,7 +58,7 @@ export interface Filter {
   hasNowFormula?: boolean; // Returns whether or not the given formula has a Now() formula within it.
 }
 
-export interface TableResource extends ItemResponse<ResourceType.Table> {
+export interface TableResource extends Resource<ResourceType.Table> {
   tableType: TableType;
   parent: PageRef;
   browserLink: string; // Browser-friendly link to the page.
@@ -97,8 +97,8 @@ export class Table {
    * @param options Options for query. See type or docs for details.
    * @returns A list of tables in a Coda doc.
    */
-  async list(docId: string, options: TableListOption): Promise<ListResponse<TableResource>> {
-    const response = await this.api.http.get<ListResponse<TableResource>>(`/docs/${docId}/tables`, {
+  async list(docId: string, options: TableListOption): Promise<ResourceList<TableResource>> {
+    const response = await this.api.http.get<ResourceList<TableResource>>(`/docs/${docId}/tables`, {
       params: options,
     });
     return response.data;
@@ -130,5 +130,3 @@ export class Table {
     return response.data;
   }
 }
-
-export default Table;

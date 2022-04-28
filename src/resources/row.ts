@@ -1,10 +1,10 @@
-import Api from '../api';
-import Mutation from './mutation';
-import { ItemResponse, ListResponse, Pagination, ResourceType } from './resource';
+import { Api } from '../api';
+import { Mutation } from './mutation';
+import { Resource, ResourceList, Pagination, ResourceType } from '../types/resource';
 import { TableRef } from './table';
-import { CellValue, ScalarValue } from './values';
+import { CellValue, ScalarValue } from '../types/values';
 
-export interface RowResourceOfTable extends ItemResponse<ResourceType.Row> {
+export interface RowResourceOfTable extends Resource<ResourceType.Row> {
   index: number; // Index of the row within the table; always positive integer
   browserLink: string; // Browser-friendly link to the row;
   createdAt: string; // Timestamp for when the row was created.
@@ -77,7 +77,7 @@ export interface RowUpsertDto {
   keyColumns?: string[];
 }
 
-export interface ListRowResponse extends ListResponse<RowResourceOfTable> {
+export interface ListRowResponse extends ResourceList<RowResourceOfTable> {
   // If specified, an opaque token that can be passed back later to retrieve new results that
   // match the parameters specified when the sync token was created.
   nextSyncToken: string;
@@ -216,5 +216,3 @@ export class Row {
     };
   }
 }
-
-export default Row;

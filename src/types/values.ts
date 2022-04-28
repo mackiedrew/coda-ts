@@ -25,11 +25,6 @@ export interface CurrencyValue extends RichValuePrototype {
   amount: string | number; // A numeric monetary amount as a string or number.
 }
 
-export interface CurrencyValue extends RichValuePrototype {
-  currency: string; // The 3-letter currency code.
-  amount: string | number; // A numeric monetary amount as a string or number.
-}
-
 export interface ImageUrlValue extends RichValuePrototype {
   name?: string; // Name of the image
   url?: string; // Url of the image

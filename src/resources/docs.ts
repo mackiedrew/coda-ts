@@ -1,6 +1,6 @@
-import Api from '../api';
-import Doc, { DocResponse } from './doc';
-import { ListResponse, Pagination } from './resource';
+import { Api } from '../api';
+import { Doc, DocResponse } from './doc';
+import { ResourceList, Pagination } from '../types/resource';
 
 export type Category = { name: string };
 
@@ -82,8 +82,8 @@ export class Docs {
    * @param options Query parameters to support search and pagination. (see docs or type for details)
    * @returns Returns a list of Coda docs accessible by the user.
    */
-  async list(options: DocsListOptions = {}): Promise<ListResponse<Doc>> {
-    const response = await this.api.http.get<ListResponse<DocResponse>>('/docs', {
+  async list(options: DocsListOptions = {}): Promise<ResourceList<Doc>> {
+    const response = await this.api.http.get<ResourceList<DocResponse>>('/docs', {
       params: options,
     });
 
@@ -116,8 +116,6 @@ export class Docs {
    */
   async catetories(): Promise<string[]> {
     const response = await this.api.http.get<{ items: Category[] }>('/categories');
-    return response.data.items.map((category) => category.name);
+    return response.data.items.map((category: Category) => category.name);
   }
 }
-
-export default Docs;

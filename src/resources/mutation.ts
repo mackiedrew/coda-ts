@@ -1,8 +1,4 @@
-import Api from '../api';
-
-export interface MutationStatus {
-  completed: boolean;
-}
+import { Api } from '../api';
 
 /**
  * A mutation status API interface class.
@@ -31,12 +27,12 @@ export class Mutation {
    *
    * https://coda.io/developers/apis/v1#operation/getMutationStatus
    *
-   * @returns The status for an asynchronous mutation to know whether or not it has been completed.
+   * @returns The status for an asynchronous mutation to know whether or not it has been completed (true = completed)
    */
-  async status(): Promise<MutationStatus> {
-    const response = await this.api.http.get<MutationStatus>(`/mutationStatus/${this.requestId}`);
-    return response.data;
+  async status(): Promise<boolean> {
+    const response = await this.api.http.get<{ completed: true }>(
+      `/mutationStatus/${this.requestId}`,
+    );
+    return response.data.completed;
   }
 }
-
-export default Mutation;

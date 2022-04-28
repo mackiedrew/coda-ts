@@ -33,14 +33,14 @@ export enum ResourceType {
   Workspace = 'workspace',
 }
 
-export interface ItemResponse<T extends ResourceType> {
+export interface Resource<T extends ResourceType> {
   id: string;
   name: string;
   href: string;
   type: T;
 }
 
-export interface ListResponse<T> {
+export interface ResourceList<T> {
   items: T[];
   href: string;
   nextPageToken: string;

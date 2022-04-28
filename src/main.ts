@@ -1,6 +1,6 @@
-import Api from './api';
-import Account from './resources/account';
-import Docs from './resources/docs';
+import { Api } from './api';
+import { Account } from './resources/account';
+import { Docs } from './resources/docs';
 
 export class Coda {
   private api: Api;
@@ -13,5 +13,3 @@ export class Coda {
     this.Docs = new Docs(this.api);
   }
 }
-
-export default Coda;

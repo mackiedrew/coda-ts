@@ -1,14 +1,12 @@
-import Api from '../api';
+import { Api } from '../api';
 import { PageRef } from './page';
-import { ItemResponse, ListResponse, ResourceType } from './resource';
+import { Pagination, Resource, ResourceList, ResourceType } from '../types/resource';
 
-export interface ListControlsOptions {
-  limit?: number; // Maximum number of results to return in this query; default: 25
-  pageToken?: string; // An opaque token used to fetch the next page of results.
+export interface ListControlsOptions extends Pagination {
   sortBy?: string; // Determines how to sort the given objects.
 }
 
-export interface ControlResource extends ItemResponse<ResourceType.Control> {
+export interface ControlResource extends Resource<ResourceType.Control> {
   parent: PageRef;
 }
 
@@ -36,8 +34,8 @@ export class Control {
    * @param options Options for the request. See types or docs for details.
    * @returns A list of controls in a Coda doc.
    */
-  async list(docId: string, options: ListControlsOptions): Promise<ListResponse<ControlResource>> {
-    const response = await this.api.http.get<ListResponse<ControlResource>>(
+  async list(docId: string, options: ListControlsOptions): Promise<ResourceList<ControlResource>> {
+    const response = await this.api.http.get<ResourceList<ControlResource>>(
       `/docs/${docId}/controls`,
       {
         params: options,
@@ -63,5 +61,3 @@ export class Control {
     return response.data;
   }
 }
-
-export default Control;

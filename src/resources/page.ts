@@ -1,8 +1,8 @@
-import Api from '../api';
-import { Icon } from './icon';
-import { Image } from './image';
+import { Api } from '../api';
+import { Icon } from '../types/icon';
+import { Image } from '../types/image';
 import { Mutation } from './mutation';
-import { ItemResponse, ListResponse, Pagination, ResourceType } from './resource';
+import { Resource, ResourceList, Pagination, ResourceType } from '../types/resource';
 
 export interface PageRef {
   id: string; // ID of the page.
@@ -12,7 +12,7 @@ export interface PageRef {
   name: string; // Name of the page.
 }
 
-export interface PageResponse extends ItemResponse<ResourceType.Page> {
+export interface PageResponse extends Resource<ResourceType.Page> {
   browserLink: string;
   subtitle?: string;
   icon?: Icon;
@@ -56,8 +56,8 @@ export class Page {
    * @param options Standard pagination options.
    * @returns List of pages.
    */
-  async list(docId: string, options: Pagination = {}): Promise<ListResponse<PageResponse>> {
-    const response = await this.api.http.get<ListResponse<PageResponse>>(`/docs/${docId}/pages`, {
+  async list(docId: string, options: Pagination = {}): Promise<ResourceList<PageResponse>> {
+    const response = await this.api.http.get<ResourceList<PageResponse>>(`/docs/${docId}/pages`, {
       params: options,
     });
     return response.data;
@@ -97,5 +97,3 @@ export class Page {
     return new Mutation(this.api, response.data.requestId);
   }
 }
-
-export default Page;

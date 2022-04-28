@@ -9,7 +9,8 @@ module.exports = {
     'sonarjs',
     'unicorn',
     '@brettz9',
-    'jsdoc'
+    'jsdoc',
+    'import',
   ],
   extends: [
     'plugin:@typescript-eslint/recommended',
@@ -18,6 +19,8 @@ module.exports = {
     'plugin:unicorn/all',
     'plugin:@brettz9/es6',
     'plugin:jsdoc/recommended',
+    'plugin:import/recommended',
+    'plugin:import/typescript',
   ],
   root: true,
   env: {

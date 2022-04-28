@@ -1,5 +1,5 @@
 export interface Image {
-  browserLinl: string;
+  browserLink: string;
   type: string;
   width: number;
   height: number;

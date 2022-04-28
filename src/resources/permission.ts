@@ -1,5 +1,5 @@
-import Api from '../api';
-import { ListResponse, Pagination } from './resource';
+import { Api } from '../api';
+import { ResourceList, Pagination } from '../types/resource';
 
 export enum AccessType {
   Readonly = 'readonly',
@@ -37,8 +37,8 @@ export interface AddPermssionOptions {
 }
 
 export interface PermissionResponse {
-  principal: Principal;
   id: string;
+  principal: Principal;
   access: AccessType;
 }
 
@@ -68,8 +68,8 @@ export class Permissions {
    * @param options Standard pagination options.
    * @returns Returns a list of permissions for this Coda doc.
    */
-  async list(options: Pagination = {}): Promise<ListResponse<PermissionResponse>> {
-    const response = await this.api.http.get<ListResponse<PermissionResponse>>(
+  async list(options: Pagination = {}): Promise<ResourceList<PermissionResponse>> {
+    const response = await this.api.http.get<ResourceList<PermissionResponse>>(
       `/docs/${this.id}/acl/permissions`,
       {
         params: options,
@@ -104,5 +104,3 @@ export class Permissions {
     return true;
   }
 }
-
-export default Permissions;

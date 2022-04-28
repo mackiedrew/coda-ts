@@ -1,17 +1,17 @@
-import Api from '../api';
+import { Api } from '../api';
 import { PageRef } from './page';
-import { ItemResponse, ListResponse, Pagination, ResourceType } from './resource';
-import { ScalarValue } from './values';
+import { Resource, ResourceList, Pagination, ResourceType } from '../types/resource';
+import { ScalarValue } from '../types/values';
 
 export interface FormulaListOptions extends Pagination {
   sortBy: string; // Determines how to sort the given objects.
 }
 
-export interface FormulaRef extends ItemResponse<ResourceType.Formula> {
+export interface FormulaRef extends Resource<ResourceType.Formula> {
   parent: PageRef;
 }
 
-export interface FormulaResource extends ItemResponse<ResourceType.Formula> {
+export interface FormulaResource extends Resource<ResourceType.Formula> {
   parent: PageRef;
   value: ScalarValue;
 }
@@ -38,8 +38,8 @@ export class Formula {
    * @param options Options for query. See type or docs for details.
    * @returns List of named formulas in a Coda doc.
    */
-  async list(docId: string, options: FormulaListOptions): Promise<ListResponse<FormulaRef>> {
-    const response = await this.api.http.get<ListResponse<FormulaRef>>(`/docs/${docId}/formulas`, {
+  async list(docId: string, options: FormulaListOptions): Promise<ResourceList<FormulaRef>> {
+    const response = await this.api.http.get<ResourceList<FormulaRef>>(`/docs/${docId}/formulas`, {
       params: options,
     });
     return response.data;
@@ -63,5 +63,3 @@ export class Formula {
     return response.data;
   }
 }
-
-export default Formula;

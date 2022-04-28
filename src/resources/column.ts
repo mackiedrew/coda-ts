@@ -1,5 +1,5 @@
-import Api from '../api';
-import { ItemResponse, ListResponse, Pagination, ResourceType } from './resource';
+import { Api } from '../api';
+import { Resource, ResourceList, Pagination, ResourceType } from '../types/resource';
 import { TableRef } from './table';
 
 export interface ListColumnOptions extends Pagination {
@@ -50,7 +50,7 @@ export interface ColumnNumber extends ColumnFormatDefault<ColumnType.Number> {
 
 export type ColumFormat = ColumnText | ColumnPerson | ColumnLookup | ColumnNumber;
 
-export interface ColumnResource extends ItemResponse<ResourceType.Column> {
+export interface ColumnResource extends Resource<ResourceType.Column> {
   format: ColumFormat; // Format of a column.
   display?: boolean; // Whether the column is the display column.
   calculated?: boolean; // Whether the column has a formula set on it.
@@ -85,8 +85,8 @@ export class Column {
     docId: string,
     tableIdOrName: string,
     options: ListColumnOptions,
-  ): Promise<ListResponse<ColumnResource>> {
-    const response = await this.api.http.get<ListResponse<ColumnResource>>(
+  ): Promise<ResourceList<ColumnResource>> {
+    const response = await this.api.http.get<ResourceList<ColumnResource>>(
       `/docs/${docId}/tables/${tableIdOrName}/columns`,
       {
         params: options,
@@ -113,12 +113,10 @@ export class Column {
     docId: string,
     tableIdOrName: string,
     columnIdOrName: string,
-  ): Promise<ListResponse<ColumnResource>> {
-    const response = await this.api.http.get<ListResponse<ColumnResource>>(
+  ): Promise<ResourceList<ColumnResource>> {
+    const response = await this.api.http.get<ResourceList<ColumnResource>>(
       `/docs/${docId}/tables/${tableIdOrName}/columns/${columnIdOrName}`,
     );
     return response.data;
   }
 }
-
-export default Column;
