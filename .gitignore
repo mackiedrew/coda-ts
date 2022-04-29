@@ -16,5 +16,5 @@ node_modules/
 dist/
 
 # Testing
-.env.test
+.test.env
 coverage/*

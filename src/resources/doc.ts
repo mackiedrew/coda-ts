@@ -5,6 +5,7 @@ import { Permissions } from './permission';
 import { PublishInfo } from './publish';
 import { ResourceType, Resource } from '../types/resource';
 import { Workspace } from '../types/workspace';
+import { Automation } from './automation';
 
 export interface ShareMetadata {
   canShare: boolean; // When true, the user of the api can share
@@ -70,6 +71,7 @@ export class Doc {
   public sourceDoc?: DocRef;
   public published?: PublishInfo;
 
+  public Automation: Automation;
   public Permissions: Permissions;
 
   constructor(api: Api, doc: DoctDto) {
@@ -91,6 +93,7 @@ export class Doc {
     this.sourceDoc = doc.sourceDoc;
     this.published = doc.published;
 
+    this.Automation = new Automation(api, doc.id);
     this.Permissions = new Permissions(api, doc.id);
   }
 

@@ -1,18 +1,9 @@
 import { Api } from '../api';
 import { Resource, ResourceType } from '../types/resource';
 
-export interface BrowserLinkDto {
-  // The browser link to try to resolve.
-  url: string;
-  /**
-   * By default, attempting to resolve the Coda URL of a deleted object will
-   * result in an error. If this flag is set, the next-available object, all
-   * the way up to the doc itself, will be resolved.
-   */
-  degradeGracefully?: boolean;
-}
-
-export interface BrowserLinkResponse extends Resource<ResourceType.ApiLink> {
+export interface ResourceLink {
+  type: ResourceType.ApiLink;
+  href: string;
   resource: Resource<ResourceType>;
   browserLink?: string; // Canonical browser-friendly link to the resolved resource.
 }
@@ -23,7 +14,7 @@ export interface BrowserLinkResponse extends Resource<ResourceType.ApiLink> {
  *
  * https://coda.io/developers/apis/v1#operation/resolveBrowserLink
  */
-export class BrowserLink {
+export class Link {
   private api: Api;
   constructor(api: Api) {
     this.api = api;
@@ -41,12 +32,11 @@ export class BrowserLink {
    * the doc itself, will be resolved.
    * @returns Metadata for the resolved resource.
    */
-  async resolve(url: string, degradeGracefully = false): Promise<BrowserLinkResponse> {
-    // URL ENCODE
-    const response = await this.api.http.get<BrowserLinkResponse>(`/resolveBrowserLink`, {
+  async resolve(url: string, degradeGracefully = false): Promise<ResourceLink> {
+    const response = await this.api.http.get<ResourceLink>(`/resolveBrowserLink`, {
       params: {
-        url: encodeURIComponent(url),
         degradeGracefully,
+        url,
       },
     });
     return response.data;

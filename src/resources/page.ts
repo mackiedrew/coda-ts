@@ -12,13 +12,13 @@ export interface PageRef {
   name: string; // Name of the page.
 }
 
-export interface PageResponse extends Resource<ResourceType.Page> {
+export interface PageResource extends Resource<ResourceType.Page> {
   browserLink: string;
   subtitle?: string;
   icon?: Icon;
   image?: Image;
-  parent?: PageResponse;
-  children?: PageResponse[];
+  parent?: PageResource;
+  children?: PageResource[];
 }
 
 export interface PageUpdateDto {
@@ -56,8 +56,8 @@ export class Page {
    * @param options Standard pagination options.
    * @returns List of pages.
    */
-  async list(docId: string, options: Pagination = {}): Promise<ResourceList<PageResponse>> {
-    const response = await this.api.http.get<ResourceList<PageResponse>>(`/docs/${docId}/pages`, {
+  async list(docId: string, options: Pagination = {}): Promise<ResourceList<PageResource>> {
+    const response = await this.api.http.get<ResourceList<PageResource>>(`/docs/${docId}/pages`, {
       params: options,
     });
     return response.data;
@@ -74,8 +74,8 @@ export class Page {
    * name and there are multiple pages with the same name, an arbitrary one will be selected.
    * @returns Returns details about a page.
    */
-  async get(docId: string, pageIdOrName: string): Promise<PageResponse> {
-    const response = await this.api.http.get<PageResponse>(`/docs/${docId}/pages/${pageIdOrName}`);
+  async get(docId: string, pageIdOrName: string): Promise<PageResource> {
+    const response = await this.api.http.get<PageResource>(`/docs/${docId}/pages/${pageIdOrName}`);
     return response.data;
   }
 

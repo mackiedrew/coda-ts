@@ -1,5 +1,5 @@
 import { Api } from '../api';
-import { Doc, DocResponse } from './doc';
+import { Doc, DoctDto } from './doc';
 import { ResourceList, Pagination } from '../types/resource';
 
 export type Category = { name: string };
@@ -55,7 +55,7 @@ export class Docs {
    * @returns Information about the created Doc.
    */
   async create(docData: DocCreateOptions): Promise<Doc> {
-    const response = await this.api.http.post<DocResponse>(`/docs`, docData);
+    const response = await this.api.http.post<DoctDto>(`/docs`, docData);
     return new Doc(this.api, response.data);
   }
 
@@ -68,7 +68,7 @@ export class Docs {
    * @returns Returns metadata for the specified doc.
    */
   async get(docId: string): Promise<Doc> {
-    const response = await this.api.http.get<DocResponse>(`/docs/${docId}`);
+    const response = await this.api.http.get<DoctDto>(`/docs/${docId}`);
     return new Doc(this.api, response.data);
   }
 
@@ -83,7 +83,7 @@ export class Docs {
    * @returns Returns a list of Coda docs accessible by the user.
    */
   async list(options: DocsListOptions = {}): Promise<ResourceList<Doc>> {
-    const response = await this.api.http.get<ResourceList<DocResponse>>('/docs', {
+    const response = await this.api.http.get<ResourceList<DoctDto>>('/docs', {
       params: options,
     });
 
