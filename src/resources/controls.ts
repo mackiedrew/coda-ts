@@ -1,12 +1,28 @@
 import { Api } from '../api';
 import { PageRef } from './page';
 import { Pagination, Resource, ResourceList, ResourceType } from '../types/resource';
+import { CellValue } from '../types/values';
+
+export enum ControlType {
+  Button = 'button',
+  Checkbox = 'checkbox',
+  DatePicker = 'datePicker',
+  DateRangePicker = 'dateRangePicker',
+  Lookup = 'lookup',
+  Multiselect = 'multiselect',
+  Select = 'select',
+  Scale = 'scale',
+  Slider = 'slider',
+  Reaction = 'reaction',
+}
 
 export interface ListControlsOptions extends Pagination {
   sortBy?: string; // Determines how to sort the given objects.
 }
 
-export interface ControlResource extends Resource<ResourceType.Control> {
+export interface Control extends Resource<ResourceType.Control> {
+  controlType: ControlType;
+  value: CellValue;
   parent: PageRef;
 }
 
@@ -19,10 +35,12 @@ export interface ControlResource extends Resource<ResourceType.Control> {
  * https://coda.io/developers/apis/v1#tag/Controls
  *
  */
-export class Control {
+export class Controls {
   private api: Api;
-  constructor(api: Api) {
+  private docId: string;
+  constructor(api: Api, docId: string) {
     this.api = api;
+    this.docId = docId;
   }
 
   /**
@@ -30,13 +48,12 @@ export class Control {
    *
    * https://coda.io/developers/apis/v1#operation/listControls
    *
-   * @param docId ID of the doc; example: `AbCDeFGH`
    * @param options Options for the request. See types or docs for details.
    * @returns A list of controls in a Coda doc.
    */
-  async list(docId: string, options: ListControlsOptions): Promise<ResourceList<ControlResource>> {
-    const response = await this.api.http.get<ResourceList<ControlResource>>(
-      `/docs/${docId}/controls`,
+  async list(options: ListControlsOptions = {}): Promise<ResourceList<Control>> {
+    const response = await this.api.http.get<ResourceList<Control>>(
+      `/docs/${this.docId}/controls`,
       {
         params: options,
       },
@@ -49,14 +66,13 @@ export class Control {
    *
    * https://coda.io/developers/apis/v1#operation/getControl
    *
-   * @param docId ID of the doc; example: `AbCDeFGH`
    * @param controlIdOrName ID or name of the control. Names are discouraged because they're
    * easily prone to being changed by users. If you're using a name, be sure to URI-encode it.
    * @returns Info on a control.
    */
-  async get(docId: string, controlIdOrName: string): Promise<ControlResource> {
-    const response = await this.api.http.get<ControlResource>(
-      `/docs/${docId}/controls/${controlIdOrName}`,
+  async get(controlIdOrName: string): Promise<Control> {
+    const response = await this.api.http.get<Control>(
+      `/docs/${this.docId}/controls/${controlIdOrName}`,
     );
     return response.data;
   }

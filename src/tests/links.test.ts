@@ -1,5 +1,5 @@
-import { Coda } from '../../main';
-import { ResourceType } from '../../types/resource';
+import { Coda } from '../main';
+import { ResourceType } from '../types/resource';
 
 const coda: Coda = new Coda(process.env.CODA_UNRESTRICTED_API_KEY || '');
 

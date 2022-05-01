@@ -56,7 +56,9 @@ export class Docs {
    */
   async create(docData: DocCreateOptions): Promise<Doc> {
     const response = await this.api.http.post<DoctDto>(`/docs`, docData);
-    return new Doc(this.api, response.data);
+    const doc = new Doc(this.api, response.data.id);
+    doc.set(response.data);
+    return doc;
   }
 
   /**
@@ -68,8 +70,9 @@ export class Docs {
    * @returns Returns metadata for the specified doc.
    */
   async get(docId: string): Promise<Doc> {
-    const response = await this.api.http.get<DoctDto>(`/docs/${docId}`);
-    return new Doc(this.api, response.data);
+    const doc = new Doc(this.api, docId);
+    await doc.refresh();
+    return doc;
   }
 
   /**
@@ -89,7 +92,11 @@ export class Docs {
 
     return {
       ...response.data,
-      items: response.data.items.map((item) => new Doc(this.api, item)),
+      items: response.data.items.map((item) => {
+        const doc = new Doc(this.api, item.id);
+        doc.set(item);
+        return doc;
+      }),
     };
   }
 
@@ -117,5 +124,18 @@ export class Docs {
   async catetories(): Promise<string[]> {
     const response = await this.api.http.get<{ items: Category[] }>('/categories');
     return response.data.items.map((category: Category) => category.name);
+  }
+
+  /**
+   * Turn any Coda URL that references a doc to a doc ID. Any URL while a doc is open
+   * should work just fine.
+   *
+   * @param url Some Coda URL that represents a doc, or an element within a doc.
+   * @returns The extracted Coda doc ID for the provided URL.
+   */
+  idFromUrl(url: string): string | void {
+    // This regex is taken directly from the form listener here:
+    // https://coda.io/developers/apis/v1#section/Using-the-API/Resource-IDs-and-Links
+    return url.match(/_d(?<docId>[\w-]+)/)?.groups?.docId;
   }
 }

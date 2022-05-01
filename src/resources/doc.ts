@@ -2,10 +2,12 @@ import { Api } from '../api';
 import { Folder } from '../types/folder';
 import { Icon } from '../types/icon';
 import { Permissions } from './permission';
-import { PublishInfo } from './publish';
+import { PublishInfo, PublishOptions } from '../types/publishing';
 import { ResourceType, Resource } from '../types/resource';
 import { Workspace } from '../types/workspace';
 import { Automation } from './automation';
+import { Controls } from './controls';
+import { Mutation } from './mutation';
 
 export interface ShareMetadata {
   canShare: boolean; // When true, the user of the api can share
@@ -56,16 +58,16 @@ export class Doc {
   static type = ResourceType.Doc;
 
   public id: string;
-  public name: string;
-  public href: string;
+  public name?: string;
+  public href?: string;
 
-  public browserLink: string;
-  public owner: string;
-  public ownerName: string;
-  public createdAt: string;
-  public updatedAt: string;
-  public workspace: Workspace;
-  public folder: Folder;
+  public browserLink?: string;
+  public owner?: string;
+  public ownerName?: string;
+  public createdAt?: string;
+  public updatedAt?: string;
+  public workspace?: Workspace;
+  public folder?: Folder;
   public icon?: Icon;
   public docSize?: DocSize;
   public sourceDoc?: DocRef;
@@ -73,14 +75,20 @@ export class Doc {
 
   public Automation: Automation;
   public Permissions: Permissions;
+  public Controls: Controls;
 
-  constructor(api: Api, doc: DoctDto) {
+  constructor(api: Api, id: string) {
     this.api = api;
+    this.id = id;
 
-    this.id = doc.id;
+    this.Automation = new Automation(api, id);
+    this.Controls = new Controls(api, id);
+    this.Permissions = new Permissions(api, id);
+  }
+
+  set(doc: Doc | DoctDto) {
     this.name = doc.name;
     this.href = doc.href;
-
     this.browserLink = doc.browserLink;
     this.owner = doc.owner;
     this.ownerName = doc.ownerName;
@@ -92,9 +100,25 @@ export class Doc {
     this.docSize = doc.docSize;
     this.sourceDoc = doc.sourceDoc;
     this.published = doc.published;
+  }
 
-    this.Automation = new Automation(api, doc.id);
-    this.Permissions = new Permissions(api, doc.id);
+  /**
+   * Returns metadata for the specified doc.
+   *
+   * https://coda.io/developers/apis/v1#operation/getDoc
+   *
+   * @param docId ID of the doc; example: `AbCDeFGH`
+   * @returns Returns metadata for the specified doc.
+   */
+  async get(docId: string = this.id): Promise<Doc | void> {
+    const response = await this.api.http.get<DoctDto>(`/docs/${docId}`);
+    return new Doc(this.api, docId).set(response.data);
+  }
+
+  async refresh(): Promise<Doc | void> {
+    const doc = await this.get();
+    if (doc) this.set(doc);
+    return doc;
   }
 
   /**
@@ -119,5 +143,33 @@ export class Doc {
   async shareMetadata(): Promise<ShareMetadata> {
     const response = await this.api.http.get<ShareMetadata>(`/docs/${this.id}/acl/metadata`);
     return response.data;
+  }
+
+  /**
+   * Update publish settings for a doc.
+   *
+   * https://coda.io/developers/apis/v1#operation/publishDoc
+   *
+   * @param options Options for query. See type or docs for details.
+   * @returns Returns mutation that can provide completion status.
+   */
+  async publish(options: PublishOptions): Promise<Mutation> {
+    const response = await this.api.http.put<{ requestId: string }>(
+      `/docs/${this.id}/publish`,
+      options,
+    );
+    return new Mutation(this.api, response.data.requestId);
+  }
+
+  /**
+   * Unpublishes a doc.
+   *
+   * https://coda.io/developers/apis/v1#operation/unpublishDoc
+   *
+   * @returns Returns true if document unpublished.
+   */
+  async unpublish(): Promise<true> {
+    await this.api.http.delete<any>(`/docs/${this.id}/publish`);
+    return true;
   }
 }

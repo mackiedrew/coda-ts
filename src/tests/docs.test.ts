@@ -1,12 +1,11 @@
-import { Coda } from '../../main';
+import { Coda } from '../main';
 
 const coda: Coda = new Coda(process.env.CODA_UNRESTRICTED_API_KEY || '');
 
-beforeEach(async () => {
-  await new Promise((res) => setTimeout(res, 1000));
-});
-
 describe('Doc API returns expected results for', () => {
+  beforeEach(async () => {
+    await new Promise((res) => setTimeout(res, 1000));
+  });
   test('list docs', async () => {
     const docList = await coda.Docs.list();
     expect(docList.items).toBeInstanceOf(Array);
@@ -29,5 +28,17 @@ describe('Doc API returns expected results for', () => {
   test('get categories', async () => {
     const categories = await coda.Docs.catetories();
     expect(categories.length).toBeGreaterThanOrEqual(0);
+  });
+});
+
+describe('idFromUrl helper', () => {
+  test('can get ID from valid URL', async () => {
+    const testUrl = 'https://coda.io/d/_duq0jEWnseE/Automations_suPXH#_luXb5';
+    expect(coda.Docs.idFromUrl(testUrl)).toBe('uq0jEWnseE');
+  });
+
+  test('handles invalid URL', async () => {
+    const testUrl = 'https://coda.io/workspaces/ws-cpFpNRJjbt/docs';
+    expect(coda.Docs.idFromUrl(testUrl)).toBeUndefined();
   });
 });

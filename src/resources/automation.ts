@@ -1,10 +1,6 @@
 import { Api } from '../api';
 import { Mutation } from './mutation';
 
-export interface MutationStatus {
-  completed: boolean;
-}
-
 /**
  * An automation API interface class. This API allows you to trigger automations.
  *
