@@ -1,13 +1,15 @@
 import { Api } from '../api';
 import { Folder } from '../types/folder';
 import { Icon } from '../types/icon';
-import { Permissions } from './permission';
+import { Permissions } from './permissions';
 import { PublishInfo, PublishOptions } from '../types/publishing';
 import { ResourceType, Resource } from '../types/resource';
 import { Workspace } from '../types/workspace';
 import { Automation } from './automation';
 import { Controls } from './controls';
 import { Mutation } from './mutation';
+import { Tables } from './tables';
+import { Pages } from './pages';
 
 export interface ShareMetadata {
   canShare: boolean; // When true, the user of the api can share
@@ -76,6 +78,8 @@ export class Doc {
   public Automation: Automation;
   public Permissions: Permissions;
   public Controls: Controls;
+  public Tables: Tables;
+  public Pages: Pages;
 
   constructor(api: Api, id: string) {
     this.api = api;
@@ -83,7 +87,9 @@ export class Doc {
 
     this.Automation = new Automation(api, id);
     this.Controls = new Controls(api, id);
+    this.Tables = new Tables(api, id);
     this.Permissions = new Permissions(api, id);
+    this.Pages = new Pages(api, id);
   }
 
   set(doc: Doc | DoctDto) {
@@ -100,6 +106,7 @@ export class Doc {
     this.docSize = doc.docSize;
     this.sourceDoc = doc.sourceDoc;
     this.published = doc.published;
+    return this;
   }
 
   /**
@@ -112,7 +119,7 @@ export class Doc {
    */
   async get(docId: string = this.id): Promise<Doc | void> {
     const response = await this.api.http.get<DoctDto>(`/docs/${docId}`);
-    return new Doc(this.api, docId).set(response.data);
+    return this.set(response.data);
   }
 
   async refresh(): Promise<Doc | void> {
@@ -140,7 +147,7 @@ export class Doc {
    *
    * @returns Metadata associated with sharing for this Coda doc.
    */
-  async shareMetadata(): Promise<ShareMetadata> {
+  async getShareMetadata(): Promise<ShareMetadata> {
     const response = await this.api.http.get<ShareMetadata>(`/docs/${this.id}/acl/metadata`);
     return response.data;
   }

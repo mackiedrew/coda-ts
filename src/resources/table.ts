@@ -1,6 +1,6 @@
 import { Api } from '../api';
 import { PageRef } from './page';
-import { Resource, ResourceList, Pagination, ResourceType } from '../types/resource';
+import { Resource, ResourceType } from '../types/resource';
 
 export enum TableType {
   Table = 'table',
@@ -58,7 +58,7 @@ export interface Filter {
   hasNowFormula?: boolean; // Returns whether or not the given formula has a Now() formula within it.
 }
 
-export interface TableResource extends Resource<ResourceType.Table> {
+export interface TableDto extends Resource<ResourceType.Table> {
   tableType: TableType;
   parent: PageRef;
   browserLink: string; // Browser-friendly link to the page.
@@ -72,11 +72,6 @@ export interface TableResource extends Resource<ResourceType.Table> {
   filter?: Filter;
 }
 
-export interface TableListOption extends Pagination {
-  sortBy: string; // Determines how to sort the given objects.
-  tabledTypes: TableType;
-}
-
 /**
  * A Table API interface class.
  *
@@ -84,24 +79,40 @@ export interface TableListOption extends Pagination {
  */
 export class Table {
   private api: Api;
-  constructor(api: Api) {
-    this.api = api;
-  }
+
+  public id: string;
+  public docId: string;
+  public type: ResourceType.Table = ResourceType.Table;
+
+  public useUpdatedTableLayouts: boolean;
+
+  public tableType?: TableType;
+  public parent?: PageRef;
+  public browserLink?: string;
+  public displayColumn?: ColumnRef;
+  public rowCount?: number;
+  public sorts?: Sort[];
+  public layout?: TableLayout;
+  public createdAt?: string;
+  public updatedAt?: string;
+  public parentTable?: TableRef;
+  public filter?: Filter;
 
   /**
-   * List of tables in a Coda doc.
+   * Creates a table object.
    *
-   * https://coda.io/developers/apis/v1#operation/listTables
-   *
-   * @param docId ID of the doc; example: `AbCDeFGH`
-   * @param options Options for query. See type or docs for details.
-   * @returns A list of tables in a Coda doc.
+   * @param api TODO
+   * @param docId ID of the doc; example: `AbCDeFGH`;
+   * @param tableIdOrName ID or name of the table. Names are discouraged because they're easily prone
+   * to being changed by users. If you're using a name, be sure to URI-encode it; example: `grid-pqRst-U`
+   * @param useUpdatedTableLayouts Return "detail" and "form" for the layout field of
+   * detail and form layouts respectively (instead of "masterDetail" for both)
    */
-  async list(docId: string, options: TableListOption): Promise<ResourceList<TableResource>> {
-    const response = await this.api.http.get<ResourceList<TableResource>>(`/docs/${docId}/tables`, {
-      params: options,
-    });
-    return response.data;
+  constructor(api: Api, docId: string, tableIdOrName: string, useUpdatedTableLayouts: boolean) {
+    this.api = api;
+    this.docId = docId;
+    this.id = tableIdOrName;
+    this.useUpdatedTableLayouts = useUpdatedTableLayouts;
   }
 
   /**
@@ -109,24 +120,38 @@ export class Table {
    *
    * https://coda.io/developers/apis/v1#operation/getTable
    *
-   * @param docId ID of the doc; example: `AbCDeFGH`
    * @param tableIdOrName ID or name of the table. Names are discouraged because they're easily prone
    * to being changed by users. If you're using a name, be sure to URI-encode it; example: `grid-pqRst-U`
-   * @param useUpdatedTableLayouts Return "detail" and "form" for the layout field of
-   * detail and form layouts respectively (instead of "masterDetail" for both)
    * @returns Details about a specific table or view.
    */
-  async get(
-    docId: string,
-    tableIdOrName: string,
-    useUpdatedTableLayouts: boolean,
-  ): Promise<TableResource> {
-    const response = await this.api.http.get<TableResource>(
-      `/docs/${docId}/tables/${tableIdOrName}`,
+  async get(tableIdOrName: string = this.id): Promise<Table | void> {
+    const response = await this.api.http.get<TableDto>(
+      `/docs/${this.docId}/tables/${tableIdOrName}`,
       {
-        params: { useUpdatedTableLayouts },
+        params: { useUpdatedTableLayouts: this.useUpdatedTableLayouts },
       },
     );
-    return response.data;
+    return this.set(response.data);
+  }
+
+  set(table: Table | TableDto): Table {
+    this.tableType = table.tableType;
+    this.parent = table.parent;
+    this.browserLink = table.browserLink;
+    this.displayColumn = table.displayColumn;
+    this.rowCount = table.rowCount;
+    this.sorts = table.sorts;
+    this.layout = table.layout;
+    this.createdAt = table.createdAt;
+    this.updatedAt = table.updatedAt;
+    this.parentTable = table.parentTable;
+    this.filter = table.filter;
+    return this;
+  }
+
+  async refresh(): Promise<Table | void> {
+    const table = await this.get();
+    if (table) this.set(table);
+    return table;
   }
 }

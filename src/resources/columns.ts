@@ -63,10 +63,16 @@ export interface ColumnResource extends Resource<ResourceType.Column> {
  *
  * https://coda.io/developers/apis/v1#tag/Columns
  */
-export class Column {
+export class Columns {
   private api: Api;
-  constructor(api: Api) {
+
+  public docId: string;
+  public tableIdOrName: string;
+
+  constructor(api: Api, docId: string, tableIdOrName: string) {
     this.api = api;
+    this.docId = docId;
+    this.tableIdOrName = tableIdOrName;
   }
 
   /**
@@ -74,20 +80,12 @@ export class Column {
    *
    * https://coda.io/developers/apis/v1#operation/listColumns
    *
-   * @param docId ID of the doc; example: `AbCDeFGH`
-   * @param tableIdOrName ID or name of the table. Names are discouraged because
-   * they're easily proneto being changed by users. If you're using a name,
-   * be sure to URI-encode it; example: `grid-pqRst-U`
    * @param options Options for the query, see type or docs for details.
    * @returns list of columns in a table.
    */
-  async list(
-    docId: string,
-    tableIdOrName: string,
-    options: ListColumnOptions,
-  ): Promise<ResourceList<ColumnResource>> {
+  async list(options: ListColumnOptions): Promise<ResourceList<ColumnResource>> {
     const response = await this.api.http.get<ResourceList<ColumnResource>>(
-      `/docs/${docId}/tables/${tableIdOrName}/columns`,
+      `/docs/${this.docId}/tables/${this.tableIdOrName}/columns`,
       {
         params: options,
       },
@@ -100,22 +98,14 @@ export class Column {
    *
    * https://coda.io/developers/apis/v1#operation/getColumn
    *
-   * @param docId ID of the doc; example: `AbCDeFGH`
-   * @param tableIdOrName ID or name of the table. Names are discouraged because
-   * they're easily proneto being changed by users. If you're using a name,
-   * be sure to URI-encode it; example: `grid-pqRst-U`
    * @param columnIdOrName ID or name of the column. Names are discouraged because
    * they're easily proneto being changed by users. If you're using a name,
    * be sure to URI-encode it; example: `c-pqRst-U`
    * @returns Details about a column in a table.
    */
-  async get(
-    docId: string,
-    tableIdOrName: string,
-    columnIdOrName: string,
-  ): Promise<ResourceList<ColumnResource>> {
+  async get(columnIdOrName: string): Promise<ResourceList<ColumnResource>> {
     const response = await this.api.http.get<ResourceList<ColumnResource>>(
-      `/docs/${docId}/tables/${tableIdOrName}/columns/${columnIdOrName}`,
+      `/docs/${this.docId}/tables/${this.tableIdOrName}/columns/${columnIdOrName}`,
     );
     return response.data;
   }

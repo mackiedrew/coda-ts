@@ -11,19 +11,19 @@ const deletedPageUrl = process.env.DELETED_PAGE_URL || '';
 
 describe('/resolveBrowserLink returns expected results for', () => {
   test('a page when intact', async () => {
-    const link = await coda.Link.resolve(intactPageUrl);
+    const link = await coda.resolveBrowserLink(intactPageUrl);
     expect(link.resource.id).toBe(intactPageId);
     expect(link.resource.type).toBe(ResourceType.Page);
   });
 
   test('a doc when a page was deleted and degradation is graceful', async () => {
-    const link = await coda.Link.resolve(deletedPageUrl, true);
+    const link = await coda.resolveBrowserLink(deletedPageUrl, true);
     expect(link.resource.id).toBe(docId);
     expect(link.resource.type).toBe(ResourceType.Doc);
   });
 
   test('an error when a page was deleted and degradation not graceful', async () => {
-    await coda.Link.resolve(deletedPageUrl).catch((error) => {
+    await coda.resolveBrowserLink(deletedPageUrl).catch((error) => {
       expect(error.response.data.statusCode).toBe(404);
     });
   });

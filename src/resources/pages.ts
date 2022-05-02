@@ -1,6 +1,6 @@
 import { Api } from '../api';
 import { ResourceList, Pagination } from '../types/resource';
-import { Page, PageResource } from './page';
+import { Page, PageDto } from './page';
 
 /**
  * A Page API interface class.
@@ -28,17 +28,13 @@ export class Pages {
    * @returns List of pages.
    */
   async list(docId: string, options: Pagination = {}): Promise<ResourceList<Page>> {
-    const response = await this.api.http.get<ResourceList<PageResource>>(`/docs/${docId}/pages`, {
+    const response = await this.api.http.get<ResourceList<PageDto>>(`/docs/${docId}/pages`, {
       params: options,
     });
 
     return {
       ...response.data,
-      items: response.data.items.map((item) => {
-        const page = new Page(this.api, item.id);
-        page.set(item);
-        return page;
-      }),
+      items: response.data.items.map((page) => new Page(this.api, this.docId, page.id).set(page)),
     };
   }
 
@@ -47,14 +43,14 @@ export class Pages {
    *
    * https://coda.io/developers/apis/v1#operation/getPage
    *
-   * @param docId ID of the doc; example: `AbCDeFGH`
    * @param pageIdOrName ID or name of the page. Names are discouraged because they're easily prone
    * to being changed by users. If you're using a name, be sure to URI-encode it. If you provide a
    * name and there are multiple pages with the same name, an arbitrary one will be selected.
    * @returns Returns details about a page.
    */
-  async get(docId: string, pageIdOrName: string): Promise<PageResource> {
-    const response = await this.api.http.get<PageResource>(`/docs/${docId}/pages/${pageIdOrName}`);
-    return response.data;
+  async get(pageIdOrName: string): Promise<Page | void> {
+    const page = new Page(this.api, this.docId, pageIdOrName);
+    await page.refresh();
+    return page;
   }
 }

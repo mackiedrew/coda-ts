@@ -38,8 +38,11 @@ export interface PageUpdateOptions {
  */
 export class Page {
   private api: Api;
+
+  public id: string;
   public docId: string;
   public type: ResourceType.Page = ResourceType.Page;
+
   public browserLink?: string;
   public subtitle?: string;
   public icon?: Icon;
@@ -47,9 +50,48 @@ export class Page {
   public parent?: Page;
   public children?: Page[];
 
-  constructor(api: Api, docId: string) {
+  constructor(api: Api, docId: string, pageIdOrName: string) {
     this.api = api;
     this.docId = docId;
+    this.id = pageIdOrName;
+  }
+
+  /**
+   * Returns details about a page.
+   *
+   * https://coda.io/developers/apis/v1#operation/getPage
+   *
+   * @param pageIdOrName ID or name of the page. Names are discouraged because they're easily prone
+   * to being changed by users. If you're using a name, be sure to URI-encode it. If you provide a
+   * name and there are multiple pages with the same name, an arbitrary one will be selected.
+   * @returns Returns details about a page.
+   */
+  async get(pageIdOrName: string = this.id): Promise<Page | void> {
+    const response = await this.api.http.get<PageDto>(`/docs/${this.docId}/pages/${pageIdOrName}`);
+    return this.set(response.data);
+  }
+
+  set(page: Page | PageDto): Page {
+    this.browserLink = page.browserLink;
+    this.subtitle = page.subtitle;
+    this.icon = page.icon;
+    this.image = page.image;
+    if (page.parent) {
+      this.parent = new Page(this.api, this.docId, page.id).set(page.parent);
+    }
+    if (page.children) {
+      this.children = page.children.map((child) =>
+        new Page(this.api, this.docId, child.id).set(child),
+      );
+    }
+
+    return this;
+  }
+
+  async refresh(): Promise<Page | void> {
+    const page = await this.get();
+    if (page) this.set(page);
+    return page;
   }
 
   /**

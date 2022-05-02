@@ -84,11 +84,9 @@ export class Permissions {
    * https://coda.io/developers/apis/v1#operation/addPermission
    *
    * @param options Parameters for adding the new permission. (see docs or type for details)
-   * @returns Returns true if permission was added.
    */
-  async add(options: AddPermssionOptions): Promise<boolean> {
+  async add(options: AddPermssionOptions): Promise<void> {
     await this.api.http.post<any>(`/docs/${this.id}/acl/permissions`, options);
-    return true;
   }
 
   /**
@@ -97,10 +95,8 @@ export class Permissions {
    * https://coda.io/developers/apis/v1#operation/deletePermission
    *
    * @param permissionId ID of a permission on a doc; example: `AbCDeFGH`
-   * @returns Returns true if permission was deleted.
    */
-  async delete(permissionId: string): Promise<boolean> {
+  async delete(permissionId: string): Promise<void> {
     await this.api.http.delete(`/docs/${this.id}/acl/permissions/${permissionId}`);
-    return true;
   }
 }

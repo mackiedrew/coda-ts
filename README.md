@@ -24,6 +24,51 @@ Create an API instance with:
 const coda = new Coda(CODA_API_KEY);
 ```
 
+# Resource Structure
+- Coda
+  - whoAmI()
+  - resolveBrowserLink()
+  - Docs
+    - list()
+    - count() - BROKEN DUE TO REPORTED CODA BUG
+    - create()
+    - get()
+    - categories()
+    - idFromUrl()
+    - Doc
+      - set()
+      - get()
+      - refresh()
+      - delete()
+      - getShareMetadata()
+      - publish()
+      - unpublish()
+      - Pages
+        - Page
+          - get()
+          - set()
+          - update()
+          - refresh()
+      - Automation
+        - trigger()
+      - Tables
+        - Table
+          - Columns
+            - list()
+            - get()
+      - Controls
+        - list()
+        - get()
+      - Formulas
+        - list()
+        - get()
+      - Permissions
+        - list()
+        - add()
+        - delete()
+- Mutation
+  - status()
+
 # Docs
 Almost every aspect of Coda wraps up into a `Doc`.
 

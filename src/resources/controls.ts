@@ -1,5 +1,5 @@
 import { Api } from '../api';
-import { PageRef } from './page';
+import { Page, PageRef } from './page';
 import { Pagination, Resource, ResourceList, ResourceType } from '../types/resource';
 import { CellValue } from '../types/values';
 
@@ -20,10 +20,21 @@ export interface ListControlsOptions extends Pagination {
   sortBy?: string; // Determines how to sort the given objects.
 }
 
-export interface Control extends Resource<ResourceType.Control> {
+export interface ControlListElement extends Resource<ResourceType.Control> {
+  controlType: ControlType;
+  parent: PageRef;
+}
+
+export interface ControlDto extends Resource<ResourceType.Control> {
   controlType: ControlType;
   value: CellValue;
   parent: PageRef;
+}
+
+export interface Control extends Resource<ResourceType.Control> {
+  controlType: ControlType;
+  parent: Page;
+  value: CellValue;
 }
 
 /**
@@ -48,11 +59,11 @@ export class Controls {
    *
    * https://coda.io/developers/apis/v1#operation/listControls
    *
-   * @param options Options for the request. See types or docs for details.
+   * @param options Options for the request. See types or docs for details.x
    * @returns A list of controls in a Coda doc.
    */
-  async list(options: ListControlsOptions = {}): Promise<ResourceList<Control>> {
-    const response = await this.api.http.get<ResourceList<Control>>(
+  async list(options: ListControlsOptions = {}): Promise<ResourceList<ControlListElement>> {
+    const response = await this.api.http.get<ResourceList<ControlListElement>>(
       `/docs/${this.docId}/controls`,
       {
         params: options,
@@ -62,7 +73,7 @@ export class Controls {
   }
 
   /**
-   * Returns info on a control.
+   * Returns info on a control; this is how you get the current value of the control as well.
    *
    * https://coda.io/developers/apis/v1#operation/getControl
    *
@@ -74,6 +85,6 @@ export class Controls {
     const response = await this.api.http.get<Control>(
       `/docs/${this.docId}/controls/${controlIdOrName}`,
     );
-    return response.data;
+    return { ...response.data, parent: new Page(this.api, this.docId, response.data.parent.id) };
   }
 }

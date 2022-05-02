@@ -23,10 +23,14 @@ export interface FormulaResource extends Resource<ResourceType.Formula> {
  *
  * https://coda.io/developers/apis/v1#tag/Formulas
  */
-export class Formula {
+export class Formulas {
   private api: Api;
-  constructor(api: Api) {
+
+  public docId: string;
+
+  constructor(api: Api, docId: string) {
     this.api = api;
+    this.docId = docId;
   }
 
   /**
@@ -34,14 +38,16 @@ export class Formula {
    *
    * https://coda.io/developers/apis/v1#operation/listFormulas
    *
-   * @param docId ID of the doc; example: `AbCDeFGH`
    * @param options Options for query. See type or docs for details.
    * @returns List of named formulas in a Coda doc.
    */
-  async list(docId: string, options: FormulaListOptions): Promise<ResourceList<FormulaRef>> {
-    const response = await this.api.http.get<ResourceList<FormulaRef>>(`/docs/${docId}/formulas`, {
-      params: options,
-    });
+  async list(options: FormulaListOptions): Promise<ResourceList<FormulaRef>> {
+    const response = await this.api.http.get<ResourceList<FormulaRef>>(
+      `/docs/${this.docId}/formulas`,
+      {
+        params: options,
+      },
+    );
     return response.data;
   }
 
@@ -50,15 +56,14 @@ export class Formula {
    *
    * https://coda.io/developers/apis/v1#operation/getFormula
    *
-   * @param docId ID of the doc; example: `AbCDeFGH`
    * @param formulaIdOrName ID or name of the formula. Names are
    * discouraged because they're easily prone to being changed by users.
    * If you're using a name, be sure to URI-encode it; example: `f-fgHijkLm`
    * @returns Details about a formula.
    */
-  async get(docId: string, formulaIdOrName: string): Promise<FormulaResource> {
+  async get(formulaIdOrName: string): Promise<FormulaResource> {
     const response = await this.api.http.get<FormulaResource>(
-      `/docs/${docId}/formulas/${formulaIdOrName}`,
+      `/docs/${this.docId}/formulas/${formulaIdOrName}`,
     );
     return response.data;
   }
