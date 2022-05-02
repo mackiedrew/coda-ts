@@ -25,15 +25,8 @@ export interface ControlListElement extends Resource<ResourceType.Control> {
   parent: PageRef;
 }
 
-export interface ControlDto extends Resource<ResourceType.Control> {
-  controlType: ControlType;
-  value: CellValue;
-  parent: PageRef;
-}
-
 export interface Control extends Resource<ResourceType.Control> {
   controlType: ControlType;
-  parent: Page;
   value: CellValue;
 }
 
@@ -48,10 +41,15 @@ export interface Control extends Resource<ResourceType.Control> {
  */
 export class Controls {
   private api: Api;
-  private docId: string;
+  private path: string;
+
+  public docId: string;
+
   constructor(api: Api, docId: string) {
     this.api = api;
     this.docId = docId;
+
+    this.path = `/docs/${docId}/controls`;
   }
 
   /**
@@ -63,12 +61,9 @@ export class Controls {
    * @returns A list of controls in a Coda doc.
    */
   async list(options: ListControlsOptions = {}): Promise<ResourceList<ControlListElement>> {
-    const response = await this.api.http.get<ResourceList<ControlListElement>>(
-      `/docs/${this.docId}/controls`,
-      {
-        params: options,
-      },
-    );
+    const response = await this.api.http.get<ResourceList<ControlListElement>>(this.path, {
+      params: options,
+    });
     return response.data;
   }
 
@@ -82,9 +77,7 @@ export class Controls {
    * @returns Info on a control.
    */
   async get(controlIdOrName: string): Promise<Control> {
-    const response = await this.api.http.get<Control>(
-      `/docs/${this.docId}/controls/${controlIdOrName}`,
-    );
-    return { ...response.data, parent: new Page(this.api, this.docId, response.data.parent.id) };
+    const response = await this.api.http.get<Control>(`${this.path}/${controlIdOrName}`);
+    return response.data;
   }
 }

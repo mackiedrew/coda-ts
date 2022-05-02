@@ -8,10 +8,15 @@ import { Mutation } from './mutation';
  */
 export class Automation {
   private api: Api;
-  private docId: string;
+  private path: string;
+
+  public docId: string;
+
   constructor(api: Api, docId: string) {
     this.api = api;
     this.docId = docId;
+
+    this.path = `/docs/${this.docId}/hooks/automation`;
   }
 
   /**
@@ -26,7 +31,7 @@ export class Automation {
    */
   async trigger(ruleId: string, payload: any): Promise<Mutation> {
     const response = await this.api.http.post<{ requestId: string }>(
-      `/docs/${this.docId}/hooks/automation/${ruleId}`,
+      `${this.path}/${ruleId}`,
       payload,
     );
     return new Mutation(this.api, response.data.requestId);

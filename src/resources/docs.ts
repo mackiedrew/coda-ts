@@ -109,7 +109,7 @@ export class Docs {
    * @param options Doc count options. (see docs or type for details)
    * @returns Returns the number of docs for the authenticated user matching the query.
    */
-  // async count(options: CountDocsOptions = {}): Promise<number> {
+  // async count(options: DocsCountOptions = {}): Promise<number> {
   //   const response = await this.api.http.get<{ count: number }>('/docs/count', { params: options });
   //   return response.data.count;
   // }

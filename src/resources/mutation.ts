@@ -35,4 +35,13 @@ export class Mutation {
     );
     return response.data.completed;
   }
+
+  async wait(interval = 10_000, retries = 6): Promise<boolean> {
+    for (let tries = 0; tries < retries; tries++) {
+      const status = await this.status();
+      if (status) return true;
+      await new Promise((resolve) => setTimeout(resolve, interval));
+    }
+    return false;
+  }
 }

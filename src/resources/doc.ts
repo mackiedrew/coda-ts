@@ -178,8 +178,7 @@ export class Doc {
    *
    * @returns Returns true if document unpublished.
    */
-  async unpublish(): Promise<true> {
+  async unpublish(): Promise<void> {
     await this.api.http.delete<any>(`/docs/${this.id}/publish`);
-    return true;
   }
 }

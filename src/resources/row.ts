@@ -1,7 +1,7 @@
 import { Api } from '../api';
 import { Mutation } from './mutation';
 import { Resource, ResourceType } from '../types/resource';
-import { Table, TableRef } from './table';
+import { TableRef } from './table';
 import { CellValue, ScalarValue } from '../types/values';
 
 export interface RowRef extends Resource<ResourceType.Row> {
@@ -21,25 +21,6 @@ export enum RowValueFormat {
   SimpleWithArrays = 'simpleWithArrays',
   Rich = 'rich',
 }
-
-export enum RowListQueryType {
-  ID = 'id',
-  Name = 'name',
-}
-
-export interface RowListQueryById {
-  type: RowListQueryType.ID;
-  queryString: string;
-  columnId: string;
-}
-
-export interface RowListQueryByName {
-  type: RowListQueryType.Name;
-  queryString: string;
-  columnName: string;
-}
-
-export type RowListQuery = RowListQueryById | RowListQueryByName;
 
 export type CellData = {
   column: string; // Column ID, URL, or name (fragile and discouraged) associated with this edit.

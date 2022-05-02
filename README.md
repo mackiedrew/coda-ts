@@ -36,11 +36,11 @@ const coda = new Coda(CODA_API_KEY);
     - categories()
     - idFromUrl()
     - Doc
+      - delete()
+      - getShareMetadata()
       - set()
       - get()
       - refresh()
-      - delete()
-      - getShareMetadata()
       - publish()
       - unpublish()
       - Pages
@@ -56,6 +56,18 @@ const coda = new Coda(CODA_API_KEY);
           - Columns
             - list()
             - get()
+          - Rows
+            - list()
+            - upsert()
+            - delete()
+            - get()
+            - Row
+              - get()
+              - update()
+              - delete()
+              - set()
+              - refresh()
+              - pushButton()
       - Controls
         - list()
         - get()

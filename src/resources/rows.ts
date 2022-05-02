@@ -19,6 +19,7 @@ export enum RowSortBy {
   UpdatedAt = 'updatedAt',
 }
 
+// Refers to the column name or column ID
 export enum RowListQueryType {
   ID = 'id',
   Name = 'name',
@@ -26,13 +27,13 @@ export enum RowListQueryType {
 
 export interface RowListQueryById {
   type: RowListQueryType.ID;
-  queryString: string;
+  value: string | number | boolean;
   columnId: string;
 }
 
 export interface RowListQueryByName {
   type: RowListQueryType.Name;
-  queryString: string;
+  value: string | number | boolean;
   columnName: string;
 }
 
@@ -52,7 +53,7 @@ export type CellData = {
   value: ScalarValue;
 };
 
-export type RowData = CellData[];
+export type RowData = { cells: CellData[] };
 
 export interface RowUpsertDto {
   rows: RowData[];
@@ -90,10 +91,12 @@ export class Rows {
     this.path = `/docs/${docId}/tables/${tableIdOrName}/rows`;
   }
 
-  constructQuery(query?: RowListQuery): string | void {
+  private constructQuery(query?: RowListQuery): string | void {
     if (!query) return;
-    if (query.type === RowListQueryType.Name) return `"${query.columnName}":${query.queryString}`;
-    return `${query.columnId}:${query.queryString}`;
+    const columnIdOrName =
+      query.type === RowListQueryType.Name ? `"${query.columnName}"` : query.columnId;
+    const value = typeof query.value === 'string' ? `"${query.value}"` : query.value;
+    return `${columnIdOrName}:${value}`;
   }
 
   async list(options: RowListOptions): Promise<ListRowResponse> {
@@ -106,16 +109,16 @@ export class Rows {
   async upsert(
     data: RowUpsertDto,
     disableParsing = false,
-  ): Promise<{ mutation: Mutation; rowIds: string[] }> {
+  ): Promise<{ mutation: Mutation; addedRowIds: string[] }> {
     const response = await this.api.http.post<{
       requestId: string;
-      rowIds: string[];
+      addedRowIds: string[];
     }>(this.path, data, {
       params: { disableParsing },
     });
     return {
       mutation: new Mutation(this.api, response.data.requestId),
-      rowIds: response.data.rowIds,
+      addedRowIds: response.data.addedRowIds,
     };
   }
 

@@ -6,6 +6,7 @@
 export default {
   clearMocks: true,
   collectCoverage: true,
+  verbose: true,
   coverageDirectory: 'coverage',
   coverageProvider: 'v8',
   preset: 'ts-jest',

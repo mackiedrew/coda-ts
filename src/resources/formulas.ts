@@ -4,15 +4,14 @@ import { Resource, ResourceList, Pagination, ResourceType } from '../types/resou
 import { ScalarValue } from '../types/values';
 
 export interface FormulaListOptions extends Pagination {
-  sortBy: string; // Determines how to sort the given objects.
+  sortBy?: string; // Determines how to sort the given objects.
 }
 
 export interface FormulaRef extends Resource<ResourceType.Formula> {
   parent: PageRef;
 }
 
-export interface FormulaResource extends Resource<ResourceType.Formula> {
-  parent: PageRef;
+export interface Formula extends Resource<ResourceType.Formula> {
   value: ScalarValue;
 }
 
@@ -25,12 +24,15 @@ export interface FormulaResource extends Resource<ResourceType.Formula> {
  */
 export class Formulas {
   private api: Api;
+  private path: string;
 
   public docId: string;
 
   constructor(api: Api, docId: string) {
     this.api = api;
     this.docId = docId;
+
+    this.path = `/docs/${this.docId}/formulas`;
   }
 
   /**
@@ -41,13 +43,10 @@ export class Formulas {
    * @param options Options for query. See type or docs for details.
    * @returns List of named formulas in a Coda doc.
    */
-  async list(options: FormulaListOptions): Promise<ResourceList<FormulaRef>> {
-    const response = await this.api.http.get<ResourceList<FormulaRef>>(
-      `/docs/${this.docId}/formulas`,
-      {
-        params: options,
-      },
-    );
+  async list(options: FormulaListOptions = {}): Promise<ResourceList<FormulaRef>> {
+    const response = await this.api.http.get<ResourceList<FormulaRef>>(this.path, {
+      params: options,
+    });
     return response.data;
   }
 
@@ -61,10 +60,8 @@ export class Formulas {
    * If you're using a name, be sure to URI-encode it; example: `f-fgHijkLm`
    * @returns Details about a formula.
    */
-  async get(formulaIdOrName: string): Promise<FormulaResource> {
-    const response = await this.api.http.get<FormulaResource>(
-      `/docs/${this.docId}/formulas/${formulaIdOrName}`,
-    );
+  async get(formulaIdOrName: string): Promise<Formula> {
+    const response = await this.api.http.get<Formula>(`${this.path}/${formulaIdOrName}`);
     return response.data;
   }
 }
