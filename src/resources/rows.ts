@@ -2,7 +2,7 @@ import { Api } from '../api';
 import { Mutation } from './mutation';
 import { ResourceList, Pagination } from '../types/resource';
 import { ScalarValue } from '../types/values';
-import { RowResource, RowResourceOfTable, RowValueFormat } from './row';
+import { RowRef, RowDto, RowValueFormat, Row } from './row';
 
 /**
  * Specifies the sort order of the rows returned. If left unspecified, rows are returned by creation
@@ -59,7 +59,7 @@ export interface RowUpsertDto {
   keyColumns?: string[];
 }
 
-export interface ListRowResponse extends ResourceList<RowResourceOfTable> {
+export interface ListRowResponse extends ResourceList<RowRef> {
   // If specified, an opaque token that can be passed back later to retrieve new results that
   // match the parameters specified when the sync token was created.
   nextSyncToken: string;
@@ -77,8 +77,17 @@ export interface ListRowResponse extends ResourceList<RowResourceOfTable> {
  */
 export class Rows {
   private api: Api;
-  constructor(api: Api) {
+  private path: string;
+
+  public docId: string;
+  public tableIdOrName: string;
+
+  constructor(api: Api, docId: string, tableIdOrName: string) {
     this.api = api;
+    this.docId = docId;
+    this.tableIdOrName = tableIdOrName;
+
+    this.path = `/docs/${docId}/tables/${tableIdOrName}/rows`;
   }
 
   constructQuery(query?: RowListQuery): string | void {
@@ -87,43 +96,34 @@ export class Rows {
     return `${query.columnId}:${query.queryString}`;
   }
 
-  async list(
-    docId: string,
-    tableIdOrName: string,
-    options: RowListOptions,
-  ): Promise<ListRowResponse> {
-    const response = await this.api.http.get<ListRowResponse>(
-      `/docs/${docId}/tables/${tableIdOrName}/rows`,
-      { params: { ...options, query: this.constructQuery(options.query) } },
-    );
+  async list(options: RowListOptions): Promise<ListRowResponse> {
+    const response = await this.api.http.get<ListRowResponse>(this.path, {
+      params: { ...options, query: this.constructQuery(options.query) },
+    });
     return response.data;
   }
 
   async upsert(
-    docId: string,
-    tableIdOrName: string,
     data: RowUpsertDto,
     disableParsing = false,
   ): Promise<{ mutation: Mutation; rowIds: string[] }> {
     const response = await this.api.http.post<{
       requestId: string;
       rowIds: string[];
-    }>(`/docs/${docId}/tables/${tableIdOrName}/rows`, data, { params: { disableParsing } });
+    }>(this.path, data, {
+      params: { disableParsing },
+    });
     return {
       mutation: new Mutation(this.api, response.data.requestId),
       rowIds: response.data.rowIds,
     };
   }
 
-  async delete(
-    docId: string,
-    tableIdOrName: string,
-    rowIds: string[],
-  ): Promise<{ mutation: Mutation; rowIds: string[] }> {
+  async delete(rowIds: string[]): Promise<{ mutation: Mutation; rowIds: string[] }> {
     const response = await this.api.http.delete<{
       requestId: string;
       rowIds: string[];
-    }>(`/docs/${docId}/tables/${tableIdOrName}/rows`, { data: { rowIds } });
+    }>(this.path, { data: { rowIds } });
     return {
       mutation: new Mutation(this.api, response.data.requestId),
       rowIds: response.data.rowIds,
@@ -131,18 +131,12 @@ export class Rows {
   }
 
   async get(
-    docId: string,
-    tableIdOrName: string,
     rowIdOrName: string,
-    useColumnNames: boolean,
-    valueFormat: RowValueFormat,
-  ): Promise<RowResource> {
-    const response = await this.api.http.get<RowResource>(
-      `/docs/${docId}/tables/${tableIdOrName}/rows/${rowIdOrName}`,
-      {
-        params: { useColumnNames, valueFormat },
-      },
-    );
-    return response.data;
+    useColumnNames = false,
+    valueFormat: RowValueFormat = RowValueFormat.Rich,
+  ): Promise<Row> {
+    const row = new Row(this.api, this.docId, this.tableIdOrName, rowIdOrName);
+    await row.refresh(useColumnNames, valueFormat);
+    return row;
   }
 }

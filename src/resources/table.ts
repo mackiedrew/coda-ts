@@ -1,6 +1,8 @@
 import { Api } from '../api';
 import { PageRef } from './page';
 import { Resource, ResourceType } from '../types/resource';
+import { Columns } from './columns';
+import { Rows } from './rows';
 
 export enum TableType {
   Table = 'table',
@@ -98,6 +100,9 @@ export class Table {
   public parentTable?: TableRef;
   public filter?: Filter;
 
+  public Columns: Columns;
+  public Rows: Rows;
+
   /**
    * Creates a table object.
    *
@@ -113,6 +118,9 @@ export class Table {
     this.docId = docId;
     this.id = tableIdOrName;
     this.useUpdatedTableLayouts = useUpdatedTableLayouts;
+
+    this.Columns = new Columns(this.api, this.docId, this.id);
+    this.Rows = new Rows(this.api, this.docId, this.id);
   }
 
   /**

@@ -10,6 +10,7 @@ import { Controls } from './controls';
 import { Mutation } from './mutation';
 import { Tables } from './tables';
 import { Pages } from './pages';
+import { Formulas } from './formulas';
 
 export interface ShareMetadata {
   canShare: boolean; // When true, the user of the api can share
@@ -77,6 +78,7 @@ export class Doc {
 
   public Automation: Automation;
   public Permissions: Permissions;
+  public Formulas: Formulas;
   public Controls: Controls;
   public Tables: Tables;
   public Pages: Pages;
@@ -87,6 +89,7 @@ export class Doc {
 
     this.Automation = new Automation(api, id);
     this.Controls = new Controls(api, id);
+    this.Formulas = new Formulas(api, id);
     this.Tables = new Tables(api, id);
     this.Permissions = new Permissions(api, id);
     this.Pages = new Pages(api, id);
