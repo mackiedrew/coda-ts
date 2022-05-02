@@ -1,14 +1,10 @@
 import { Api } from '../api';
 import { ResourceList, Pagination } from '../types/resource';
-import { Table, TableDto } from './table';
+import { Table, TableDto, TableType } from './table';
 
-export enum TableType {
-  Table = 'table',
-  View = 'view',
-}
 export interface TableListOption extends Pagination {
-  sortBy: string; // Determines how to sort the given objects.
-  tabledTypes: TableType;
+  sortBy?: string; // Determines how to sort the given objects.
+  tabledTypes?: TableType;
 }
 
 /**
@@ -36,7 +32,7 @@ export class Tables {
    * @returns A list of tables in a Coda doc.
    */
   async list(
-    options: TableListOption,
+    options: TableListOption = {},
     useUpdatedTableLayouts = true,
   ): Promise<ResourceList<Table>> {
     const response = await this.api.http.get<ResourceList<TableDto>>(`/docs/${this.docId}/tables`, {
