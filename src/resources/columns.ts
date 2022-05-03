@@ -50,7 +50,7 @@ export interface ColumnNumber extends ColumnFormatDefault<ColumnType.Number> {
 
 export type ColumFormat = ColumnText | ColumnPerson | ColumnLookup | ColumnNumber;
 
-export interface ColumnResource extends Resource<ResourceType.Column> {
+export interface Column extends Resource<ResourceType.Column> {
   format: ColumFormat; // Format of a column.
   display?: boolean; // Whether the column is the display column.
   calculated?: boolean; // Whether the column has a formula set on it.
@@ -83,8 +83,8 @@ export class Columns {
    * @param options Options for the query, see type or docs for details.
    * @returns list of columns in a table.
    */
-  async list(options: ListColumnOptions): Promise<ResourceList<ColumnResource>> {
-    const response = await this.api.http.get<ResourceList<ColumnResource>>(
+  async list(options: ListColumnOptions = {}): Promise<ResourceList<Column>> {
+    const response = await this.api.http.get<ResourceList<Column>>(
       `/docs/${this.docId}/tables/${this.tableIdOrName}/columns`,
       {
         params: options,
@@ -103,8 +103,8 @@ export class Columns {
    * be sure to URI-encode it; example: `c-pqRst-U`
    * @returns Details about a column in a table.
    */
-  async get(columnIdOrName: string): Promise<ResourceList<ColumnResource>> {
-    const response = await this.api.http.get<ResourceList<ColumnResource>>(
+  async get(columnIdOrName: string): Promise<Column> {
+    const response = await this.api.http.get<Column>(
       `/docs/${this.docId}/tables/${this.tableIdOrName}/columns/${columnIdOrName}`,
     );
     return response.data;

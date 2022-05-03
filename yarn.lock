@@ -1882,7 +1882,7 @@ __metadata:
     dotenv: 16.0.0
     eslint: 8.13.0
     eslint-config-prettier: 8.5.0
-    eslint-plugin-import: ^2.26.0
+    eslint-plugin-import: 2.26.0
     eslint-plugin-jsdoc: 39.2.8
     eslint-plugin-prettier: 4.0.0
     eslint-plugin-sonarjs: 0.13.0
@@ -2585,7 +2585,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-import@npm:^2.26.0":
+"eslint-plugin-import@npm:2.26.0":
   version: 2.26.0
   resolution: "eslint-plugin-import@npm:2.26.0"
   dependencies:

@@ -36,6 +36,21 @@ describe('Rows', () => {
       const rowList = await rows.list({ query, useColumnNames: true });
       expect(rowList.items[0].values[query.columnName]).toBe(query.value);
     });
+
+    test('handles query with non-string query', async () => {
+      const query: RowListQueryByName = {
+        type: RowListQueryType.Name,
+        value: 10,
+        columnName: 'Check',
+      };
+      const rowList = await rows.list({ query, useColumnNames: true });
+      expect(rowList.items[0].values[query.columnName]).toBe(query.value);
+    });
+
+    test('handles no query', async () => {
+      const rowList = await rows.list();
+      expect(rowList.items.length).toBeGreaterThan(0);
+    });
   });
 
   describe('upsert, get, delete', () => {

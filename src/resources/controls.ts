@@ -1,5 +1,5 @@
 import { Api } from '../api';
-import { Page, PageRef } from './page';
+import { PageRef } from './page';
 import { Pagination, Resource, ResourceList, ResourceType } from '../types/resource';
 import { CellValue } from '../types/values';
 

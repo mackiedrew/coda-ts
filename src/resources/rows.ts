@@ -1,8 +1,7 @@
 import { Api } from '../api';
 import { Mutation } from './mutation';
 import { ResourceList, Pagination } from '../types/resource';
-import { ScalarValue } from '../types/values';
-import { RowRef, RowDto, RowValueFormat, Row } from './row';
+import { RowRef, RowValueFormat, Row, RowData } from './row';
 
 /**
  * Specifies the sort order of the rows returned. If left unspecified, rows are returned by creation
@@ -48,13 +47,6 @@ export interface RowListOptions extends Pagination {
   syncToken?: string;
 }
 
-export type CellData = {
-  column: string; // Column ID, URL, or name (fragile and discouraged) associated with this edit.
-  value: ScalarValue;
-};
-
-export type RowData = { cells: CellData[] };
-
 export interface RowUpsertDto {
   rows: RowData[];
   keyColumns?: string[];
@@ -99,7 +91,7 @@ export class Rows {
     return `${columnIdOrName}:${value}`;
   }
 
-  async list(options: RowListOptions): Promise<ListRowResponse> {
+  async list(options: RowListOptions = {}): Promise<ListRowResponse> {
     const response = await this.api.http.get<ListRowResponse>(this.path, {
       params: { ...options, query: this.constructQuery(options.query) },
     });

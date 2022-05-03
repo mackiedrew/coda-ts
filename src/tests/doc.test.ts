@@ -1,4 +1,6 @@
+import { randomUUID } from 'node:crypto';
 import { Coda } from '../main';
+import { PublishMode } from '../types/publishing';
 
 const coda: Coda = new Coda(process.env.CODA_UNRESTRICTED_API_KEY || '');
 
@@ -21,11 +23,31 @@ describe('Doc', () => {
     });
   });
 
-  test('publish()', async () => {
-    expect(true).toBe(true);
-  });
+  describe('publishing', () => {
+    jest.setTimeout(60_000);
+    const docId = process.env.LIVE_DOC_ID || '';
+    const docs = coda.Docs;
 
-  test('unpublish()', async () => {
-    expect(true).toBe(true);
+    test('publish()', async () => {
+      const doc = await docs.get(docId);
+      const mutation = await doc.publish({
+        slug: `coda-ts-test-${randomUUID()}`,
+        discoverable: false,
+        earnCredit: false,
+        categoryNames: [],
+        mode: PublishMode.Edit,
+      });
+      await mutation.wait();
+      await doc.refresh();
+      expect(doc.published).toBeTruthy();
+    });
+
+    test('unpublish()', async () => {
+      const doc = await docs.get(docId);
+      await doc.unpublish();
+      await new Promise((resolve) => setTimeout(resolve, 30_000));
+      await doc.refresh();
+      expect(doc.published).toBeFalsy();
+    });
   });
 });

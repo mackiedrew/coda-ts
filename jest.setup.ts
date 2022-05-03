@@ -1,2 +1,2 @@
 require('dotenv').config({ path: '.test.env' });
-jest.setTimeout(10000);
+jest.setTimeout(30_000);

@@ -27,7 +27,7 @@ export type CellData = {
   value: ScalarValue;
 };
 
-export type RowData = CellData[];
+export type RowData = { cells: CellData[] };
 
 export class Row {
   private api: Api;
@@ -68,9 +68,13 @@ export class Row {
     const response = await this.api.http.put<{
       requestId: string;
       id: string;
-    }>(this.path, data, {
-      params: { disableParsing },
-    });
+    }>(
+      this.path,
+      { row: data },
+      {
+        params: { disableParsing },
+      },
+    );
     return {
       mutation: new Mutation(this.api, response.data.requestId),
       rowId: response.data.id,
@@ -98,7 +102,10 @@ export class Row {
     return this;
   }
 
-  async refresh(useColumnNames: boolean, valueFormat: RowValueFormat): Promise<Row | void> {
+  async refresh(
+    useColumnNames = false,
+    valueFormat: RowValueFormat = RowValueFormat.Rich,
+  ): Promise<Row | void> {
     const row = await this.get(useColumnNames, valueFormat);
     if (row) this.set(row);
     return row;

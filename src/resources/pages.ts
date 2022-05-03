@@ -23,12 +23,11 @@ export class Pages {
    *
    * https://coda.io/developers/apis/v1#operation/listPages
    *
-   * @param docId ID of the doc; example: `AbCDeFGH`
    * @param options Standard pagination options.
    * @returns List of pages.
    */
-  async list(docId: string, options: Pagination = {}): Promise<ResourceList<Page>> {
-    const response = await this.api.http.get<ResourceList<PageDto>>(`/docs/${docId}/pages`, {
+  async list(options: Pagination = {}): Promise<ResourceList<Page>> {
+    const response = await this.api.http.get<ResourceList<PageDto>>(`/docs/${this.docId}/pages`, {
       params: options,
     });
 
@@ -48,7 +47,7 @@ export class Pages {
    * name and there are multiple pages with the same name, an arbitrary one will be selected.
    * @returns Returns details about a page.
    */
-  async get(pageIdOrName: string): Promise<Page | void> {
+  async get(pageIdOrName: string): Promise<Page> {
     const page = new Page(this.api, this.docId, pageIdOrName);
     await page.refresh();
     return page;

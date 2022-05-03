@@ -66,7 +66,7 @@ export class Page {
    * name and there are multiple pages with the same name, an arbitrary one will be selected.
    * @returns Returns details about a page.
    */
-  async get(pageIdOrName: string = this.id): Promise<Page | void> {
+  async get(pageIdOrName: string = this.id): Promise<Page> {
     const response = await this.api.http.get<PageDto>(`/docs/${this.docId}/pages/${pageIdOrName}`);
     return this.set(response.data);
   }
@@ -99,15 +99,12 @@ export class Page {
    *
    * https://coda.io/developers/apis/v1#operation/updatePage
    *
-   * @param pageIdOrName ID or name of the page. Names are discouraged because they're easily prone
-   * to being changed by users. If you're using a name, be sure to URI-encode it. If you provide a
-   * name and there are multiple pages with the same name, an arbitrary one will be selected.
    * @param options Options to update page, see docs or type for details.
    * @returns Update properties for a page.
    */
-  async update(pageIdOrName: string, options: PageUpdateOptions): Promise<Mutation> {
+  async update(options: PageUpdateOptions): Promise<Mutation> {
     const response = await this.api.http.put<{ requestId: string }>(
-      `/docs/${this.docId}/pages/${pageIdOrName}`,
+      `/docs/${this.docId}/pages/${this.id}`,
       options,
     );
     return new Mutation(this.api, response.data.requestId);
