@@ -18,36 +18,36 @@ describe('Row', () => {
   jest.setTimeout(120_000);
   const testRowId = process.env.ROW_ID || '';
 
-  test('get()', async () => {
+  test('get() row', async () => {
     const row = await rows.get(testRowId);
     expect(row.id).toBe(testRowId);
   });
 
-  // test('delete()', async () => {
-  //   const rowName = 'Kill This Row';
-  //   const rowCheck = randomInt(100);
+  test('delete() row', async () => {
+    const rowName = 'Kill This Row';
+    const rowCheck = randomInt(100);
 
-  //   const data = {
-  //     rows: [
-  //       {
-  //         cells: [
-  //           { column: 'Name', value: rowName },
-  //           { column: 'Check', value: rowCheck },
-  //         ],
-  //       },
-  //     ],
-  //   };
-  //   const upsertResult = await rows.upsert(data);
-  //   await upsertResult.mutation.wait();
-  //   const addedRowId = upsertResult.addedRowIds[0];
-  //   const row = await rows.get(addedRowId, true);
-  //   const deleteResult = await row.delete();
-  //   const successful = await deleteResult.mutation.wait(20_000, 6);
-  //   expect(successful).toBe(true);
-  //   expect(deleteResult.rowId).toBe(addedRowId);
-  // });
+    const data = {
+      rows: [
+        {
+          cells: [
+            { column: 'Name', value: rowName },
+            { column: 'Check', value: rowCheck },
+          ],
+        },
+      ],
+    };
+    const upsertResult = await rows.upsert(data);
+    await upsertResult.mutation.wait();
+    const addedRowId = upsertResult.addedRowIds[0];
+    const row = await rows.get(addedRowId, true);
+    const deleteResult = await row.delete();
+    const successful = await deleteResult.mutation.wait(20_000, 6);
+    expect(successful).toBe(true);
+    expect(deleteResult.rowId).toBe(addedRowId);
+  });
 
-  test('update() + refresh()', async () => {
+  test('update() row + refresh() row', async () => {
     const row = await rows.get(testRowId, true);
 
     const oldUpdatedAt = row.updatedAt;
