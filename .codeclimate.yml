@@ -3,4 +3,4 @@ exclude_patterns:
   - ".github/"
   - ".vscode/"
   - ".yarn/"
-  - "src/tests/"
+  - "tests/"
