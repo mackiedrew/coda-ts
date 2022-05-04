@@ -4,14 +4,20 @@ import { ResourceList, Pagination } from './base';
 
 export type Category = { name: string };
 
-export interface DocCreateOptions {
+type DocCreateOptions = {
   title?: string; // Title of the new doc. Defaults to 'Untitled'.
   sourceDoc?: string; // An optional doc ID from which to create a copy.
   timezone?: string; // The timezone to use for the newly created doc.
   folderId?: string; // The ID of the folder within which to create this doc. Defaults to your "My docs" folder in the oldest workspace you joined
-}
+};
 
-export interface DocsListOptions extends Pagination {
+// type DocsCountOptions = {
+//   isPublished?: boolean; // Limit results to only published items.
+//   isOwner?: boolean; // Show only docs owned by the user.
+//   workspaceId?: string; // Filters docs belonging to the given workspace.
+// };
+
+interface DocsListOptions extends Pagination {
   isOwner?: boolean; // Show only docs owned by the user.
   isPublisher?: boolean; // Show only published docs.
   query?: string; // Search term used to filter down resutls.
@@ -21,12 +27,6 @@ export interface DocsListOptions extends Pagination {
   workspaceId?: string; // Show only docs belonging to the given workspace.
   folderid?: string; // Show only docs belonging to the given folder.
 }
-
-export type DocsCountOptions = {
-  isPublished?: boolean; // Limit results to only published items.
-  isOwner?: boolean; // Show only docs owned by the user.
-  workspaceId?: string; // Filters docs belonging to the given workspace.
-};
 
 /**
  * A Docs API interface singleton class.

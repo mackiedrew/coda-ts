@@ -1,4 +1,4 @@
-import { Coda } from '../main';
+import { Coda } from '../src/main';
 
 const coda: Coda = new Coda(process.env.CODA_KEY || '');
 const docId = 'uq0jEWnseE';

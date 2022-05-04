@@ -16,11 +16,7 @@ export enum ControlType {
   Reaction = 'reaction',
 }
 
-export interface ListControlsOptions extends Pagination {
-  sortBy?: string; // Determines how to sort the given objects.
-}
-
-export interface ControlListElement extends Resource<ResourceType.Control> {
+export interface ControlRef extends Resource<ResourceType.Control> {
   controlType: ControlType;
   parent: PageRef;
 }
@@ -28,6 +24,10 @@ export interface ControlListElement extends Resource<ResourceType.Control> {
 export interface Control extends Resource<ResourceType.Control> {
   controlType: ControlType;
   value: CellValue;
+}
+
+interface ListControlsOptions extends Pagination {
+  sortBy?: string; // Determines how to sort the given objects.
 }
 
 /**
@@ -60,8 +60,8 @@ export class Controls {
    * @param options Options for the request. See types or docs for details.x
    * @returns A list of controls in a Coda doc.
    */
-  async list(options: ListControlsOptions = {}): Promise<ResourceList<ControlListElement>> {
-    const response = await this.http.get<ResourceList<ControlListElement>>(this.path, {
+  async list(options: ListControlsOptions = {}): Promise<ResourceList<ControlRef>> {
+    const response = await this.http.get<ResourceList<ControlRef>>(this.path, {
       params: options,
     });
     return response.data;

@@ -1,5 +1,4 @@
-import { Coda } from '../main';
-import { Columns } from '../resources/columns';
+import { Coda, Columns } from '../src/main';
 
 let columns: Columns;
 

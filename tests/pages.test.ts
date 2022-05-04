@@ -1,5 +1,4 @@
-import { Coda } from '../main';
-import { Doc } from '../resources/doc';
+import { Coda, Doc } from '../src/main';
 
 let doc: Doc;
 

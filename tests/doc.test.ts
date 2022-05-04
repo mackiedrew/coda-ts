@@ -1,6 +1,5 @@
 import { randomUUID } from 'node:crypto';
-import { Coda } from '../main';
-import { PublishMode } from '../resources/publishing';
+import { Coda, PublishMode } from '../src/main';
 
 const coda: Coda = new Coda(process.env.CODA_KEY || '');
 

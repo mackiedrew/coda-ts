@@ -30,16 +30,16 @@ export interface PrincipalAnyone {
 
 export type Principal = PrincipalEmail | PrincipalDomain | PrincipalAnyone;
 
-export interface AddPermssionOptions {
-  access: AccessType;
-  principal: Principal;
-  supressEmail?: boolean;
-}
-
 export interface PermissionResponse {
   id: string;
   principal: Principal;
   access: AccessType;
+}
+
+interface AddPermssionOptions {
+  access: AccessType;
+  principal: Principal;
+  supressEmail?: boolean;
 }
 
 /**

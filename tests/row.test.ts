@@ -1,6 +1,5 @@
 import { randomInt } from 'node:crypto';
-import { Coda } from '../main';
-import { Rows } from '../resources/rows';
+import { Coda, Rows } from '../src/main';
 
 let rows: Rows;
 

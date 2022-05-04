@@ -2,10 +2,6 @@ import { AxiosInstance } from 'axios';
 import { Resource, ResourceList, Pagination, ResourceType } from './base';
 import { TableRef } from './table';
 
-export interface ListColumnOptions extends Pagination {
-  visibleOnly?: boolean; // If true, returns only visible columns for the table.
-}
-
 export enum ColumnType {
   Text = 'text',
   Person = 'person',
@@ -31,11 +27,11 @@ export enum ColumnType {
   LinkColumnFormat = 'LinkColumnFormat',
 }
 
+// Column Formats
 export interface ColumnFormatDefault<T extends ColumnType> {
   type: T;
   isArray: boolean;
 }
-
 export type ColumnText = ColumnFormatDefault<ColumnType.Text>;
 export interface ColumnPerson extends ColumnFormatDefault<ColumnType.Person> {
   table: TableRef;
@@ -50,12 +46,22 @@ export interface ColumnNumber extends ColumnFormatDefault<ColumnType.Number> {
 
 export type ColumFormat = ColumnText | ColumnPerson | ColumnLookup | ColumnNumber;
 
+export interface ColumnRef {
+  id: string; // ID of the column.
+  type: ResourceType.Column; // The type of this resource.
+  href: string; // API link to the column.
+}
+
 export interface Column extends Resource<ResourceType.Column> {
   format: ColumFormat; // Format of a column.
   display?: boolean; // Whether the column is the display column.
   calculated?: boolean; // Whether the column has a formula set on it.
   formula?: string; // Formula on the column.
   defaultValue?: string; // Default value formula for the column.
+}
+
+interface ListColumnOptions extends Pagination {
+  visibleOnly?: boolean; // If true, returns only visible columns for the table.
 }
 
 /**

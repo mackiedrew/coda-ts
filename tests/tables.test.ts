@@ -1,6 +1,4 @@
-import { Coda } from '../main';
-import { Doc } from '../resources/doc';
-import { TableType } from '../resources/table';
+import { Coda, Doc, TableType } from '../src/main';
 
 let doc: Doc;
 

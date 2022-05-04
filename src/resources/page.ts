@@ -4,12 +4,8 @@ import { Image } from './image';
 import { Mutation } from './mutation';
 import { Resource, ResourceType } from './base';
 
-export interface PageRef {
-  id: string; // ID of the page.
-  type: ResourceType.Page; // The type of this resource.
+export interface PageRef extends Resource<ResourceType.Page> {
   browserLink: string; // Browser-friendly link to the page.
-  href: string; // API link to the page.
-  name: string; // Name of the page.
 }
 
 export interface PageDto extends Resource<ResourceType.Page> {
@@ -21,7 +17,7 @@ export interface PageDto extends Resource<ResourceType.Page> {
   children?: PageDto[];
 }
 
-export interface PageUpdateOptions {
+interface PageUpdateOptions {
   name?: string;
   subtitle?: string;
   iconName?: string;

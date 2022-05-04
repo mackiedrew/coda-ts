@@ -20,4 +20,5 @@ export default {
       statements: 100,
     },
   },
+  coveragePathIgnorePatterns: ['node_modules', , '<rootDir>/src/main.ts'],
 };

@@ -1,6 +1,5 @@
 import { randomInt } from 'node:crypto';
-import { Coda } from '../main';
-import { RowListQueryType, RowListQueryById, Rows, RowListQueryByName } from '../resources/rows';
+import { Coda, RowListQueryType, RowListQueryById, Rows, RowListQueryByName } from '../src/main';
 
 let rows: Rows;
 

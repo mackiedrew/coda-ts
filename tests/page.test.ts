@@ -1,6 +1,5 @@
 import { randomInt } from 'node:crypto';
-import { Coda } from '../main';
-import { Page } from '../resources/page';
+import { Coda, Page } from '../src/main';
 
 let page: Page;
 const testPageId = 'canvas-r4UCASEB-O';

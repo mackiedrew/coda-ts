@@ -1,5 +1,4 @@
-import { Coda } from '../main';
-import { ResourceType } from '../resources/base';
+import { Coda, ResourceType } from '../src/main';
 
 describe('Coda', () => {
   describe('whoAmI()', () => {

@@ -3,16 +3,16 @@ import { PageRef } from './page';
 import { Resource, ResourceList, Pagination, ResourceType } from './base';
 import { ScalarValue } from './values';
 
-export interface FormulaListOptions extends Pagination {
-  sortBy?: string; // Determines how to sort the given objects.
-}
-
 export interface FormulaRef extends Resource<ResourceType.Formula> {
   parent: PageRef;
 }
 
 export interface Formula extends Resource<ResourceType.Formula> {
   value: ScalarValue;
+}
+
+interface FormulaListOptions extends Pagination {
+  sortBy?: string; // Determines how to sort the given objects.
 }
 
 /**

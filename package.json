@@ -1,8 +1,17 @@
 {
   "name": "coda-ts",
-  "description": "Simple node, JavaScript, and TypeScript client for working with the Coda API.",
+  "version": "1.0.0",
+  "description": "A hopefully intuitive client for every public Coda API. Strictly typed, carefully tested, and helpfully documented.",
+  "keywords": ["node", "typescript", "coda"],
+  "author": "Mackie Drew <mackiedrew@gmail.com>",
+  "homepage": "https://github.com/mackiedrew/coda-ts",
+  "repository": "github:mackiedrew/coda-ts",
+  "bugs": {
+    "url" : "https://github.com/mackiedrew/coda-ts/issues"
+  },
   "packageManager": "yarn@3.2.0",
-  "license": "MIT",
+  "license": "MTI",
+  "main": "./dist/main.js",
   "scripts": {
     "build": "tsup",
     "lint": "eslint '{src,tests}/**/*.ts'",

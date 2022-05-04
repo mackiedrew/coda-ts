@@ -1,7 +1,7 @@
 import { AxiosInstance } from 'axios';
 import { PageRef } from './page';
 import { Resource, ResourceType } from './base';
-import { Columns } from './columns';
+import { ColumnRef, Columns } from './columns';
 import { Rows } from './rows';
 
 export enum TableType {
@@ -39,12 +39,6 @@ export interface TableRef {
   tableType: TableType;
   name: string; // Name of the page.
   parent: PageRef; // Reference to a page.
-}
-
-export interface ColumnRef {
-  id: string; // ID of the column.
-  type: ResourceType.Column; // The type of this resource.
-  href: string; // API link to the column.
 }
 
 export interface Sort {

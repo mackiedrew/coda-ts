@@ -1,6 +1,4 @@
-import { Coda } from '../main';
-import { Doc } from '../resources/doc';
-import { AccessType, PrincipalEmail, PrincipalType } from '../resources/permissions';
+import { Coda, Doc, AccessType, PrincipalEmail, PrincipalType } from '../src/main';
 
 let doc: Doc;
 

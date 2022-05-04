@@ -2,7 +2,7 @@ import { AxiosInstance } from 'axios';
 import { ResourceList, Pagination } from './base';
 import { Table, TableDto, TableType } from './table';
 
-export interface TableListOption extends Pagination {
+export interface TableListOptions extends Pagination {
   sortBy?: string; // Determines how to sort the given objects.
   tabledTypes?: TableType;
 }
@@ -32,7 +32,7 @@ export class Tables {
    * @returns A list of tables in a Coda doc.
    */
   async list(
-    options: TableListOption = {},
+    options: TableListOptions = {},
     useUpdatedTableLayouts = true,
   ): Promise<ResourceList<Table>> {
     const response = await this.http.get<ResourceList<TableDto>>(`/docs/${this.docId}/tables`, {
