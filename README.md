@@ -1,4 +1,9 @@
 # Coda TS
+
+[![Build](https://github.com/mackiedrew/coda-ts/actions/workflows/build.yml/badge.svg)](https://github.com/mackiedrew/coda-ts/actions/workflows/build.yml)
+[![Tests](https://github.com/mackiedrew/coda-ts/actions/workflows/tests.yml/badge.svg)](https://github.com/mackiedrew/coda-ts/actions/workflows/tests.yml)
+[![CodeQL](https://github.com/mackiedrew/coda-ts/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/mackiedrew/coda-ts/actions/workflows/codeql-analysis.yml)
+
 <a href="https://codeclimate.com/github/mackiedrew/coda-ts/maintainability"><img src="https://api.codeclimate.com/v1/badges/14d3e66a9981fce3dbbe/maintainability" /></a> <a href="https://codeclimate.com/github/mackiedrew/coda-ts/test_coverage"><img src="https://api.codeclimate.com/v1/badges/14d3e66a9981fce3dbbe/test_coverage" /></a>
 
 https://coda.io/developers/apis/v1

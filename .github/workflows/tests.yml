@@ -32,5 +32,12 @@ jobs:
       - name: Lint
         run: yarn lint
         
-      - name: Tests
+      - name: Integration tests
         run: yarn test
+
+      - name: Upload coverage report
+      - uses: paambaati/codeclimate-action@v2.2.4
+        env:
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+
+
