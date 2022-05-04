@@ -30,13 +30,13 @@ export type CellData = {
 export type RowData = CellData[];
 
 export class Row {
-  private http: AxiosInstance;
-  private path: string;
+  private readonly http: AxiosInstance;
+  private readonly path: string;
 
-  public type = ResourceType.Row;
-  public id: string;
-  public docId: string;
-  public tableIdOrName: string;
+  public readonly type = ResourceType.Row;
+  public readonly id: string;
+  public readonly docId: string;
+  public readonly tableIdOrName: string;
 
   public index?: number;
   public browserLink?: string;
@@ -54,48 +54,48 @@ export class Row {
     this.path = `/docs/${docId}/tables/${tableIdOrName}/rows/${rowIdOrName}`;
   }
 
-  async get(
+  public async get(
     useColumnNames = false,
     valueFormat: RowValueFormat = RowValueFormat.Rich,
   ): Promise<Row> {
-    const response = await this.http.get<RowDto>(this.path, {
+    const { data } = await this.http.get<RowDto>(this.path, {
       params: { useColumnNames, valueFormat },
     });
-    return this.set(response.data);
+    return this.set(data);
   }
 
-  async update(
-    data: RowData,
+  public async update(
+    rowData: RowData,
     disableParsing = false,
   ): Promise<{ mutation: Mutation; rowId: string }> {
-    const response = await this.http.put<{
+    const { data } = await this.http.put<{
       requestId: string;
       id: string;
     }>(
       this.path,
-      { row: { cells: data } },
+      { row: { cells: rowData } },
       {
         params: { disableParsing },
       },
     );
     return {
-      mutation: new Mutation(this.http, response.data.requestId),
-      rowId: response.data.id,
+      mutation: new Mutation(this.http, data.requestId),
+      rowId: data.id,
     };
   }
 
-  async delete(): Promise<{ mutation: Mutation; rowId: string }> {
-    const response = await this.http.delete<{
+  public async delete(): Promise<{ mutation: Mutation; rowId: string }> {
+    const { data } = await this.http.delete<{
       requestId: string;
       id: string;
     }>(this.path);
     return {
-      mutation: new Mutation(this.http, response.data.requestId),
-      rowId: response.data.id,
+      mutation: new Mutation(this.http, data.requestId),
+      rowId: data.id,
     };
   }
 
-  set(row: Row | RowDto): Row {
+  public set(row: Row | RowDto): Row {
     this.index = row.index;
     this.browserLink = row.browserLink;
     this.createdAt = row.createdAt;
@@ -105,18 +105,18 @@ export class Row {
     return this;
   }
 
-  async pushButton(
+  public async pushButton(
     columnIdOrName: string,
   ): Promise<{ mutation: Mutation; rowId: string; columnId: string }> {
-    const response = await this.http.post<{
+    const { data } = await this.http.post<{
       requestId: string;
       rowId: string;
       columnId: string;
     }>(`${this.path}/buttons/${columnIdOrName}`);
     return {
-      mutation: new Mutation(this.http, response.data.requestId),
-      rowId: response.data.rowId,
-      columnId: response.data.columnId,
+      mutation: new Mutation(this.http, data.requestId),
+      rowId: data.rowId,
+      columnId: data.columnId,
     };
   }
 }

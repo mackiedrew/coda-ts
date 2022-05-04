@@ -71,14 +71,16 @@ interface ListColumnOptions extends Pagination {
  */
 export class Columns {
   private http: AxiosInstance;
+  private readonly path: string;
 
-  public docId: string;
-  public tableIdOrName: string;
+  public readonly docId: string;
+  public readonly tableIdOrName: string;
 
   constructor(http: AxiosInstance, docId: string, tableIdOrName: string) {
     this.http = http;
     this.docId = docId;
     this.tableIdOrName = tableIdOrName;
+    this.path = `/docs/${this.docId}/tables/${this.tableIdOrName}/columns`;
   }
 
   /**
@@ -89,14 +91,11 @@ export class Columns {
    * @param options Options for the query, see type or docs for details.
    * @returns list of columns in a table.
    */
-  async list(options: ListColumnOptions = {}): Promise<ResourceList<Column>> {
-    const response = await this.http.get<ResourceList<Column>>(
-      `/docs/${this.docId}/tables/${this.tableIdOrName}/columns`,
-      {
-        params: options,
-      },
-    );
-    return response.data;
+  public async list(options: ListColumnOptions = {}): Promise<ResourceList<Column>> {
+    const { data } = await this.http.get<ResourceList<Column>>(this.path, {
+      params: options,
+    });
+    return data;
   }
 
   /**
@@ -109,10 +108,8 @@ export class Columns {
    * be sure to URI-encode it; example: `c-pqRst-U`
    * @returns Details about a column in a table.
    */
-  async get(columnIdOrName: string): Promise<Column> {
-    const response = await this.http.get<Column>(
-      `/docs/${this.docId}/tables/${this.tableIdOrName}/columns/${columnIdOrName}`,
-    );
-    return response.data;
+  public async get(columnIdOrName: string): Promise<Column> {
+    const { data } = await this.http.get<Column>(`${this.path}/${columnIdOrName}`);
+    return data;
   }
 }

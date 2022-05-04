@@ -54,11 +54,10 @@ export class Docs {
    * @param docData Doc creation parameters. (see docs or type for details)
    * @returns Information about the created Doc.
    */
-  async create(docData: DocCreateOptions): Promise<Doc> {
-    const response = await this.http.post<DoctDto>(`/docs`, docData);
-    const doc = new Doc(this.http, response.data.id);
-    doc.set(response.data);
-    return doc;
+  public async create(docData: DocCreateOptions): Promise<Doc> {
+    const { data } = await this.http.post<DoctDto>(`/docs`, docData);
+    const doc = new Doc(this.http, data.id);
+    return doc.set(data);
   }
 
   /**
@@ -69,9 +68,8 @@ export class Docs {
    * @param docId ID of the doc; example: `AbCDeFGH`
    * @returns Returns metadata for the specified doc.
    */
-  async get(docId: string): Promise<Doc> {
-    const doc = new Doc(this.http, docId);
-    return await doc.get();
+  public async get(docId: string): Promise<Doc> {
+    return await new Doc(this.http, docId).get();
   }
 
   /**
@@ -84,14 +82,14 @@ export class Docs {
    * @param options Query parameters to support search and pagination. (see docs or type for details)
    * @returns Returns a list of Coda docs accessible by the user.
    */
-  async list(options: DocsListOptions = {}): Promise<ResourceList<Doc>> {
-    const response = await this.http.get<ResourceList<DoctDto>>('/docs', {
+  public async list(options: DocsListOptions = {}): Promise<ResourceList<Doc>> {
+    const { data } = await this.http.get<ResourceList<DoctDto>>('/docs', {
       params: options,
     });
 
     return {
-      ...response.data,
-      items: response.data.items.map((item) => {
+      ...data,
+      items: data.items.map((item) => {
         const doc = new Doc(this.http, item.id);
         doc.set(item);
         return doc;
@@ -108,9 +106,9 @@ export class Docs {
    * @param options Doc count options. (see docs or type for details)
    * @returns Returns the number of docs for the authenticated user matching the query.
    */
-  // async count(options: DocsCountOptions = {}): Promise<number> {
-  //   const response = await this.http.get<{ count: number }>('/docs/count', { params: options });
-  //   return response.data.count;
+  // public async count(options: DocsCountOptions = {}): Promise<number> {
+  //   const { data } = await this.http.get<{ count: number }>('/docs/count', { params: options });
+  //   return data.count;
   // }
 
   /**
@@ -120,9 +118,9 @@ export class Docs {
    *
    * @returns All available doc categories.
    */
-  async catetories(): Promise<string[]> {
-    const response = await this.http.get<{ items: Category[] }>('/categories');
-    return response.data.items.map((category: Category) => category.name);
+  public async catetories(): Promise<string[]> {
+    const { data } = await this.http.get<{ items: Category[] }>('/categories');
+    return data.items.map((category: Category) => category.name);
   }
 
   /**
@@ -132,7 +130,7 @@ export class Docs {
    * @param url Some Coda URL that represents a doc, or an element within a doc.
    * @returns The extracted Coda doc ID for the provided URL.
    */
-  idFromUrl(url: string): string | void {
+  public idFromUrl(url: string): string | void {
     // This regex is taken directly from the form listener here:
     // https://coda.io/developers/apis/v1#section/Using-the-API/Resource-IDs-and-Links
     return url.match(/_d(?<docId>[\w-]+)/)?.groups?.docId;

@@ -41,9 +41,9 @@ interface ListControlsOptions extends Pagination {
  */
 export class Controls {
   private http: AxiosInstance;
-  private path: string;
+  private readonly path: string;
 
-  public docId: string;
+  public readonly docId: string;
 
   constructor(http: AxiosInstance, docId: string) {
     this.http = http;
@@ -60,11 +60,11 @@ export class Controls {
    * @param options Options for the request. See types or docs for details.x
    * @returns A list of controls in a Coda doc.
    */
-  async list(options: ListControlsOptions = {}): Promise<ResourceList<ControlRef>> {
-    const response = await this.http.get<ResourceList<ControlRef>>(this.path, {
+  public async list(options: ListControlsOptions = {}): Promise<ResourceList<ControlRef>> {
+    const { data } = await this.http.get<ResourceList<ControlRef>>(this.path, {
       params: options,
     });
-    return response.data;
+    return data;
   }
 
   /**
@@ -76,8 +76,8 @@ export class Controls {
    * easily prone to being changed by users. If you're using a name, be sure to URI-encode it.
    * @returns Info on a control.
    */
-  async get(controlIdOrName: string): Promise<Control> {
-    const response = await this.http.get<Control>(`${this.path}/${controlIdOrName}`);
-    return response.data;
+  public async get(controlIdOrName: string): Promise<Control> {
+    const { data } = await this.http.get<Control>(`${this.path}/${controlIdOrName}`);
+    return data;
   }
 }

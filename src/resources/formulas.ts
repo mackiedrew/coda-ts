@@ -24,9 +24,9 @@ interface FormulaListOptions extends Pagination {
  */
 export class Formulas {
   private http: AxiosInstance;
-  private path: string;
+  private readonly path: string;
 
-  public docId: string;
+  public readonly docId: string;
 
   constructor(http: AxiosInstance, docId: string) {
     this.http = http;
@@ -43,11 +43,11 @@ export class Formulas {
    * @param options Options for query. See type or docs for details.
    * @returns List of named formulas in a Coda doc.
    */
-  async list(options: FormulaListOptions = {}): Promise<ResourceList<FormulaRef>> {
-    const response = await this.http.get<ResourceList<FormulaRef>>(this.path, {
+  public async list(options: FormulaListOptions = {}): Promise<ResourceList<FormulaRef>> {
+    const { data } = await this.http.get<ResourceList<FormulaRef>>(this.path, {
       params: options,
     });
-    return response.data;
+    return data;
   }
 
   /**
@@ -60,8 +60,8 @@ export class Formulas {
    * If you're using a name, be sure to URI-encode it; example: `f-fgHijkLm`
    * @returns Details about a formula.
    */
-  async get(formulaIdOrName: string): Promise<Formula> {
-    const response = await this.http.get<Formula>(`${this.path}/${formulaIdOrName}`);
-    return response.data;
+  public async get(formulaIdOrName: string): Promise<Formula> {
+    const { data } = await this.http.get<Formula>(`${this.path}/${formulaIdOrName}`);
+    return data;
   }
 }

@@ -74,12 +74,11 @@ export interface TableDto extends Resource<ResourceType.Table> {
  * https://coda.io/developers/apis/v1#tag/Tables
  */
 export class Table {
-  private http: AxiosInstance;
+  private readonly http: AxiosInstance;
 
-  public id: string;
-  public docId: string;
-  public type: ResourceType.Table = ResourceType.Table;
-
+  public readonly id: string;
+  public readonly docId: string;
+  public readonly type: ResourceType.Table = ResourceType.Table;
   public useUpdatedTableLayouts: boolean;
 
   public tableType?: TableType;
@@ -94,8 +93,8 @@ export class Table {
   public parentTable?: TableRef;
   public filter?: Filter;
 
-  public Columns: Columns;
-  public Rows: Rows;
+  public readonly Columns: Columns;
+  public readonly Rows: Rows;
 
   constructor(
     http: AxiosInstance,
@@ -121,14 +120,14 @@ export class Table {
    * to being changed by users. If you're using a name, be sure to URI-encode it; example: `grid-pqRst-U`
    * @returns Details about a specific table or view.
    */
-  async get(tableIdOrName: string = this.id): Promise<Table> {
-    const response = await this.http.get<TableDto>(`/docs/${this.docId}/tables/${tableIdOrName}`, {
+  public async get(tableIdOrName: string = this.id): Promise<Table> {
+    const { data } = await this.http.get<TableDto>(`/docs/${this.docId}/tables/${tableIdOrName}`, {
       params: { useUpdatedTableLayouts: this.useUpdatedTableLayouts },
     });
-    return this.set(response.data);
+    return this.set(data);
   }
 
-  set(table: Table | TableDto): Table {
+  public set(table: Table | TableDto): Table {
     this.tableType = table.tableType;
     this.parent = table.parent;
     this.browserLink = table.browserLink;

@@ -52,8 +52,8 @@ interface AddPermssionOptions {
  * https://coda.io/developers/apis/v1#tag/Docs
  */
 export class Permissions {
-  private http: AxiosInstance;
-  private id: string;
+  private readonly http: AxiosInstance;
+  private readonly id: string;
 
   constructor(http: AxiosInstance, docId: string) {
     this.http = http;
@@ -68,14 +68,14 @@ export class Permissions {
    * @param options Standard pagination options.
    * @returns Returns a list of permissions for this Coda doc.
    */
-  async list(options: Pagination = {}): Promise<ResourceList<PermissionResponse>> {
-    const response = await this.http.get<ResourceList<PermissionResponse>>(
+  public async list(options: Pagination = {}): Promise<ResourceList<PermissionResponse>> {
+    const { data } = await this.http.get<ResourceList<PermissionResponse>>(
       `/docs/${this.id}/acl/permissions`,
       {
         params: options,
       },
     );
-    return response.data;
+    return data;
   }
 
   /**
@@ -85,7 +85,7 @@ export class Permissions {
    *
    * @param options Parameters for adding the new permission. (see docs or type for details)
    */
-  async add(options: AddPermssionOptions): Promise<void> {
+  public async add(options: AddPermssionOptions): Promise<void> {
     await this.http.post<any>(`/docs/${this.id}/acl/permissions`, options);
   }
 
@@ -96,7 +96,7 @@ export class Permissions {
    *
    * @param permissionId ID of a permission on a doc; example: `AbCDeFGH`
    */
-  async delete(permissionId: string): Promise<void> {
+  public async delete(permissionId: string): Promise<void> {
     await this.http.delete(`/docs/${this.id}/acl/permissions/${permissionId}`);
   }
 }

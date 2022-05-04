@@ -5,9 +5,9 @@ import { Link } from './link';
 
 export class Coda {
   public static baseUrl = 'https://coda.io/apis/v1';
-  private http: AxiosInstance;
+  private readonly http: AxiosInstance;
 
-  public Docs: Docs;
+  public readonly Docs: Docs;
 
   constructor(token: string) {
     this.http = axios.create({
@@ -23,9 +23,9 @@ export class Coda {
    *
    * @returns Basic info about the current user, the token used and the workspace the user belongs to.
    */
-  async whoAmI(): Promise<WhoAmI> {
-    const response = await this.http.get<WhoAmI>(`/whoami`);
-    return response.data;
+  public async whoAmI(): Promise<WhoAmI> {
+    const { data } = await this.http.get<WhoAmI>(`/whoami`);
+    return data;
   }
 
   /**
@@ -40,7 +40,7 @@ export class Coda {
    * the doc itself, will be resolved.
    * @returns Metadata for the resolved resource.
    */
-  async resolveBrowserLink(url: string, degradeGracefully = false): Promise<Link> {
+  public async resolveBrowserLink(url: string, degradeGracefully = false): Promise<Link> {
     const { data } = await this.http.get<Link>(`/resolveBrowserLink`, {
       params: {
         degradeGracefully,

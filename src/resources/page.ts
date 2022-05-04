@@ -37,7 +37,8 @@ export class Page {
 
   public id: string;
   public docId: string;
-  public type: ResourceType.Page = ResourceType.Page;
+
+  public static readonly type: ResourceType.Page = ResourceType.Page;
 
   public browserLink?: string;
   public subtitle?: string;
@@ -62,12 +63,12 @@ export class Page {
    * name and there are multiple pages with the same name, an arbitrary one will be selected.
    * @returns Returns details about a page.
    */
-  async get(pageIdOrName: string = this.id): Promise<Page> {
-    const response = await this.http.get<PageDto>(`/docs/${this.docId}/pages/${pageIdOrName}`);
-    return this.set(response.data);
+  public async get(pageIdOrName: string = this.id): Promise<Page> {
+    const { data } = await this.http.get<PageDto>(`/docs/${this.docId}/pages/${pageIdOrName}`);
+    return this.set(data);
   }
 
-  set(page: Page | PageDto): Page {
+  public set(page: Page | PageDto): Page {
     this.browserLink = page.browserLink;
     this.subtitle = page.subtitle;
     this.icon = page.icon;
@@ -92,11 +93,11 @@ export class Page {
    * @param options Options to update page, see docs or type for details.
    * @returns Update properties for a page.
    */
-  async update(options: PageUpdateOptions): Promise<Mutation> {
-    const response = await this.http.put<{ requestId: string }>(
+  public async update(options: PageUpdateOptions): Promise<Mutation> {
+    const { data } = await this.http.put<{ requestId: string }>(
       `/docs/${this.docId}/pages/${this.id}`,
       options,
     );
-    return new Mutation(this.http, response.data.requestId);
+    return new Mutation(this.http, data.requestId);
   }
 }

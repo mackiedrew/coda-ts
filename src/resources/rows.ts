@@ -69,11 +69,11 @@ export interface ListRowResponse extends ResourceList<RowRef> {
  *
  */
 export class Rows {
-  private http: AxiosInstance;
-  private path: string;
+  private readonly http: AxiosInstance;
+  private readonly path: string;
 
-  public docId: string;
-  public tableIdOrName: string;
+  public readonly docId: string;
+  public readonly tableIdOrName: string;
 
   constructor(http: AxiosInstance, docId: string, tableIdOrName: string) {
     this.http = http;
@@ -91,45 +91,45 @@ export class Rows {
     return `${columnIdOrName}:${value}`;
   }
 
-  async list(options: RowListOptions = {}): Promise<ListRowResponse> {
-    const response = await this.http.get<ListRowResponse>(this.path, {
+  public async list(options: RowListOptions = {}): Promise<ListRowResponse> {
+    const { data } = await this.http.get<ListRowResponse>(this.path, {
       params: { ...options, query: this.constructQuery(options.query) },
     });
-    return response.data;
+    return data;
   }
 
-  async upsert(
-    data: RowUpsertDto,
+  public async upsert(
+    rowData: RowUpsertDto,
     disableParsing = false,
   ): Promise<{ mutation: Mutation; addedRowIds: string[] }> {
-    const response = await this.http.post<{
+    const { data } = await this.http.post<{
       requestId: string;
       addedRowIds: string[];
     }>(
       this.path,
-      { ...data, rows: data.rows.map((row) => ({ cells: row })) },
+      { ...rowData, rows: rowData.rows.map((row) => ({ cells: row })) },
       {
         params: { disableParsing },
       },
     );
     return {
-      mutation: new Mutation(this.http, response.data.requestId),
-      addedRowIds: response.data.addedRowIds,
+      mutation: new Mutation(this.http, data.requestId),
+      addedRowIds: data.addedRowIds,
     };
   }
 
-  async delete(rowIds: string[]): Promise<{ mutation: Mutation; rowIds: string[] }> {
-    const response = await this.http.delete<{
+  public async delete(rowIds: string[]): Promise<{ mutation: Mutation; rowIds: string[] }> {
+    const { data } = await this.http.delete<{
       requestId: string;
       rowIds: string[];
     }>(this.path, { data: { rowIds } });
     return {
-      mutation: new Mutation(this.http, response.data.requestId),
-      rowIds: response.data.rowIds,
+      mutation: new Mutation(this.http, data.requestId),
+      rowIds: data.rowIds,
     };
   }
 
-  async get(
+  public async get(
     rowIdOrName: string,
     useColumnNames = false,
     valueFormat: RowValueFormat = RowValueFormat.Rich,

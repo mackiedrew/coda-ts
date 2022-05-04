@@ -57,12 +57,12 @@ export interface DoctDto extends Resource<ResourceType.Doc> {
 export class Doc {
   private http: AxiosInstance;
 
-  static type = ResourceType.Doc;
+  public static readonly type = ResourceType.Doc;
 
-  public id: string;
+  public readonly id: string;
+
   public name?: string;
   public href?: string;
-
   public browserLink?: string;
   public owner?: string;
   public ownerName?: string;
@@ -75,11 +75,11 @@ export class Doc {
   public sourceDoc?: DocRef;
   public published?: PublishInfo;
 
-  public Permissions: Permissions;
-  public Formulas: Formulas;
-  public Controls: Controls;
-  public Tables: Tables;
-  public Pages: Pages;
+  public readonly Permissions: Permissions;
+  public readonly Formulas: Formulas;
+  public readonly Controls: Controls;
+  public readonly Tables: Tables;
+  public readonly Pages: Pages;
 
   constructor(http: AxiosInstance, id: string) {
     this.http = http;
@@ -92,7 +92,7 @@ export class Doc {
     this.Pages = new Pages(http, id);
   }
 
-  set(doc: Doc | DoctDto) {
+  public set(doc: Doc | DoctDto) {
     this.name = doc.name;
     this.href = doc.href;
     this.browserLink = doc.browserLink;
@@ -117,9 +117,9 @@ export class Doc {
    * @param docId ID of the doc; example: `AbCDeFGH`
    * @returns Returns metadata for the specified doc.
    */
-  async get(docId: string = this.id): Promise<Doc> {
-    const response = await this.http.get<DoctDto>(`/docs/${docId}`);
-    return this.set(response.data);
+  public async get(docId: string = this.id): Promise<Doc> {
+    const { data } = await this.http.get<DoctDto>(`/docs/${docId}`);
+    return this.set(data);
   }
 
   /**
@@ -129,7 +129,7 @@ export class Doc {
    *
    * @returns Returns true if doc was deleted.
    */
-  async delete(): Promise<boolean> {
+  public async delete(): Promise<boolean> {
     await this.http.delete(`/docs/${this.id}`);
     return true;
   }
@@ -141,9 +141,9 @@ export class Doc {
    *
    * @returns Metadata associated with sharing for this Coda doc.
    */
-  async getShareMetadata(): Promise<ShareMetadata> {
-    const response = await this.http.get<ShareMetadata>(`/docs/${this.id}/acl/metadata`);
-    return response.data;
+  public async getShareMetadata(): Promise<ShareMetadata> {
+    const { data } = await this.http.get<ShareMetadata>(`/docs/${this.id}/acl/metadata`);
+    return data;
   }
 
   /**
@@ -154,12 +154,12 @@ export class Doc {
    * @param options Options for query. See type or docs for details.
    * @returns Returns mutation that can provide completion status.
    */
-  async publish(options: PublishOptions): Promise<Mutation> {
-    const response = await this.http.put<{ requestId: string }>(
+  public async publish(options: PublishOptions): Promise<Mutation> {
+    const { data } = await this.http.put<{ requestId: string }>(
       `/docs/${this.id}/publish`,
       options,
     );
-    return new Mutation(this.http, response.data.requestId);
+    return new Mutation(this.http, data.requestId);
   }
 
   /**
@@ -169,7 +169,7 @@ export class Doc {
    *
    * @returns Returns true if document unpublished.
    */
-  async unpublish(): Promise<void> {
+  public async unpublish(): Promise<void> {
     await this.http.delete<any>(`/docs/${this.id}/publish`);
   }
 }

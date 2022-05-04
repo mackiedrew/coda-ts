@@ -8,12 +8,14 @@ export interface PublishInfo {
   categories: string[];
 }
 
+// Type described here: https://coda.io/developers/apis/v1#operation/publishDoc
 export enum PublishMode {
   View = 'view',
   Play = 'play',
   Edit = 'edit',
 }
 
+// Many of these options are not set as required (in the Coda official docs) but most are for initial publishing.
 export interface PublishOptions {
   slug: string; // Slug for the published doc.
   discoverable: boolean; // If true, indicates that the doc is discoverable.

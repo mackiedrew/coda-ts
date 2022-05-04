@@ -13,8 +13,8 @@ export interface TableListOptions extends Pagination {
  * https://coda.io/developers/apis/v1#tag/Tables
  */
 export class Tables {
-  private http: AxiosInstance;
-  private docId: string;
+  private readonly http: AxiosInstance;
+  public readonly docId: string;
 
   constructor(http: AxiosInstance, docId: string) {
     this.http = http;
@@ -31,16 +31,16 @@ export class Tables {
    * detail and form layouts respectively (instead of "masterDetail" for both)
    * @returns A list of tables in a Coda doc.
    */
-  async list(
+  public async list(
     options: TableListOptions = {},
     useUpdatedTableLayouts = true,
   ): Promise<ResourceList<Table>> {
-    const response = await this.http.get<ResourceList<TableDto>>(`/docs/${this.docId}/tables`, {
+    const { data } = await this.http.get<ResourceList<TableDto>>(`/docs/${this.docId}/tables`, {
       params: options,
     });
     return {
-      ...response.data,
-      items: response.data.items.map((item) => {
+      ...data,
+      items: data.items.map((item) => {
         const table = new Table(this.http, this.docId, item.id, useUpdatedTableLayouts);
         table.set(item);
         return table;
@@ -59,7 +59,7 @@ export class Tables {
    * detail and form layouts respectively (instead of "masterDetail" for both)
    * @returns Returns data for the specified table.
    */
-  async get(tableIdOrName: string, useUpdatedTableLayouts = true): Promise<Table> {
+  public async get(tableIdOrName: string, useUpdatedTableLayouts = true): Promise<Table> {
     const table = new Table(this.http, this.docId, tableIdOrName, useUpdatedTableLayouts);
     return await table.get();
   }

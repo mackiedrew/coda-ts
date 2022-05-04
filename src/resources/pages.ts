@@ -11,8 +11,9 @@ import { Page, PageDto } from './page';
  * https://coda.io/developers/apis/v1#tag/Pages
  */
 export class Pages {
-  private http: AxiosInstance;
-  private docId: string;
+  private readonly http: AxiosInstance;
+  private readonly docId: string;
+
   constructor(http: AxiosInstance, docId: string) {
     this.http = http;
     this.docId = docId;
@@ -26,14 +27,14 @@ export class Pages {
    * @param options Standard pagination options.
    * @returns List of pages.
    */
-  async list(options: Pagination = {}): Promise<ResourceList<Page>> {
-    const response = await this.http.get<ResourceList<PageDto>>(`/docs/${this.docId}/pages`, {
+  public async list(options: Pagination = {}): Promise<ResourceList<Page>> {
+    const { data } = await this.http.get<ResourceList<PageDto>>(`/docs/${this.docId}/pages`, {
       params: options,
     });
 
     return {
-      ...response.data,
-      items: response.data.items.map((page) => new Page(this.http, this.docId, page.id).set(page)),
+      ...data,
+      items: data.items.map((page) => new Page(this.http, this.docId, page.id).set(page)),
     };
   }
 
@@ -47,7 +48,7 @@ export class Pages {
    * name and there are multiple pages with the same name, an arbitrary one will be selected.
    * @returns Returns details about a page.
    */
-  async get(pageIdOrName: string): Promise<Page> {
+  public async get(pageIdOrName: string): Promise<Page> {
     const page = new Page(this.http, this.docId, pageIdOrName);
     return await page.get();
   }
