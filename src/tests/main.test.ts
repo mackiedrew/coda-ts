@@ -23,10 +23,10 @@ describe('Coda', () => {
   describe('resolveBrowserLink()', () => {
     const coda: Coda = new Coda(process.env.CODA_UNRESTRICTED_API_KEY || '');
 
-    const docId = process.env.LIVE_DOC_ID || '';
-    const intactPageUrl = process.env.INTACT_PAGE_URL || '';
-    const intactPageId = process.env.INTACT_PAGE_ID || '';
-    const deletedPageUrl = process.env.DELETED_PAGE_URL || '';
+    const docId = 'uq0jEWnseE';
+    const intactPageUrl = 'https://coda.io/d/Test-Document_duq0jEWnseE/Test-123_suHU9#_lumwu';
+    const intactPageId = 'canvas-r4UCASEB-O';
+    const deletedPageUrl = 'https://coda.io/d/Test-Document_duq0jEWnseE/Deleted-Page_sufXo#_lukoS';
 
     test('a page when intact', async () => {
       const link = await coda.resolveBrowserLink(intactPageUrl);

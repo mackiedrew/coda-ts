@@ -1,10 +1,10 @@
 import { Coda } from '../main';
 
 const coda: Coda = new Coda(process.env.CODA_UNRESTRICTED_API_KEY || '');
-const docId = process.env.LIVE_DOC_ID || '';
-const controlId = process.env.CONTROL_ID || '';
+const docId = 'uq0jEWnseE';
 
 describe('Controls', () => {
+  const controlId = 'ctrl-y79hKSzABI';
   test('list()', async () => {
     const doc = await coda.Docs.get(docId);
     const controls = await doc.Controls.list();

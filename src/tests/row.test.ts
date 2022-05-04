@@ -6,8 +6,8 @@ let rows: Rows;
 
 beforeAll(async () => {
   const token = process.env.CODA_UNRESTRICTED_API_KEY || '';
-  const docId = process.env.LIVE_DOC_ID || '';
-  const tableId = process.env.ROWS_TABLE_ID || '';
+  const docId = 'uq0jEWnseE';
+  const tableId = 'grid-8A4rQsaQom';
 
   const doc = await new Coda(token).Docs.get(docId);
   const table = await doc.Tables.get(tableId);
@@ -16,7 +16,7 @@ beforeAll(async () => {
 
 describe('Row', () => {
   jest.setTimeout(120_000);
-  const testRowId = process.env.ROW_ID || '';
+  const testRowId = 'i-OEjqhSsosE';
 
   test('get()', async () => {
     const row = await rows.get(testRowId);

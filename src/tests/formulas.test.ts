@@ -1,8 +1,8 @@
 import { Coda } from '../main';
 
 const coda: Coda = new Coda(process.env.CODA_UNRESTRICTED_API_KEY || '');
-const docId = process.env.LIVE_DOC_ID || '';
-const formulaId = process.env.FORMULA_ID || '';
+const docId = 'uq0jEWnseE';
+const formulaId = 'f-Yi8p4nV3SQ';
 
 describe('Formulas', () => {
   test('list()', async () => {

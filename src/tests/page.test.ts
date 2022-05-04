@@ -3,11 +3,11 @@ import { Coda } from '../main';
 import { Page } from '../resources/page';
 
 let page: Page;
-const testPageId = process.env.INTACT_PAGE_ID || '';
+const testPageId = 'canvas-r4UCASEB-O';
 
 beforeAll(async () => {
   const token = process.env.CODA_UNRESTRICTED_API_KEY || '';
-  const docId = process.env.LIVE_DOC_ID || '';
+  const docId = 'uq0jEWnseE';
   const doc = await new Coda(token).Docs.get(docId);
   page = await doc.Pages.get(testPageId);
 });

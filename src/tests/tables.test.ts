@@ -6,12 +6,12 @@ let doc: Doc;
 
 beforeAll(async () => {
   const token = process.env.CODA_UNRESTRICTED_API_KEY || '';
-  const docId = process.env.LIVE_DOC_ID || '';
+  const docId = 'uq0jEWnseE';
   doc = await new Coda(token).Docs.get(docId);
 });
 
 describe('Tables', () => {
-  const testTableId = process.env.ROWS_TABLE_ID || '';
+  const testTableId = 'grid-8A4rQsaQom';
 
   test('list()', async () => {
     const tables = await doc.Tables.list();

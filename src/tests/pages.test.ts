@@ -5,12 +5,12 @@ let doc: Doc;
 
 beforeAll(async () => {
   const token = process.env.CODA_UNRESTRICTED_API_KEY || '';
-  const docId = process.env.LIVE_DOC_ID || '';
+  const docId = 'uq0jEWnseE';
   doc = await new Coda(token).Docs.get(docId);
 });
 
 describe('Pages', () => {
-  const testPageId = process.env.INTACT_PAGE_ID || '';
+  const testPageId = 'canvas-r4UCASEB-O';
 
   test('list()', async () => {
     const pages = await doc.Pages.list();

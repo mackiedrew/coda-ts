@@ -25,7 +25,7 @@ describe('Doc', () => {
 
   describe('publishing', () => {
     jest.setTimeout(60_000);
-    const docId = process.env.LIVE_DOC_ID || '';
+    const docId = 'uq0jEWnseE';
     const docs = coda.Docs;
 
     test('publish()', async () => {
