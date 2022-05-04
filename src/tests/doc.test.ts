@@ -2,7 +2,7 @@ import { randomUUID } from 'node:crypto';
 import { Coda } from '../main';
 import { PublishMode } from '../resources/publishing';
 
-const coda: Coda = new Coda(process.env.CODA_UNRESTRICTED_API_KEY || '');
+const coda: Coda = new Coda(process.env.CODA_KEY || '');
 
 describe('Doc', () => {
   test('getShareMetadata()', async () => {

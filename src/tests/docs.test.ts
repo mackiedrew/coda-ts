@@ -1,6 +1,6 @@
 import { Coda } from '../main';
 
-const coda: Coda = new Coda(process.env.CODA_UNRESTRICTED_API_KEY || '');
+const coda: Coda = new Coda(process.env.CODA_KEY || '');
 
 describe('Docs', () => {
   test('list()', async () => {

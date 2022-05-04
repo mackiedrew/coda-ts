@@ -6,7 +6,7 @@ let page: Page;
 const testPageId = 'canvas-r4UCASEB-O';
 
 beforeAll(async () => {
-  const token = process.env.CODA_UNRESTRICTED_API_KEY || '';
+  const token = process.env.CODA_KEY || '';
   const docId = 'uq0jEWnseE';
   const doc = await new Coda(token).Docs.get(docId);
   page = await doc.Pages.get(testPageId);

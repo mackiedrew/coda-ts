@@ -4,7 +4,7 @@ import { ResourceType } from '../resources/resource';
 describe('Coda', () => {
   describe('whoAmI()', () => {
     test('returns expected result with valid token', async () => {
-      const coda = new Coda(process.env.CODA_UNRESTRICTED_API_KEY || '');
+      const coda = new Coda(process.env.CODA_KEY || '');
       const whoAmI = await coda.whoAmI();
       expect(whoAmI.type).toBe(ResourceType.User);
       expect(whoAmI.scoped).toBe(false);
@@ -21,7 +21,7 @@ describe('Coda', () => {
   });
 
   describe('resolveBrowserLink()', () => {
-    const coda: Coda = new Coda(process.env.CODA_UNRESTRICTED_API_KEY || '');
+    const coda: Coda = new Coda(process.env.CODA_KEY || '');
 
     const docId = 'uq0jEWnseE';
     const intactPageUrl = 'https://coda.io/d/Test-Document_duq0jEWnseE/Test-123_suHU9#_lumwu';

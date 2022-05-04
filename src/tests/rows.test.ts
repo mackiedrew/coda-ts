@@ -5,7 +5,7 @@ import { RowListQueryType, RowListQueryById, Rows, RowListQueryByName } from '..
 let rows: Rows;
 
 beforeAll(async () => {
-  const token = process.env.CODA_UNRESTRICTED_API_KEY || '';
+  const token = process.env.CODA_KEY || '';
   const docId = 'uq0jEWnseE';
   const tableId = 'grid-8A4rQsaQom';
 

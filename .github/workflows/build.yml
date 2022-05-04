@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: CI
+name: Build
 
 # Controls when the workflow will run
 on:
@@ -16,7 +16,7 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
-  test:
+  Test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -24,16 +24,6 @@ jobs:
       - name: Install dependencies
         run: yarn install
         
-      - name: Create env file
-        run: |
-          touch .env.test
-          echo CODA_UNRESTRICTED_API_KEY=${{ secrets.CODA_UNRESTRICTED_API_KEY }} >> .env.test
-        
       - name: Build
         run: yarn build
-        
-      - name: Lint
-        run: yarn lint
-        
-      - name: Tests
-        run: yarn test
+
