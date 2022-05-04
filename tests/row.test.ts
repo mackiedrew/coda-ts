@@ -28,12 +28,10 @@ describe('Row', () => {
 
     const data = {
       rows: [
-        {
-          cells: [
-            { column: 'Name', value: rowName },
-            { column: 'Check', value: rowCheck },
-          ],
-        },
+        [
+          { column: 'Name', value: rowName },
+          { column: 'Check', value: rowCheck },
+        ],
       ],
     };
     const upsertResult = await rows.upsert(data);
@@ -52,7 +50,7 @@ describe('Row', () => {
     const oldUpdatedAt = row.updatedAt;
     const nextCheck = randomInt(100);
 
-    const update = await row.update({ cells: [{ column: 'Check', value: nextCheck }] });
+    const update = await row.update([{ column: 'Check', value: nextCheck }]);
     await update.mutation.wait();
 
     await row.refresh(true);

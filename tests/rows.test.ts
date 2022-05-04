@@ -62,12 +62,10 @@ describe('Rows', () => {
     test('upsert()', async () => {
       const data = {
         rows: [
-          {
-            cells: [
-              { column: 'Name', value: rowName },
-              { column: 'Check', value: rowCheck },
-            ],
-          },
+          [
+            { column: 'Name', value: rowName },
+            { column: 'Check', value: rowCheck },
+          ],
         ],
       };
       const result = await rows.upsert(data);

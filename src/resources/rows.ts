@@ -105,9 +105,13 @@ export class Rows {
     const response = await this.http.post<{
       requestId: string;
       addedRowIds: string[];
-    }>(this.path, data, {
-      params: { disableParsing },
-    });
+    }>(
+      this.path,
+      { ...data, rows: data.rows.map((row) => ({ cells: row })) },
+      {
+        params: { disableParsing },
+      },
+    );
     return {
       mutation: new Mutation(this.http, response.data.requestId),
       addedRowIds: response.data.addedRowIds,

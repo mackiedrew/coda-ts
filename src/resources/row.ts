@@ -27,7 +27,7 @@ export type CellData = {
   value: ScalarValue;
 };
 
-export type RowData = { cells: CellData[] };
+export type RowData = CellData[];
 
 export class Row {
   private http: AxiosInstance;
@@ -70,7 +70,7 @@ export class Row {
       id: string;
     }>(
       this.path,
-      { row: data },
+      { row: { cells: data } },
       {
         params: { disableParsing },
       },
