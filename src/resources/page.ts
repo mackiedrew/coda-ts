@@ -2,7 +2,7 @@ import { AxiosInstance } from 'axios';
 import { Icon } from './icon';
 import { Image } from './image';
 import { Mutation } from './mutation';
-import { Resource, ResourceType } from './resource';
+import { Resource, ResourceType } from './base';
 
 export interface PageRef {
   id: string; // ID of the page.

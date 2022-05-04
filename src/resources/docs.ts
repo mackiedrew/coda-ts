@@ -1,6 +1,6 @@
 import { AxiosInstance } from 'axios';
 import { Doc, DoctDto } from './doc';
-import { ResourceList, Pagination } from './resource';
+import { ResourceList, Pagination } from './base';
 
 export type Category = { name: string };
 

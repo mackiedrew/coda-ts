@@ -1,4 +1,4 @@
-import { Resource, ResourceType } from './resource';
+import { Resource, ResourceType } from './base';
 
 export interface Link {
   type: ResourceType.ApiLink;

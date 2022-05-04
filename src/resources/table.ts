@@ -1,6 +1,6 @@
 import { AxiosInstance } from 'axios';
 import { PageRef } from './page';
-import { Resource, ResourceType } from './resource';
+import { Resource, ResourceType } from './base';
 import { Columns } from './columns';
 import { Rows } from './rows';
 
@@ -103,17 +103,12 @@ export class Table {
   public Columns: Columns;
   public Rows: Rows;
 
-  /**
-   * Creates a table object.
-   *
-   * @param api TODO
-   * @param docId ID of the doc; example: `AbCDeFGH`;
-   * @param tableIdOrName ID or name of the table. Names are discouraged because they're easily prone
-   * to being changed by users. If you're using a name, be sure to URI-encode it; example: `grid-pqRst-U`
-   * @param useUpdatedTableLayouts Return "detail" and "form" for the layout field of
-   * detail and form layouts respectively (instead of "masterDetail" for both)
-   */
-  constructor(http: AxiosInstance, docId: string, tableIdOrName: string, useUpdatedTableLayouts: boolean) {
+  constructor(
+    http: AxiosInstance,
+    docId: string,
+    tableIdOrName: string,
+    useUpdatedTableLayouts: boolean,
+  ) {
     this.http = http;
     this.docId = docId;
     this.id = tableIdOrName;
@@ -133,12 +128,9 @@ export class Table {
    * @returns Details about a specific table or view.
    */
   async get(tableIdOrName: string = this.id): Promise<Table | void> {
-    const response = await this.http.get<TableDto>(
-      `/docs/${this.docId}/tables/${tableIdOrName}`,
-      {
-        params: { useUpdatedTableLayouts: this.useUpdatedTableLayouts },
-      },
-    );
+    const response = await this.http.get<TableDto>(`/docs/${this.docId}/tables/${tableIdOrName}`, {
+      params: { useUpdatedTableLayouts: this.useUpdatedTableLayouts },
+    });
     return this.set(response.data);
   }
 

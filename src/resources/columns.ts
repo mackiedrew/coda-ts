@@ -1,5 +1,5 @@
 import { AxiosInstance } from 'axios';
-import { Resource, ResourceList, Pagination, ResourceType } from './resource';
+import { Resource, ResourceList, Pagination, ResourceType } from './base';
 import { TableRef } from './table';
 
 export interface ListColumnOptions extends Pagination {

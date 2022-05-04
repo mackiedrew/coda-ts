@@ -30,9 +30,7 @@ export class Mutation {
    * @returns The status for an asynchronous mutation to know whether or not it has been completed (true = completed)
    */
   async status(): Promise<boolean> {
-    const response = await this.http.get<{ completed: true }>(
-      `/mutationStatus/${this.requestId}`,
-    );
+    const response = await this.http.get<{ completed: true }>(`/mutationStatus/${this.requestId}`);
     return response.data.completed;
   }
 

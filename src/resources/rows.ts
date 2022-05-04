@@ -1,6 +1,6 @@
 import { AxiosInstance } from 'axios';
 import { Mutation } from './mutation';
-import { ResourceList, Pagination } from './resource';
+import { ResourceList, Pagination } from './base';
 import { RowRef, RowValueFormat, Row, RowData } from './row';
 
 /**

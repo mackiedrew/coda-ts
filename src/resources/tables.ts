@@ -1,5 +1,5 @@
 import { AxiosInstance } from 'axios';
-import { ResourceList, Pagination } from './resource';
+import { ResourceList, Pagination } from './base';
 import { Table, TableDto, TableType } from './table';
 
 export interface TableListOption extends Pagination {

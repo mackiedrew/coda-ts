@@ -1,5 +1,5 @@
 import { AxiosInstance } from 'axios';
-import { ResourceList, Pagination } from './resource';
+import { ResourceList, Pagination } from './base';
 import { Page, PageDto } from './page';
 
 /**

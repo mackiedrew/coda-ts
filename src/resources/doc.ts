@@ -1,10 +1,10 @@
 import { AxiosInstance } from 'axios';
-import { Folder } from './folder';
+import { FolderRef } from './folder';
 import { Icon } from './icon';
 import { Permissions } from './permissions';
 import { PublishInfo, PublishOptions } from './publishing';
-import { ResourceType, Resource } from './resource';
-import { Workspace } from './workspace';
+import { ResourceType, Resource } from './base';
+import { WorkspaceRef } from './workspace';
 import { Controls } from './controls';
 import { Mutation } from './mutation';
 import { Tables } from './tables';
@@ -37,8 +37,8 @@ export interface DoctDto extends Resource<ResourceType.Doc> {
   ownerName: string;
   createdAt: string;
   updatedAt: string;
-  workspace: Workspace;
-  folder: Folder;
+  workspace: WorkspaceRef;
+  folder: FolderRef;
   icon?: Icon;
   docSize?: DocSize;
   sourceDoc?: DocRef;
@@ -68,8 +68,8 @@ export class Doc {
   public ownerName?: string;
   public createdAt?: string;
   public updatedAt?: string;
-  public workspace?: Workspace;
-  public folder?: Folder;
+  public workspace?: WorkspaceRef;
+  public folder?: FolderRef;
   public icon?: Icon;
   public docSize?: DocSize;
   public sourceDoc?: DocRef;

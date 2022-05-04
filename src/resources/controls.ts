@@ -1,6 +1,6 @@
 import { AxiosInstance } from 'axios';
 import { PageRef } from './page';
-import { Pagination, Resource, ResourceList, ResourceType } from './resource';
+import { Pagination, Resource, ResourceList, ResourceType } from './base';
 import { CellValue } from './values';
 
 export enum ControlType {

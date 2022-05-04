@@ -1,6 +1,6 @@
 import { AxiosInstance } from 'axios';
 import { PageRef } from './page';
-import { Resource, ResourceList, Pagination, ResourceType } from './resource';
+import { Resource, ResourceList, Pagination, ResourceType } from './base';
 import { ScalarValue } from './values';
 
 export interface FormulaListOptions extends Pagination {

@@ -1,6 +1,6 @@
 import { AxiosInstance } from 'axios';
 import { Mutation } from './mutation';
-import { Resource, ResourceType } from './resource';
+import { Resource, ResourceType } from './base';
 import { TableRef } from './table';
 import { CellValue, ScalarValue } from './values';
 
