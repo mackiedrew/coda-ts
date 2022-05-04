@@ -1,8 +1,8 @@
 import { Api } from '../api';
-import { Icon } from '../types/icon';
-import { Image } from '../types/image';
+import { Icon } from './icon';
+import { Image } from './image';
 import { Mutation } from './mutation';
-import { Resource, ResourceType } from '../types/resource';
+import { Resource, ResourceType } from './resource';
 
 export interface PageRef {
   id: string; // ID of the page.

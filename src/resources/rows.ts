@@ -1,6 +1,6 @@
 import { Api } from '../api';
 import { Mutation } from './mutation';
-import { ResourceList, Pagination } from '../types/resource';
+import { ResourceList, Pagination } from './resource';
 import { RowRef, RowValueFormat, Row, RowData } from './row';
 
 /**

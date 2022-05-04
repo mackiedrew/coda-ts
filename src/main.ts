@@ -1,7 +1,7 @@
 import { Api } from './api';
 import { Docs } from './resources/docs';
-import { Resource, ResourceType } from './types/resource';
-import { Workspace } from './types/workspace';
+import { Resource, ResourceType } from './resources/resource';
+import { Workspace } from './resources/workspace';
 
 export interface WhoAmI {
   name: string; // Name of the user.

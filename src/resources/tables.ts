@@ -1,5 +1,5 @@
 import { Api } from '../api';
-import { ResourceList, Pagination } from '../types/resource';
+import { ResourceList, Pagination } from './resource';
 import { Table, TableDto, TableType } from './table';
 
 export interface TableListOption extends Pagination {

@@ -1,5 +1,5 @@
 import { Api } from '../api';
-import { ResourceList, Pagination } from '../types/resource';
+import { ResourceList, Pagination } from './resource';
 
 export enum AccessType {
   Readonly = 'readonly',

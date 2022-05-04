@@ -1,5 +1,5 @@
 import { Coda } from '../main';
-import { ResourceType } from '../types/resource';
+import { ResourceType } from '../resources/resource';
 
 describe('Coda', () => {
   describe('whoAmI()', () => {

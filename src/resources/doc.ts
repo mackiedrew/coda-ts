@@ -1,11 +1,10 @@
 import { Api } from '../api';
-import { Folder } from '../types/folder';
-import { Icon } from '../types/icon';
+import { Folder } from './folder';
+import { Icon } from './icon';
 import { Permissions } from './permissions';
-import { PublishInfo, PublishOptions } from '../types/publishing';
-import { ResourceType, Resource } from '../types/resource';
-import { Workspace } from '../types/workspace';
-import { Automation } from './automation';
+import { PublishInfo, PublishOptions } from './publishing';
+import { ResourceType, Resource } from './resource';
+import { Workspace } from './workspace';
 import { Controls } from './controls';
 import { Mutation } from './mutation';
 import { Tables } from './tables';
@@ -76,7 +75,6 @@ export class Doc {
   public sourceDoc?: DocRef;
   public published?: PublishInfo;
 
-  public Automation: Automation;
   public Permissions: Permissions;
   public Formulas: Formulas;
   public Controls: Controls;
@@ -87,7 +85,6 @@ export class Doc {
     this.api = api;
     this.id = id;
 
-    this.Automation = new Automation(api, id);
     this.Controls = new Controls(api, id);
     this.Formulas = new Formulas(api, id);
     this.Tables = new Tables(api, id);

@@ -1,5 +1,5 @@
 import { Api } from '../api';
-import { Resource, ResourceList, Pagination, ResourceType } from '../types/resource';
+import { Resource, ResourceList, Pagination, ResourceType } from './resource';
 import { TableRef } from './table';
 
 export interface ListColumnOptions extends Pagination {

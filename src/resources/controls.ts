@@ -1,7 +1,7 @@
 import { Api } from '../api';
 import { PageRef } from './page';
-import { Pagination, Resource, ResourceList, ResourceType } from '../types/resource';
-import { CellValue } from '../types/values';
+import { Pagination, Resource, ResourceList, ResourceType } from './resource';
+import { CellValue } from './values';
 
 export enum ControlType {
   Button = 'button',

@@ -1,6 +1,6 @@
 import { Api } from '../api';
 import { PageRef } from './page';
-import { Resource, ResourceType } from '../types/resource';
+import { Resource, ResourceType } from './resource';
 import { Columns } from './columns';
 import { Rows } from './rows';
 

@@ -1,6 +1,6 @@
 import { Api } from '../api';
 import { Doc, DoctDto } from './doc';
-import { ResourceList, Pagination } from '../types/resource';
+import { ResourceList, Pagination } from './resource';
 
 export type Category = { name: string };
 

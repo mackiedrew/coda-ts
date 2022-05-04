@@ -1,7 +1,7 @@
 import { Api } from '../api';
 import { PageRef } from './page';
-import { Resource, ResourceList, Pagination, ResourceType } from '../types/resource';
-import { ScalarValue } from '../types/values';
+import { Resource, ResourceList, Pagination, ResourceType } from './resource';
+import { ScalarValue } from './values';
 
 export interface FormulaListOptions extends Pagination {
   sortBy?: string; // Determines how to sort the given objects.

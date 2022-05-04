@@ -1,8 +1,8 @@
 import { Api } from '../api';
 import { Mutation } from './mutation';
-import { Resource, ResourceType } from '../types/resource';
+import { Resource, ResourceType } from './resource';
 import { TableRef } from './table';
-import { CellValue, ScalarValue } from '../types/values';
+import { CellValue, ScalarValue } from './values';
 
 export interface RowRef extends Resource<ResourceType.Row> {
   index: number; // Index of the row within the table; always positive integer
