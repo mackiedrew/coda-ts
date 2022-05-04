@@ -1,4 +1,4 @@
-import { Api } from '../api';
+import { AxiosInstance } from 'axios';
 import { ResourceList, Pagination } from './resource';
 import { Page, PageDto } from './page';
 
@@ -11,10 +11,10 @@ import { Page, PageDto } from './page';
  * https://coda.io/developers/apis/v1#tag/Pages
  */
 export class Pages {
-  private api: Api;
+  private http: AxiosInstance;
   private docId: string;
-  constructor(api: Api, docId: string) {
-    this.api = api;
+  constructor(http: AxiosInstance, docId: string) {
+    this.http = http;
     this.docId = docId;
   }
 
@@ -27,13 +27,13 @@ export class Pages {
    * @returns List of pages.
    */
   async list(options: Pagination = {}): Promise<ResourceList<Page>> {
-    const response = await this.api.http.get<ResourceList<PageDto>>(`/docs/${this.docId}/pages`, {
+    const response = await this.http.get<ResourceList<PageDto>>(`/docs/${this.docId}/pages`, {
       params: options,
     });
 
     return {
       ...response.data,
-      items: response.data.items.map((page) => new Page(this.api, this.docId, page.id).set(page)),
+      items: response.data.items.map((page) => new Page(this.http, this.docId, page.id).set(page)),
     };
   }
 
@@ -48,7 +48,7 @@ export class Pages {
    * @returns Returns details about a page.
    */
   async get(pageIdOrName: string): Promise<Page> {
-    const page = new Page(this.api, this.docId, pageIdOrName);
+    const page = new Page(this.http, this.docId, pageIdOrName);
     await page.refresh();
     return page;
   }

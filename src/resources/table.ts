@@ -1,4 +1,4 @@
-import { Api } from '../api';
+import { AxiosInstance } from 'axios';
 import { PageRef } from './page';
 import { Resource, ResourceType } from './resource';
 import { Columns } from './columns';
@@ -80,7 +80,7 @@ export interface TableDto extends Resource<ResourceType.Table> {
  * https://coda.io/developers/apis/v1#tag/Tables
  */
 export class Table {
-  private api: Api;
+  private http: AxiosInstance;
 
   public id: string;
   public docId: string;
@@ -113,14 +113,14 @@ export class Table {
    * @param useUpdatedTableLayouts Return "detail" and "form" for the layout field of
    * detail and form layouts respectively (instead of "masterDetail" for both)
    */
-  constructor(api: Api, docId: string, tableIdOrName: string, useUpdatedTableLayouts: boolean) {
-    this.api = api;
+  constructor(http: AxiosInstance, docId: string, tableIdOrName: string, useUpdatedTableLayouts: boolean) {
+    this.http = http;
     this.docId = docId;
     this.id = tableIdOrName;
     this.useUpdatedTableLayouts = useUpdatedTableLayouts;
 
-    this.Columns = new Columns(this.api, this.docId, this.id);
-    this.Rows = new Rows(this.api, this.docId, this.id);
+    this.Columns = new Columns(this.http, this.docId, this.id);
+    this.Rows = new Rows(this.http, this.docId, this.id);
   }
 
   /**
@@ -133,7 +133,7 @@ export class Table {
    * @returns Details about a specific table or view.
    */
   async get(tableIdOrName: string = this.id): Promise<Table | void> {
-    const response = await this.api.http.get<TableDto>(
+    const response = await this.http.get<TableDto>(
       `/docs/${this.docId}/tables/${tableIdOrName}`,
       {
         params: { useUpdatedTableLayouts: this.useUpdatedTableLayouts },

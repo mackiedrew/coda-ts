@@ -1,33 +1,20 @@
-import { Api } from './api';
+import axios, { AxiosInstance } from 'axios';
+import { WhoAmI } from './resources/account';
 import { Docs } from './resources/docs';
-import { Resource, ResourceType } from './resources/resource';
-import { Workspace } from './resources/workspace';
-
-export interface WhoAmI {
-  name: string; // Name of the user.
-  loginId: string; // Email address of the user.
-  type: ResourceType.User; // The type of this resource.
-  scoped: boolean; // True if the token used to make this request has restricted/scoped access to the API.
-  tokenName: string; // Returns the name of the token used for this request.
-  href: string; // API link to the user.
-  workspace: Workspace; // Reference to a Coda workspace.
-  pictureLink: string; // Browser-friendly link to the user's avatar image.
-}
-
-export interface ResourceLink {
-  type: ResourceType.ApiLink;
-  href: string;
-  resource: Resource<ResourceType>;
-  browserLink?: string; // Canonical browser-friendly link to the resolved resource.
-}
+import { Link } from './resources/links';
 
 export class Coda {
-  private api: Api;
+  public static baseUrl = 'https://coda.io/apis/v1';
+  private http: AxiosInstance;
+
   public Docs: Docs;
 
   constructor(token: string) {
-    this.api = new Api(token);
-    this.Docs = new Docs(this.api);
+    this.http = axios.create({
+      baseURL: Coda.baseUrl,
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    this.Docs = new Docs(this.http);
   }
 
   /**
@@ -37,7 +24,7 @@ export class Coda {
    * @returns Basic info about the current user, the token used and the workspace the user belongs to.
    */
   async whoAmI(): Promise<WhoAmI> {
-    const response = await this.api.http.get<WhoAmI>(`/whoami`);
+    const response = await this.http.get<WhoAmI>(`/whoami`);
     return response.data;
   }
 
@@ -53,13 +40,13 @@ export class Coda {
    * the doc itself, will be resolved.
    * @returns Metadata for the resolved resource.
    */
-  async resolveBrowserLink(url: string, degradeGracefully = false): Promise<ResourceLink> {
-    const response = await this.api.http.get<ResourceLink>(`/resolveBrowserLink`, {
+  async resolveBrowserLink(url: string, degradeGracefully = false): Promise<Link> {
+    const { data } = await this.http.get<Link>(`/resolveBrowserLink`, {
       params: {
         degradeGracefully,
         url,
       },
     });
-    return response.data;
+    return data;
   }
 }

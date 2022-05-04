@@ -1,4 +1,4 @@
-import { Api } from '../api';
+import { AxiosInstance } from 'axios';
 import { Resource, ResourceList, Pagination, ResourceType } from './resource';
 import { TableRef } from './table';
 
@@ -64,13 +64,13 @@ export interface Column extends Resource<ResourceType.Column> {
  * https://coda.io/developers/apis/v1#tag/Columns
  */
 export class Columns {
-  private api: Api;
+  private http: AxiosInstance;
 
   public docId: string;
   public tableIdOrName: string;
 
-  constructor(api: Api, docId: string, tableIdOrName: string) {
-    this.api = api;
+  constructor(http: AxiosInstance, docId: string, tableIdOrName: string) {
+    this.http = http;
     this.docId = docId;
     this.tableIdOrName = tableIdOrName;
   }
@@ -84,7 +84,7 @@ export class Columns {
    * @returns list of columns in a table.
    */
   async list(options: ListColumnOptions = {}): Promise<ResourceList<Column>> {
-    const response = await this.api.http.get<ResourceList<Column>>(
+    const response = await this.http.get<ResourceList<Column>>(
       `/docs/${this.docId}/tables/${this.tableIdOrName}/columns`,
       {
         params: options,
@@ -104,7 +104,7 @@ export class Columns {
    * @returns Details about a column in a table.
    */
   async get(columnIdOrName: string): Promise<Column> {
-    const response = await this.api.http.get<Column>(
+    const response = await this.http.get<Column>(
       `/docs/${this.docId}/tables/${this.tableIdOrName}/columns/${columnIdOrName}`,
     );
     return response.data;

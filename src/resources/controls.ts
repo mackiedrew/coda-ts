@@ -1,4 +1,4 @@
-import { Api } from '../api';
+import { AxiosInstance } from 'axios';
 import { PageRef } from './page';
 import { Pagination, Resource, ResourceList, ResourceType } from './resource';
 import { CellValue } from './values';
@@ -40,13 +40,13 @@ export interface Control extends Resource<ResourceType.Control> {
  *
  */
 export class Controls {
-  private api: Api;
+  private http: AxiosInstance;
   private path: string;
 
   public docId: string;
 
-  constructor(api: Api, docId: string) {
-    this.api = api;
+  constructor(http: AxiosInstance, docId: string) {
+    this.http = http;
     this.docId = docId;
 
     this.path = `/docs/${docId}/controls`;
@@ -61,7 +61,7 @@ export class Controls {
    * @returns A list of controls in a Coda doc.
    */
   async list(options: ListControlsOptions = {}): Promise<ResourceList<ControlListElement>> {
-    const response = await this.api.http.get<ResourceList<ControlListElement>>(this.path, {
+    const response = await this.http.get<ResourceList<ControlListElement>>(this.path, {
       params: options,
     });
     return response.data;
@@ -77,7 +77,7 @@ export class Controls {
    * @returns Info on a control.
    */
   async get(controlIdOrName: string): Promise<Control> {
-    const response = await this.api.http.get<Control>(`${this.path}/${controlIdOrName}`);
+    const response = await this.http.get<Control>(`${this.path}/${controlIdOrName}`);
     return response.data;
   }
 }

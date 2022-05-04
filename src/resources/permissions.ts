@@ -1,4 +1,4 @@
-import { Api } from '../api';
+import { AxiosInstance } from 'axios';
 import { ResourceList, Pagination } from './resource';
 
 export enum AccessType {
@@ -52,11 +52,11 @@ export interface PermissionResponse {
  * https://coda.io/developers/apis/v1#tag/Docs
  */
 export class Permissions {
-  private api: Api;
+  private http: AxiosInstance;
   private id: string;
 
-  constructor(api: Api, docId: string) {
-    this.api = api;
+  constructor(http: AxiosInstance, docId: string) {
+    this.http = http;
     this.id = docId;
   }
 
@@ -69,7 +69,7 @@ export class Permissions {
    * @returns Returns a list of permissions for this Coda doc.
    */
   async list(options: Pagination = {}): Promise<ResourceList<PermissionResponse>> {
-    const response = await this.api.http.get<ResourceList<PermissionResponse>>(
+    const response = await this.http.get<ResourceList<PermissionResponse>>(
       `/docs/${this.id}/acl/permissions`,
       {
         params: options,
@@ -86,7 +86,7 @@ export class Permissions {
    * @param options Parameters for adding the new permission. (see docs or type for details)
    */
   async add(options: AddPermssionOptions): Promise<void> {
-    await this.api.http.post<any>(`/docs/${this.id}/acl/permissions`, options);
+    await this.http.post<any>(`/docs/${this.id}/acl/permissions`, options);
   }
 
   /**
@@ -97,6 +97,6 @@ export class Permissions {
    * @param permissionId ID of a permission on a doc; example: `AbCDeFGH`
    */
   async delete(permissionId: string): Promise<void> {
-    await this.api.http.delete(`/docs/${this.id}/acl/permissions/${permissionId}`);
+    await this.http.delete(`/docs/${this.id}/acl/permissions/${permissionId}`);
   }
 }

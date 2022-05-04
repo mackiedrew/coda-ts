@@ -1,4 +1,4 @@
-import { Api } from '../api';
+import { AxiosInstance } from 'axios';
 
 /**
  * A mutation status API interface class.
@@ -6,15 +6,15 @@ import { Api } from '../api';
  * https://coda.io/developers/apis/v1#operation/getMutationStatus
  */
 export class Mutation {
-  private api: Api;
+  private http: AxiosInstance;
 
   /**
    * ID of the request. example: `abc-123-def-456`
    */
   private requestId: string;
 
-  constructor(api: Api, requestId: string) {
-    this.api = api;
+  constructor(http: AxiosInstance, requestId: string) {
+    this.http = http;
     this.requestId = requestId;
   }
 
@@ -30,7 +30,7 @@ export class Mutation {
    * @returns The status for an asynchronous mutation to know whether or not it has been completed (true = completed)
    */
   async status(): Promise<boolean> {
-    const response = await this.api.http.get<{ completed: true }>(
+    const response = await this.http.get<{ completed: true }>(
       `/mutationStatus/${this.requestId}`,
     );
     return response.data.completed;

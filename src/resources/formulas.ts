@@ -1,4 +1,4 @@
-import { Api } from '../api';
+import { AxiosInstance } from 'axios';
 import { PageRef } from './page';
 import { Resource, ResourceList, Pagination, ResourceType } from './resource';
 import { ScalarValue } from './values';
@@ -23,13 +23,13 @@ export interface Formula extends Resource<ResourceType.Formula> {
  * https://coda.io/developers/apis/v1#tag/Formulas
  */
 export class Formulas {
-  private api: Api;
+  private http: AxiosInstance;
   private path: string;
 
   public docId: string;
 
-  constructor(api: Api, docId: string) {
-    this.api = api;
+  constructor(http: AxiosInstance, docId: string) {
+    this.http = http;
     this.docId = docId;
 
     this.path = `/docs/${this.docId}/formulas`;
@@ -44,7 +44,7 @@ export class Formulas {
    * @returns List of named formulas in a Coda doc.
    */
   async list(options: FormulaListOptions = {}): Promise<ResourceList<FormulaRef>> {
-    const response = await this.api.http.get<ResourceList<FormulaRef>>(this.path, {
+    const response = await this.http.get<ResourceList<FormulaRef>>(this.path, {
       params: options,
     });
     return response.data;
@@ -61,7 +61,7 @@ export class Formulas {
    * @returns Details about a formula.
    */
   async get(formulaIdOrName: string): Promise<Formula> {
-    const response = await this.api.http.get<Formula>(`${this.path}/${formulaIdOrName}`);
+    const response = await this.http.get<Formula>(`${this.path}/${formulaIdOrName}`);
     return response.data;
   }
 }

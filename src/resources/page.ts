@@ -1,4 +1,4 @@
-import { Api } from '../api';
+import { AxiosInstance } from 'axios';
 import { Icon } from './icon';
 import { Image } from './image';
 import { Mutation } from './mutation';
@@ -37,7 +37,7 @@ export interface PageUpdateOptions {
  * https://coda.io/developers/apis/v1#tag/Pages
  */
 export class Page {
-  private api: Api;
+  private http: AxiosInstance;
 
   public id: string;
   public docId: string;
@@ -50,8 +50,8 @@ export class Page {
   public parent?: Page;
   public children?: Page[];
 
-  constructor(api: Api, docId: string, pageIdOrName: string) {
-    this.api = api;
+  constructor(http: AxiosInstance, docId: string, pageIdOrName: string) {
+    this.http = http;
     this.docId = docId;
     this.id = pageIdOrName;
   }
@@ -67,7 +67,7 @@ export class Page {
    * @returns Returns details about a page.
    */
   async get(pageIdOrName: string = this.id): Promise<Page> {
-    const response = await this.api.http.get<PageDto>(`/docs/${this.docId}/pages/${pageIdOrName}`);
+    const response = await this.http.get<PageDto>(`/docs/${this.docId}/pages/${pageIdOrName}`);
     return this.set(response.data);
   }
 
@@ -77,11 +77,11 @@ export class Page {
     this.icon = page.icon;
     this.image = page.image;
     if (page.parent) {
-      this.parent = new Page(this.api, this.docId, page.id).set(page.parent);
+      this.parent = new Page(this.http, this.docId, page.id).set(page.parent);
     }
     if (page.children) {
       this.children = page.children.map((child) =>
-        new Page(this.api, this.docId, child.id).set(child),
+        new Page(this.http, this.docId, child.id).set(child),
       );
     }
 
@@ -103,10 +103,10 @@ export class Page {
    * @returns Update properties for a page.
    */
   async update(options: PageUpdateOptions): Promise<Mutation> {
-    const response = await this.api.http.put<{ requestId: string }>(
+    const response = await this.http.put<{ requestId: string }>(
       `/docs/${this.docId}/pages/${this.id}`,
       options,
     );
-    return new Mutation(this.api, response.data.requestId);
+    return new Mutation(this.http, response.data.requestId);
   }
 }

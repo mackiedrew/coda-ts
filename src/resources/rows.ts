@@ -1,4 +1,4 @@
-import { Api } from '../api';
+import { AxiosInstance } from 'axios';
 import { Mutation } from './mutation';
 import { ResourceList, Pagination } from './resource';
 import { RowRef, RowValueFormat, Row, RowData } from './row';
@@ -69,14 +69,14 @@ export interface ListRowResponse extends ResourceList<RowRef> {
  *
  */
 export class Rows {
-  private api: Api;
+  private http: AxiosInstance;
   private path: string;
 
   public docId: string;
   public tableIdOrName: string;
 
-  constructor(api: Api, docId: string, tableIdOrName: string) {
-    this.api = api;
+  constructor(http: AxiosInstance, docId: string, tableIdOrName: string) {
+    this.http = http;
     this.docId = docId;
     this.tableIdOrName = tableIdOrName;
 
@@ -92,7 +92,7 @@ export class Rows {
   }
 
   async list(options: RowListOptions = {}): Promise<ListRowResponse> {
-    const response = await this.api.http.get<ListRowResponse>(this.path, {
+    const response = await this.http.get<ListRowResponse>(this.path, {
       params: { ...options, query: this.constructQuery(options.query) },
     });
     return response.data;
@@ -102,25 +102,25 @@ export class Rows {
     data: RowUpsertDto,
     disableParsing = false,
   ): Promise<{ mutation: Mutation; addedRowIds: string[] }> {
-    const response = await this.api.http.post<{
+    const response = await this.http.post<{
       requestId: string;
       addedRowIds: string[];
     }>(this.path, data, {
       params: { disableParsing },
     });
     return {
-      mutation: new Mutation(this.api, response.data.requestId),
+      mutation: new Mutation(this.http, response.data.requestId),
       addedRowIds: response.data.addedRowIds,
     };
   }
 
   async delete(rowIds: string[]): Promise<{ mutation: Mutation; rowIds: string[] }> {
-    const response = await this.api.http.delete<{
+    const response = await this.http.delete<{
       requestId: string;
       rowIds: string[];
     }>(this.path, { data: { rowIds } });
     return {
-      mutation: new Mutation(this.api, response.data.requestId),
+      mutation: new Mutation(this.http, response.data.requestId),
       rowIds: response.data.rowIds,
     };
   }
@@ -130,7 +130,7 @@ export class Rows {
     useColumnNames = false,
     valueFormat: RowValueFormat = RowValueFormat.Rich,
   ): Promise<Row> {
-    const row = new Row(this.api, this.docId, this.tableIdOrName, rowIdOrName);
+    const row = new Row(this.http, this.docId, this.tableIdOrName, rowIdOrName);
     await row.refresh(useColumnNames, valueFormat);
     return row;
   }

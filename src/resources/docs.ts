@@ -1,4 +1,4 @@
-import { Api } from '../api';
+import { AxiosInstance } from 'axios';
 import { Doc, DoctDto } from './doc';
 import { ResourceList, Pagination } from './resource';
 
@@ -39,9 +39,9 @@ export type DocsCountOptions = {
  * https://coda.io/developers/apis/v1#tag/Docs
  */
 export class Docs {
-  private api: Api;
-  constructor(api: Api) {
-    this.api = api;
+  private http: AxiosInstance;
+  constructor(http: AxiosInstance) {
+    this.http = http;
   }
 
   /**
@@ -55,8 +55,8 @@ export class Docs {
    * @returns Information about the created Doc.
    */
   async create(docData: DocCreateOptions): Promise<Doc> {
-    const response = await this.api.http.post<DoctDto>(`/docs`, docData);
-    const doc = new Doc(this.api, response.data.id);
+    const response = await this.http.post<DoctDto>(`/docs`, docData);
+    const doc = new Doc(this.http, response.data.id);
     doc.set(response.data);
     return doc;
   }
@@ -70,7 +70,7 @@ export class Docs {
    * @returns Returns metadata for the specified doc.
    */
   async get(docId: string): Promise<Doc> {
-    const doc = new Doc(this.api, docId);
+    const doc = new Doc(this.http, docId);
     await doc.refresh();
     return doc;
   }
@@ -86,14 +86,14 @@ export class Docs {
    * @returns Returns a list of Coda docs accessible by the user.
    */
   async list(options: DocsListOptions = {}): Promise<ResourceList<Doc>> {
-    const response = await this.api.http.get<ResourceList<DoctDto>>('/docs', {
+    const response = await this.http.get<ResourceList<DoctDto>>('/docs', {
       params: options,
     });
 
     return {
       ...response.data,
       items: response.data.items.map((item) => {
-        const doc = new Doc(this.api, item.id);
+        const doc = new Doc(this.http, item.id);
         doc.set(item);
         return doc;
       }),
@@ -110,7 +110,7 @@ export class Docs {
    * @returns Returns the number of docs for the authenticated user matching the query.
    */
   // async count(options: DocsCountOptions = {}): Promise<number> {
-  //   const response = await this.api.http.get<{ count: number }>('/docs/count', { params: options });
+  //   const response = await this.http.get<{ count: number }>('/docs/count', { params: options });
   //   return response.data.count;
   // }
 
@@ -122,7 +122,7 @@ export class Docs {
    * @returns All available doc categories.
    */
   async catetories(): Promise<string[]> {
-    const response = await this.api.http.get<{ items: Category[] }>('/categories');
+    const response = await this.http.get<{ items: Category[] }>('/categories');
     return response.data.items.map((category: Category) => category.name);
   }
 

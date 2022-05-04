@@ -1,4 +1,4 @@
-import { Api } from '../api';
+import { AxiosInstance } from 'axios';
 import { Folder } from './folder';
 import { Icon } from './icon';
 import { Permissions } from './permissions';
@@ -55,7 +55,7 @@ export interface DoctDto extends Resource<ResourceType.Doc> {
  * https://coda.io/developers/apis/v1#tag/Docs
  */
 export class Doc {
-  private api: Api;
+  private http: AxiosInstance;
 
   static type = ResourceType.Doc;
 
@@ -81,15 +81,15 @@ export class Doc {
   public Tables: Tables;
   public Pages: Pages;
 
-  constructor(api: Api, id: string) {
-    this.api = api;
+  constructor(http: AxiosInstance, id: string) {
+    this.http = http;
     this.id = id;
 
-    this.Controls = new Controls(api, id);
-    this.Formulas = new Formulas(api, id);
-    this.Tables = new Tables(api, id);
-    this.Permissions = new Permissions(api, id);
-    this.Pages = new Pages(api, id);
+    this.Controls = new Controls(http, id);
+    this.Formulas = new Formulas(http, id);
+    this.Tables = new Tables(http, id);
+    this.Permissions = new Permissions(http, id);
+    this.Pages = new Pages(http, id);
   }
 
   set(doc: Doc | DoctDto) {
@@ -118,7 +118,7 @@ export class Doc {
    * @returns Returns metadata for the specified doc.
    */
   async get(docId: string = this.id): Promise<Doc | void> {
-    const response = await this.api.http.get<DoctDto>(`/docs/${docId}`);
+    const response = await this.http.get<DoctDto>(`/docs/${docId}`);
     return this.set(response.data);
   }
 
@@ -136,7 +136,7 @@ export class Doc {
    * @returns Returns true if doc was deleted.
    */
   async delete(): Promise<boolean> {
-    await this.api.http.delete(`/docs/${this.id}`);
+    await this.http.delete(`/docs/${this.id}`);
     return true;
   }
 
@@ -148,7 +148,7 @@ export class Doc {
    * @returns Metadata associated with sharing for this Coda doc.
    */
   async getShareMetadata(): Promise<ShareMetadata> {
-    const response = await this.api.http.get<ShareMetadata>(`/docs/${this.id}/acl/metadata`);
+    const response = await this.http.get<ShareMetadata>(`/docs/${this.id}/acl/metadata`);
     return response.data;
   }
 
@@ -161,11 +161,11 @@ export class Doc {
    * @returns Returns mutation that can provide completion status.
    */
   async publish(options: PublishOptions): Promise<Mutation> {
-    const response = await this.api.http.put<{ requestId: string }>(
+    const response = await this.http.put<{ requestId: string }>(
       `/docs/${this.id}/publish`,
       options,
     );
-    return new Mutation(this.api, response.data.requestId);
+    return new Mutation(this.http, response.data.requestId);
   }
 
   /**
@@ -176,6 +176,6 @@ export class Doc {
    * @returns Returns true if document unpublished.
    */
   async unpublish(): Promise<void> {
-    await this.api.http.delete<any>(`/docs/${this.id}/publish`);
+    await this.http.delete<any>(`/docs/${this.id}/publish`);
   }
 }
