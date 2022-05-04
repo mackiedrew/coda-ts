@@ -46,7 +46,6 @@ const coda = new Coda(CODA_API_KEY);
       - getShareMetadata()
       - set()
       - get()
-      - refresh()
       - publish()
       - unpublish()
       - Pages
@@ -54,8 +53,7 @@ const coda = new Coda(CODA_API_KEY);
           - get()
           - set()
           - update()
-          - refresh()
-      - Automation - NOT IMPLEMENTED DUE TO APPROPRIATE DOCS
+      - Automation - NOT IMPLEMENTED DUE TO MISSING DOCS
         - trigger()
       - Tables
         - Table
@@ -72,7 +70,6 @@ const coda = new Coda(CODA_API_KEY);
               - update()
               - delete()
               - set()
-              - refresh()
               - pushButton()
       - Controls
         - list()

@@ -135,7 +135,6 @@ export class Rows {
     valueFormat: RowValueFormat = RowValueFormat.Rich,
   ): Promise<Row> {
     const row = new Row(this.http, this.docId, this.tableIdOrName, rowIdOrName);
-    await row.refresh(useColumnNames, valueFormat);
-    return row;
+    return row.get(useColumnNames, valueFormat);
   }
 }

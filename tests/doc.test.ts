@@ -37,7 +37,7 @@ describe('Doc', () => {
         mode: PublishMode.Edit,
       });
       await mutation.wait();
-      await doc.refresh();
+      await doc.get();
       expect(doc.published).toBeTruthy();
     });
 
@@ -45,7 +45,7 @@ describe('Doc', () => {
       const doc = await docs.get(docId);
       await doc.unpublish();
       await new Promise((resolve) => setTimeout(resolve, 30_000));
-      await doc.refresh();
+      await doc.get();
       expect(doc.published).toBeFalsy();
     });
   });

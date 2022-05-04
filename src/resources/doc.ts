@@ -117,15 +117,9 @@ export class Doc {
    * @param docId ID of the doc; example: `AbCDeFGH`
    * @returns Returns metadata for the specified doc.
    */
-  async get(docId: string = this.id): Promise<Doc | void> {
+  async get(docId: string = this.id): Promise<Doc> {
     const response = await this.http.get<DoctDto>(`/docs/${docId}`);
     return this.set(response.data);
-  }
-
-  async refresh(): Promise<Doc | void> {
-    const doc = await this.get();
-    if (doc) this.set(doc);
-    return doc;
   }
 
   /**

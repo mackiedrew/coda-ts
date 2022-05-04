@@ -49,7 +49,6 @@ export class Pages {
    */
   async get(pageIdOrName: string): Promise<Page> {
     const page = new Page(this.http, this.docId, pageIdOrName);
-    await page.refresh();
-    return page;
+    return await page.get();
   }
 }

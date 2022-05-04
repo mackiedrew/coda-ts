@@ -121,7 +121,7 @@ export class Table {
    * to being changed by users. If you're using a name, be sure to URI-encode it; example: `grid-pqRst-U`
    * @returns Details about a specific table or view.
    */
-  async get(tableIdOrName: string = this.id): Promise<Table | void> {
+  async get(tableIdOrName: string = this.id): Promise<Table> {
     const response = await this.http.get<TableDto>(`/docs/${this.docId}/tables/${tableIdOrName}`, {
       params: { useUpdatedTableLayouts: this.useUpdatedTableLayouts },
     });
@@ -141,11 +141,5 @@ export class Table {
     this.parentTable = table.parentTable;
     this.filter = table.filter;
     return this;
-  }
-
-  async refresh(): Promise<Table | void> {
-    const table = await this.get();
-    if (table) this.set(table);
-    return table;
   }
 }

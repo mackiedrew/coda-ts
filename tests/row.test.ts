@@ -44,7 +44,7 @@ describe('Row', () => {
     expect(deleteResult.rowId).toBe(addedRowId);
   });
 
-  test('update() row + refresh()', async () => {
+  test('update()', async () => {
     const row = await rows.get(testRowId, true);
 
     const oldUpdatedAt = row.updatedAt;
@@ -53,7 +53,7 @@ describe('Row', () => {
     const update = await row.update([{ column: 'Check', value: nextCheck }]);
     await update.mutation.wait();
 
-    await row.refresh(true);
+    await row.get(true);
 
     expect(row.values?.['Check']).toBe(nextCheck);
     expect(row.updatedAt).not.toBe(oldUpdatedAt);
@@ -64,7 +64,7 @@ describe('Row', () => {
     const check = row.values?.['Check'] as number;
     const result = await row.pushButton('Buttons');
     await result.mutation.wait();
-    await row.refresh(true);
+    await row.get(true);
     const nextCheck = row.values?.['Check'] as number;
 
     expect(nextCheck).toBe(check + 1);

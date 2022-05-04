@@ -71,8 +71,7 @@ export class Docs {
    */
   async get(docId: string): Promise<Doc> {
     const doc = new Doc(this.http, docId);
-    await doc.refresh();
-    return doc;
+    return await doc.get();
   }
 
   /**

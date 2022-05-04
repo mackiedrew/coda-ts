@@ -84,12 +84,6 @@ export class Page {
     return this;
   }
 
-  async refresh(): Promise<Page | void> {
-    const page = await this.get();
-    if (page) this.set(page);
-    return page;
-  }
-
   /**
    * Update properties for a page.
    *

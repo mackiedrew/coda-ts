@@ -22,7 +22,7 @@ describe('Page', () => {
     const subtitle = randomInt(100).toString();
     const mutation = await page.update({ subtitle });
     await mutation.wait();
-    await page.refresh();
+    await page.get();
     expect(page.subtitle).toBe(subtitle);
   });
 });

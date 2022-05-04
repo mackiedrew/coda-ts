@@ -61,7 +61,6 @@ export class Tables {
    */
   async get(tableIdOrName: string, useUpdatedTableLayouts = true): Promise<Table> {
     const table = new Table(this.http, this.docId, tableIdOrName, useUpdatedTableLayouts);
-    await table.refresh();
-    return table;
+    return await table.get();
   }
 }

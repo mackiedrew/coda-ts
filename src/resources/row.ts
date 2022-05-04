@@ -54,7 +54,10 @@ export class Row {
     this.path = `/docs/${docId}/tables/${tableIdOrName}/rows/${rowIdOrName}`;
   }
 
-  async get(useColumnNames: boolean, valueFormat: RowValueFormat): Promise<Row> {
+  async get(
+    useColumnNames = false,
+    valueFormat: RowValueFormat = RowValueFormat.Rich,
+  ): Promise<Row> {
     const response = await this.http.get<RowDto>(this.path, {
       params: { useColumnNames, valueFormat },
     });
@@ -100,15 +103,6 @@ export class Row {
     this.values = row.values;
     this.parent = row.parent;
     return this;
-  }
-
-  async refresh(
-    useColumnNames = false,
-    valueFormat: RowValueFormat = RowValueFormat.Rich,
-  ): Promise<Row | void> {
-    const row = await this.get(useColumnNames, valueFormat);
-    if (row) this.set(row);
-    return row;
   }
 
   async pushButton(
