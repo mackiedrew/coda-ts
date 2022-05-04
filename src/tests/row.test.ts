@@ -18,12 +18,12 @@ describe('Row', () => {
   jest.setTimeout(120_000);
   const testRowId = process.env.ROW_ID || '';
 
-  test('get() row', async () => {
+  test('get()', async () => {
     const row = await rows.get(testRowId);
     expect(row.id).toBe(testRowId);
   });
 
-  test('delete() row', async () => {
+  test('delete()', async () => {
     const rowName = 'Kill This Row';
     const rowCheck = randomInt(100);
 
@@ -47,7 +47,7 @@ describe('Row', () => {
     expect(deleteResult.rowId).toBe(addedRowId);
   });
 
-  test('update() row + refresh() row', async () => {
+  test('update() row + refresh()', async () => {
     const row = await rows.get(testRowId, true);
 
     const oldUpdatedAt = row.updatedAt;
@@ -61,5 +61,15 @@ describe('Row', () => {
     expect(row.values?.['Check']).toBe(nextCheck);
     expect(row.updatedAt).not.toBe(oldUpdatedAt);
   });
-  // test('pushButton()', async () => {});
+
+  test('pushButton()', async () => {
+    const row = await rows.get(testRowId, true);
+    const check = row.values?.['Check'] as number;
+    const result = await row.pushButton('Buttons');
+    await result.mutation.wait();
+    await row.refresh(true);
+    const nextCheck = row.values?.['Check'] as number;
+
+    expect(nextCheck).toBe(check + 1);
+  });
 });

@@ -49,7 +49,7 @@ const coda = new Coda(CODA_API_KEY);
           - set()
           - update()
           - refresh()
-      - Automation
+      - Automation - NOT IMPLEMENTED DUE TO APPROPRIATE DOCS
         - trigger()
       - Tables
         - Table
@@ -86,7 +86,7 @@ Almost every aspect of Coda wraps up into a `Doc`.
 
 ## Getting Doc ID
 
-Aalmost every API call will also require a `docId`. Since this isn't the most common way to work with Coda in-browser you may not find it intuitive to find this value. The best way to find the `docId` is to look at the structure of any Coda link. For example, in the following link you can find the ID of the doc as everything past the `d/_d` and before the first following `/`: 
+Almost every API call will also require a `docId`. Since this isn't the most common way to work with Coda in-browser you may not find it intuitive to find this value. The best way to find the `docId` is to look at the structure of any Coda link. For example, in the following link you can find the ID of the doc as everything past the `d/_d` and before the first following `/`: 
 
 ### Manually extracted
 
